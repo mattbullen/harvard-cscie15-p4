@@ -14,6 +14,8 @@ TBD
 
 #### Details for teaching team
 
+TBD
+
 #### Outside code
 
 * Laravel 5: http://laravel.com
