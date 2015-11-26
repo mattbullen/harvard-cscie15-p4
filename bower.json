@@ -1,0 +1,30 @@
+{
+  "name": "p4",
+  "description": "CSCI E-15 Final Project",
+  "main": "",
+  "authors": [
+    "Matthew Bullen <burner0110@gmail.com>"
+  ],
+  "license": "MIT",
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals",
+    "node",
+    "yui"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.0.0"
+  },
+  "resolutions": {
+    "polymer": "^1.2.0"
+  }
+}

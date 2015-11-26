@@ -1,0 +1,40 @@
+.title {
+    margin: 0px 0px 40px 0px;
+    text-align: center;
+    color: rgb(34, 34, 34);
+}
+
+#description-wrapper {
+    width: 700px;
+    margin: 0px auto;
+    color: rgb(34, 34, 34);
+}
+
+.description {
+    font-size: 18px;
+    font-family: Halifax, Arial, sans-serif;
+}
+
+.description li {
+    width: 600px;
+    margin: 0px 0px 20px 30px;
+}
+
+.heading {
+    text-decoration: underline;
+}
+
+a {
+    color: rgb(34, 34, 34);
+    transition: color 200ms cubic-bezier(0.250, 0.250, 0.750, 0.750);
+}
+
+a:active,
+a:focus,
+a:visited {
+    color: rgb(34, 34, 34);
+}
+
+a:hover {
+    color: #c06c20 !important;
+}

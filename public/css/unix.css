@@ -1,0 +1,105 @@
+/* Description */
+
+#description {
+    margin-bottom: 50px;
+}
+
+#description-title {
+    margin-top: 0px;
+    margin-bottom: 30px;
+    text-align: center;
+    text-decoration: underline;
+}
+
+#description-content {
+    text-align: left;
+}
+
+.description-content-paragraph {
+    width: 700px;
+    margin: 0px auto;
+    font-size: 18px;
+}
+
+/* Permissions Columns */
+
+.permissions-column {
+    padding: 0px 50px;
+}
+
+.permissions-title {
+    margin: 0px 0px 15px 0px;
+    text-decoration: underline;
+}
+
+.checkbox-row {
+    height: 24px;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.checkbox-row-grouped {
+    height: 24px;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.checkbox-label {
+    float: left;
+    height: 24px;
+    width: 30%;
+    line-height: 24px;
+}
+
+.checkbox-box {
+    float: right;
+    height: 18px;
+    width: 18px;
+    margin: 3px 0px 0px 0px !important;
+    cursor: pointer;
+}
+
+/* Submit Button */
+
+#submit {
+    height: 40px;
+    width: 283px;
+    margin: 36px auto 20px auto;
+}
+
+#button-post {
+    height: 40px;
+    width: 282px;
+    padding: 0px;
+    margin: 0px;
+    line-height: 40px;
+    font-family: Museo, Halifax, Arial, sans-serif;
+    text-align: center;
+    color: rgb(34, 34, 34);
+    border: 1px solid rgb(34, 34, 34);
+}
+
+/* Result Area */
+
+#result {
+    width: 283px;
+    margin: 0px auto;
+    border: 1px solid #c06c20;
+}
+
+#result-content {
+    height: 100px;
+    width: 283px;
+    line-height: 100px;
+    font-size: 50px;
+    font-family: Museo, Halifax, Arial, sans-serif;
+    text-align: center;
+    color: #c06c20;
+}
+
+.error {
+    height: 100px;
+    width: 100%;
+    line-height: 100px;
+    font-size: 20px;
+}
