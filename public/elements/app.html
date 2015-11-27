@@ -205,6 +205,14 @@ Polymer({
         itm.user = this.$.tUser.value;
         itm.type = "edit";
     },
+    signIn: function(e) {
+        console.log(e);
+        console.log("Signed In");
+    },
+    signOut: function(e) {
+        console.log(e);
+        console.log("Signed Out");
+    },
     // From: https://scotch.io/tutorials/build-a-real-time-polymer-to-do-app
     findWithAttribute: function(array, attr, value) {
         for (var i = 0; i < array.length; i += 1) {
@@ -214,7 +222,8 @@ Polymer({
     },
     ready: function(e) {
         //this.addEventListener('complete', this.handleComplete);
-        //this.addEventListener('edit', this.handleEdit);
+        this.addEventListener('google-signin-success', this.signIn);
+        this.addEventListener('google-signed-out', this.signOut);
         this.setMenuButtons();
     }
   });
