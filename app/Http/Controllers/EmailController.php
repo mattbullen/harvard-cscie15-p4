@@ -11,7 +11,7 @@ class AuthController extends Controller
     // http://laravel.com/docs/5.1/validation
     // http://daylerees.com/trick-validation-within-models/
     private function validateInput() {
-        $check = new \App\User(); 
+        $check = new \App\Email(); 
         if ($check->validate(Request::all())) {
             return false;
         } else {
