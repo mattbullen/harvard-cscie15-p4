@@ -286,12 +286,15 @@ Polymer({
         console.log("Signed Out");
         
         var user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile(); console.log(user);
+        this.clearModelProperties();
         
+        
+    },
+    clearModelProperties: function() {
         this.currentUser = "";
         this.userHeaderMessage = "You are logged out. Thanks for using the app!";
         this.menuButtons = [];
         this.graphData = [];
-        
     },
     // From: https://scotch.io/tutorials/build-a-real-time-polymer-to-do-app
     findWithAttribute: function(array, attr, value) {
@@ -305,14 +308,9 @@ Polymer({
     },
     closeWelcomeModal: function() {
         this.$.welcomeModal.close();
-    },
-    patchOverlay: function (e) {
-        if (e.target.withBackdrop) {
-            e.target.parentNode.insertBefore(e.target._backdrop, e.target);
-        }
+        $(".iron-overlay-backdrop-0").hide();
     },
     ready: function(e) {
-        //this.addEventListener('complete', this.handleComplete);
         this.addEventListener('google-signin-success', this.signIn);
         this.addEventListener('google-signed-out', this.signOut);
         this.openWelcomeModal();
