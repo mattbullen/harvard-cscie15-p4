@@ -17,12 +17,16 @@
     <link href="../bower_components/iron-icons/iron-icons.html" rel="import">
     <link href="../bower_components/paper-fab/paper-fab.html" rel="import">
     <link href="../bower_components/google-signin/google-signin.html" rel="import">
+    <link href="../bower_components/platinum-https-redirect/platinum-https-redirect.html" rel="import">
     <script src="../js/jquery-2.1.4.min.js"> </script>
     <script src="../js/index.js"> </script>
 </head>
 
 <dom-module id="base-app">
-
+    
+    <!-- Attempts to require the page to use HTTPS -->
+    <platinum-https-redirect></platinum-https-redirect>
+    
     <template>
     
         <paper-drawer-panel>
