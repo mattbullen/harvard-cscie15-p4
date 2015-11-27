@@ -30,7 +30,7 @@ Route::post('/record/exercise/update', 'RecordController@updateExercise');
 Route::post('/record/exercise/delete', 'RecordController@deleteExercise');
 
 // For the table of users
-Route::post('/user', 'EmailController@handleUser');
+Route::post('/email', 'EmailController@handleUser');
 
 // Default route
 Route::get('/', function () {
