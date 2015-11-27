@@ -238,7 +238,7 @@ Polymer({
                     showErrorMessage();
                 }*/
                 if (response.user) {
-                    model.set("userHeaderMessage", "You're good to go, " + name + "!")
+                    model.userHeaderMessage = "You're good to go, " + name + "!";
                 }
             },
             error: function(error) {
