@@ -56,6 +56,18 @@
                     <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
                     <paper-item>Log</paper-item>
                     <paper-item>Name</paper-item>
+                    
+                    <template is="dom-if" if="{{!userHeaderMessage.length}}">
+                        <paper-material>
+                            <paper-item id="userHeaderMessage">Please sign in with Google to access your saved exercise sessions.</paper-item>
+                        </paper-material>
+                    </template>
+                    <template id="userHeaderMessageTemplate">
+                        <paper-material>
+                            <paper-item>{{userHeaderMessage}}</paper-item>
+                        </paper-material>
+                    </template>
+                    
                     <google-signin client-id="132101877152-mj6pbmmc8jt05q7o78sm39103fm00189.apps.googleusercontent.com" scopes="https://www.googleapis.com/auth/drive"></google-signin>
                 </paper-toolbar>
                 
@@ -94,6 +106,11 @@
 Polymer({
     is: "base-app",
     properties: {
+        userHeaderMessage: {
+            type: String,
+            value: "",
+            reflect: true
+        },
         menuButtons: {
             type: Array,
             value: [],
@@ -212,10 +229,55 @@ Polymer({
     signIn: function(e) {
         console.log(e);
         console.log("Signed In");
+        
+        // Extract the user details from the Google JWT sign in object
+        var user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
+        var email = user.po;
+        var firstName = user.Ph;
+        console.log(user, email, firstName);
+
+        this.handleUser(user.po, user.Ph);
+    },
+    handleUser: function(email, name) {
+    
+        // Reference the local instance of the Polymer model for use inside the AJAX success callback
+        var model = this;
+        
+        // Set up the CSRF token.
+        $.ajaxSetup({ headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") } });
+    
+        // POST handling routine.
+        $.ajax({
+            type: "POST",
+            url: "/user",
+            data: { email: email },
+            success: function(response) {
+                console.log("\nResponse:", response);
+                $("#textArea").text(JSON.stringify(response));
+                /*if (response.text) {
+                    showSuccessMessage(response.text);
+                } else {
+                    showErrorMessage();
+                }*/
+                if (response.user) {
+                    this.userHeaderMessage = "Welcome," + name + "!";
+                }
+            },
+            error: function(error) {
+                console.log("\nError:", error);
+                $("#graphWrapper").html(error.responseText);
+                // showErrorMessage();
+            }
+        });
     },
     signOut: function(e) {
         console.log(e);
         console.log("Signed Out");
+        
+        this.userHeaderMessage = "You are logged out. Thanks for using the app!";
+        this.menuButtons = [];
+        this.graphData = [];
+        
     },
     // From: https://scotch.io/tutorials/build-a-real-time-polymer-to-do-app
     findWithAttribute: function(array, attr, value) {

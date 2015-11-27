@@ -10,30 +10,24 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Model implements AuthenticatableContract,
-                                    AuthorizableContract,
-                                    CanResetPasswordContract
+class User extends ModelValidationLayer implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword;
 
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
     protected $table = 'users';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['name', 'email', 'password'];
-
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = ['password', 'remember_token'];
+    protected $fillable = ['email'];
+    protected $hidden = ['remember_token'];
+    
+    // Based on: 
+    // http://laravel.com/docs/5.1/validation
+    // http://daylerees.com/trick-validation-within-models/
+    protected $rules = array(
+        'email' => 'required|max:255|email'
+    );
+    
+    protected $messages = array(
+        'required' => 'Please use a valid email!',
+        'max' => 'You\'ve gone over the character limit! E-mails may contain a maximum of 255 characters.',
+        'email' => 'Please use a valid e-mail format: abc@xyx.com'
+    );
 }
