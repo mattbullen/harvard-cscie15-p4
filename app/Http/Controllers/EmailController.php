@@ -19,7 +19,7 @@ class EmailController extends Controller {
         }
     }
     
-    public function handlerUser() {
+    public function handleUser() {
         $reqErrors = self::validateInput();
         if ($reqErrors) {
             return Response::json(array('error' => $reqErrors));
