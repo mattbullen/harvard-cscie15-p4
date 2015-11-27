@@ -56,10 +56,7 @@
                     <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
                     <paper-item>Log</paper-item>
                     <paper-item>Name</paper-item>
-                    
-                    <template is="dom-if" if="{{!userHeaderMessage.length}}">
-                        <paper-item id="userHeaderMessage">Please sign in with Google.</paper-item> 
-                    </template>
+
                     <template id="userHeaderMessageTemplate">
                         <paper-item>{{userHeaderMessage}}</paper-item>
                     </template>
@@ -109,7 +106,7 @@ Polymer({
         },
         userHeaderMessage: {
             type: String,
-            value: "",
+            value: "Please sign in with Google.",
             reflect: true
         },
         menuButtons: {
