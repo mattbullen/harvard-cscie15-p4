@@ -214,7 +214,7 @@ Polymer({
         }
     },
     signIn: function(e) {
-        console.log(e);
+
         console.log("Signed In");
         
         // Extract the user details from the Google JWT sign in object
@@ -260,9 +260,12 @@ Polymer({
         });
     },
     signOut: function(e) {
-        console.log(e);
+
         console.log("Signed Out");
         
+        var user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile(); console.log(user);
+        
+        this.currentUser = "";
         this.userHeaderMessage = "You are logged out. Thanks for using the app!";
         this.menuButtons = [];
         this.graphData = [];
