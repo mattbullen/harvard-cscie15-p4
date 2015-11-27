@@ -99,16 +99,8 @@
 Polymer({
     is: "base-app",
     properties: {
-        currentUser: {
-            type: String,
-            value: "",
-            reflect: true
-        },
-        userHeaderMessage: {
-            type: String,
-            value: "Please sign in with Google.",
-            reflect: true
-        },
+        currentUser: String,
+        userHeaderMessage: String,
         menuButtons: {
             type: Array,
             value: [],
