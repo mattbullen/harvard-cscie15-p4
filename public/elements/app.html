@@ -249,7 +249,7 @@ Polymer({
                     showErrorMessage();
                 }*/
                 if (response.user) {
-                    model.userHeaderMessage = "Welcome," + name + "!"; console.log(model.userHeaderMessage);
+                    this.set("userHeaderMessage", "You're good to go, " + name + "!")
                 }
             },
             error: function(error) {
