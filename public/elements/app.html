@@ -58,7 +58,7 @@
                     <paper-item>Name</paper-item>
 
                     <template id="userHeaderMessageTemplate">
-                        <paper-item>{{userHeaderMessage}}</paper-item>
+                        <paper-item id="userHeaderMessage">{{userHeaderMessage}}</paper-item>
                     </template>
                     
                     <google-signin client-id="132101877152-mj6pbmmc8jt05q7o78sm39103fm00189.apps.googleusercontent.com" scopes="https://www.googleapis.com/auth/drive"></google-signin>
@@ -100,7 +100,11 @@ Polymer({
     is: "base-app",
     properties: {
         currentUser: String,
-        userHeaderMessage: String,
+        userHeaderMessage: {
+            type: String,
+            value: "Please log in with Google.",
+            notify: true
+        },
         menuButtons: {
             type: Array,
             value: [],
