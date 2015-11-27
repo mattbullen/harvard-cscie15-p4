@@ -14,6 +14,9 @@
     <link href="../bower_components/paper-item/paper-item.html" rel="import">
     <link href="../bower_components/paper-input/paper-input.html" rel="import">
     <link href="../bower_components/paper-button/paper-button.html" rel="import">
+    <link href="../bower_components/paper-dialog/paper-dialog.html" rel="import">
+    <link href="../bower_components/paper-dialog/paper-dialog.html" rel="import">
+    <link href="../bower_components/paper-dialog/paper-dialog.html" rel="import">
     <link href="../bower_components/iron-icons/iron-icons.html" rel="import">
     <link href="../bower_components/paper-fab/paper-fab.html" rel="import">
     <link href="../bower_components/google-signin/google-signin.html" rel="import">
@@ -26,8 +29,13 @@
     
     <!-- Attempts to require the page to use HTTPS -->
     <platinum-https-redirect></platinum-https-redirect>
-    
+
     <template>
+        
+        <paper-dialog id="welcomeModal" entry-animation="scale-up-animation" exit-animation="fade-out-animation" opened="true">
+            <h2>Header</h2>
+            <div>Dialog body</div>
+        </paper-dialog>
     
         <paper-drawer-panel>
         
@@ -40,7 +48,7 @@
                 <paper-menu id="menu">
                     <template is="dom-if" if="{{!menuButtons.length}}">
                         <paper-material>
-                            <paper-item class="message" elevation="2">No saved exercises!</paper-item>
+                            <paper-item class="message" elevation="2">Please log in!</paper-item>
                         </paper-material>
                     </template>
                     <template id="menuButtons" is="dom-repeat" items="{{menuButtons}}">
@@ -272,11 +280,14 @@ Polymer({
         }
         return -1;
     },
+    openWelcomeModal: function() {
+        //this.$.welcomeModal.open();
+    },
     ready: function(e) {
         //this.addEventListener('complete', this.handleComplete);
         this.addEventListener('google-signin-success', this.signIn);
         this.addEventListener('google-signed-out', this.signOut);
-        this.setMenuButtons();
+        this.openWelcomeModal();
     }
   });
 </script>

@@ -23,7 +23,8 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#1.0.0",
-    "pubnub-element": "~4.0.1"
+    "pubnub-element": "~4.0.1",
+    "paper-dialog": "PolymerElements/paper-dialog#~1.0.3"
   },
   "resolutions": {
     "polymer": "^1.2.0"
