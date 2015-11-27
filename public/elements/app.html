@@ -58,7 +58,7 @@
                     <paper-item>Name</paper-item>
                     
                     <template is="dom-if" if="{{!userHeaderMessage.length}}">
-                        <paper-item id="userHeaderMessage">Please sign in with Google to access your saved exercise sessions.</paper-item> 
+                        <paper-item id="userHeaderMessage">Please sign in with Google.</paper-item> 
                     </template>
                     <template id="userHeaderMessageTemplate">
                         <paper-item>{{userHeaderMessage}}</paper-item>
@@ -102,6 +102,11 @@
 Polymer({
     is: "base-app",
     properties: {
+        currentUser: {
+            type: String,
+            value: "",
+            reflect: true
+        },
         userHeaderMessage: {
             type: String,
             value: "",
@@ -217,14 +222,16 @@ Polymer({
         var email = user.po;
         var firstName = user.Ph;
         console.log(user, email, firstName);
-
+        
+        this.currentUser = user.po; console.log(this.currentUser);
+        
         this.handleUser(user.po, user.Ph);
     },
     handleUser: function(email, name) {
     
         // Reference the local instance of the Polymer model for use inside the AJAX success callback
         var model = this;
-        console.log(email, name);
+
         // Set up the CSRF token.
         $.ajaxSetup({ headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") } });
     
@@ -242,7 +249,7 @@ Polymer({
                     showErrorMessage();
                 }*/
                 if (response.user) {
-                    model.userHeaderMessage = "Welcome," + name + "!";
+                    model.userHeaderMessage = "Welcome," + name + "!"; console.log(model.userHeaderMessage);
                 }
             },
             error: function(error) {
