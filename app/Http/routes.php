@@ -41,6 +41,6 @@ Route::post('/record/exercise/update', 'RecordController@updateExercise');
 Route::post('/record/exercise/delete', 'RecordController@deleteExercise');
 
 Route::get('/', function () {
-    return view('layouts.index');
+    return view('layouts.master');
 });
 

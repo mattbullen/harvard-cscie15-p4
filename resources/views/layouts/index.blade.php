@@ -10,6 +10,15 @@
             width: 20%;
         }
     </style>
+    
+    <!-- Title Bar -->
+    <div id="row-header" class="row">
+        <div class="large-12 columns">
+            <h2 class="row-header-title">Fitness Tracker</h2>
+        </div>
+    </div>
+    
+    <!-- Page Content -->
     <div id="row-content" class="row">
         <div id="wrapper">
             <input id="input-exercise-create" type="text"></input>

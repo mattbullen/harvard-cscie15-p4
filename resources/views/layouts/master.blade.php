@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html id="html">
+<html>
 
     <head>
    
@@ -18,58 +18,20 @@
         
         <!-- CSS-->
         <link rel="stylesheet" href="{{ URL::asset('css/normalize.css') }}">
-        <link rel="stylesheet" href="{{ URL::asset('css/foundation.min.css') }}">
-        <link rel="stylesheet" href="{{ URL::asset('css/base.css') }}">
-        @yield("page-css")
-        
+        <link rel="stylesheet" href="{{ URL::asset('css/index.css') }}">
+
         <!-- Polymer JS -->
-        <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
-      
+        <script src="{{ URL::asset('bower_components/webcomponentsjs/webcomponents-lite.min.js') }}"> </script>
+        
+        <!-- Polymer Elements Import -->
+        <link href="{{ URL::asset('elements/app.html') }}" rel="import">
+        
     </head>
    
-    <body id="body">
+    <body fullbleed unresolved>
         
-        <!-- Title Bar -->
-        <div id="row-header" class="row">
-            <div class="large-12 columns">
-                <h2 class="row-header-title">Fitness Tracker</h2>
-            </div>
-        </div>
-
-        <!-- Menu Bar 
-        <div id="row-menu" class="row">
-            <div class="large-12 columns">
-                
-                <div id="button-home" class="left button-link">
-                    <a id="a-home" class="button-href" href="/">Home</a>
-                </div>
-                
-                <div id="button-text" class="left button-link">
-                    <a id="a-text" class="button-href" href="/text">Lorem Ipsum Text</a>
-                </div>
-                
-                <div id="button-users" class="left button-link">
-                    <a id="a-users" class="button-href" href="/users">Random Users</a>
-                </div>
-                
-                <div id="button-unix" class="left button-link">
-                    <a id="a-unix" class="button-href" href="/unix">Unix Permissions</a>
-                </div>
-                
-                <div id="button-password" class="left button-link">
-                    <a id="a-password" class="button-href" href="/password">XKCD Password</a>
-                </div>
-                
-            </div>
-        </div> -->
-        
-        <!-- Page-Specific Content -->
-        @yield("page-content")
-        
-        <!-- JS-->
-        <script src="{{ URL::asset('js/jquery.2.1.4.min.js') }}"> </script>
-        <script src="{{ URL::asset('js/foundation.min.js') }}"> </script>
-        @yield("page-js")
+        <!-- Imported Polymer App -->
+        <base-app> <base-app>
         
     </body>
    

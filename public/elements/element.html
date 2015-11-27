@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <link href="../bower_components/polymer/polymer.html" rel="import">
+    <link href="../bower_components/paper-checkbox/paper-checkbox.html" rel="import">
+    <link href="../bower_components/paper-item/paper-item.html" rel="import">
+    <link href="../bower_components/paper-input/paper-input.html" rel="import">
+    <link href="../bower_components/paper-material/paper-material.html" rel="import">
+    <link href="../bower_components/iron-icons/iron-icons.html" rel="import">
+    <link href="../bower_components/paper-fab/paper-fab.html" rel="import">
+</head>
+
+<dom-module id="base-element" attributes="task user rid">
+
+    <template>
+    
+        <paper-material class="" elevation="1">
+            <paper-checkbox checked="{{completed}}"></paper-checkbox>
+            <paper-fab hidden={{editing}} icon="icons:create" on-tap="doEdit" class="edit" mini></paper-fab>
+            <paper-fab hidden={{!editing}} icon="icons:done" on-tap="doEdit" class="done" mini></paper-fab>
+            <paper-item hidden="{{editing}}" id="task">{{task}}</paper-item>
+            <paper-input id="edit" hidden="{{!editing}}" value="{{task}}"></paper-input>
+            <paper-item class="info">Created by: <span>{{user}}</span></paper-item>
+            <paper-item class="info">{{time}}</paper-item>
+        </paper-material>
+        
+    </template>
+  
+</dom-module>
+
+<script>
+Polymer({
+    is: "base-element",
+    properties: {
+        user: {
+            type: String,
+            value: ""   
+        },
+        task: {
+            type: String,
+            value: ""
+        },
+        rid: {
+            type: Number,
+            value: -1
+        },
+        time: {
+            type: String,
+            value: new Date().toLocaleString()
+        },
+        completed: {
+            type: Boolean,
+            value: false,
+            observer: 'compChanged'
+        },
+        editing: {
+            type: Boolean,
+            value: false    
+        }
+    },
+    compChanged: function(e) {
+        if (e){ this.fire('complete', this); }
+    },
+    doEdit: function(e) {
+        this.editing = !this.editing;
+        if (!this.editing) { this.fire('edit', { rid: this.rid, task: this.task }); }
+    },
+    ready: function(e) {
+    
+    }
+});
+</script>

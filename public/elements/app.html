@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="csrf-token" content="<?php echo csrf_token() ?>" />
+    <link href="../bower_components/polymer/polymer.html" rel="import">
+    <link href="../bower_components/paper-drawer-panel/paper-drawer-panel.html" rel="import">
+    <link href="../bower_components/paper-header-panel/paper-header-panel.html" rel="import">
+    <link href="../bower_components/paper-toolbar/paper-toolbar.html" rel="import">
+    <link href="../bower_components/paper-icon-button/paper-icon-button.html" rel="import">
+    <link href="../bower_components/paper-material/paper-material.html" rel="import">
+    <link href="../bower_components/paper-menu/paper-menu.html" rel="import">    
+    <link href="../bower_components/paper-item/paper-item.html" rel="import">
+    <link href="../bower_components/paper-input/paper-input.html" rel="import">
+    <link href="../bower_components/paper-button/paper-button.html" rel="import">
+    <link href="../bower_components/iron-icons/iron-icons.html" rel="import">
+	<link href="../bower_components/paper-fab/paper-fab.html" rel="import">
+    <script src="../js/jquery-2.1.4.min.js"> </script>
+    <script src="../js/index.js"> </script>
+</head>
+
+<dom-module id="base-app">
+
+    <template>
+    
+        <paper-drawer-panel>
+        
+            <paper-header-panel class="side-panel" drawer>
+            
+                <paper-toolbar>
+                    <paper-item>Exercises</paper-item>
+                </paper-toolbar>
+                
+                <paper-menu id="menu">
+                    <template is="dom-if" if="{{!menuButtons.length}}">
+                        <paper-material>
+                            <paper-item class="message" elevation="2">No saved exercises!</paper-item>
+                        </paper-material>
+                    </template>
+                    <template id="menuButtons" is="dom-repeat" items="{{menuButtons}}">
+                        <paper-button id="menu-{{item.name}}" class="menuButton" on-tap="updateContentView" raised>{{item.name}}</paper-button>
+                    </template>
+                </paper-menu>
+                
+            </paper-header-panel>
+            
+            <paper-header-panel main class="main-panel">
+            
+                <paper-toolbar>
+                    <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+                    <paper-item>Log</paper-item>
+                    <paper-item>Name</paper-item>
+                    <paper-item>Logout</paper-item>
+                </paper-toolbar>
+                
+                <div id="logWrapper">
+                    <paper-material id="logSession" elevation="2">
+                        <paper-input id="enterSets" char-counter label="Sets" maxlength="3"></paper-input>
+                        <paper-input id="enterReps" char-counter label="Reps" maxlength="3"></paper-input>
+                        <paper-input id="enterNotes" char-counter label="Notes" maxlength="140"></paper-input>
+                        <paper-fab id="saveSession" icon="icons:add" on-tap="logExercise"></paper-fab>
+                    </paper-material>
+                </div>
+                
+                <div id="graphWrapper">
+                    <template is="dom-if" if="{{!graphData.length}}">
+                        <paper-material>
+                            <paper-item id="textArea" elevation="2">Graph here.</paper-item>
+                        </paper-material>
+                    </template>
+                    <template id="graphTemplate" is="dom-repeat" items="{{graphData}}">
+                        <paper-material>
+                            <paper-item elevation="2">{{item.entry}}</paper-item>
+                        </paper-material>
+                    </template>
+                </div>
+                
+            </paper-header-panel>
+            
+        </paper-drawer-panel>
+
+    </template>
+    
+</dom-module>
+
+<script>
+
+Polymer({
+    is: "base-app",
+    properties: {
+        menuButtons: {
+            type: Array,
+            value: [],
+            reflect: true
+        },
+        graphData: {
+            type: Array,
+            value: [ { entry: 00 }, { entry: 01 }, { entry: 02 } ],
+            reflect: true
+        }
+    },
+    logExercise: function(e) {
+
+        // Reference the local instance of the Polymer model for use inside the AJAX success callback
+        var model = this;
+        
+        // Set up the CSRF token.
+        $.ajaxSetup({ headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") } });
+    
+        // Extract the POST data and reset the input
+        var data = {
+            name: $("#enterNotes").val()
+        }
+        $("#enterNotes").val('');
+        
+        // POST handling routine.
+        $.ajax({
+            type: "POST",
+            url: "/record/exercise/create",
+            data: data,
+            success: function(response) {
+                console.log("\nResponse:", response);
+                $("#textArea").text(JSON.stringify(response));
+                if (response.exercises) {
+                    model.updateMenuButtons(response.exercises);
+                }
+                /*if (response.text) {
+                    showSuccessMessage(response.text);
+                } else {
+                    showErrorMessage();
+                }*/
+            },
+            error: function(error) {
+                console.log("\nError:", error);
+                $("#graphWrapper").html(error.responseText);
+                // showErrorMessage();
+            }
+        });
+    },
+    setMenuButtons: function(e) {
+        
+        // Reference the local instance of the Polymer model for use inside the AJAX success callback
+        var model = this;
+        
+        // Set up the CSRF token.
+        $.ajaxSetup({ headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") } });
+    
+        // POST handling routine.
+        $.ajax({
+            type: "POST",
+            url: "/record/exercise/read",
+            data: { name: "all" },
+            success: function(response) {
+                console.log("\nResponse:", response);
+                $("#textArea").text(JSON.stringify(response));
+                /*if (response.text) {
+                    showSuccessMessage(response.text);
+                } else {
+                    showErrorMessage();
+                }*/
+                if (response.found) {
+                    model.updateMenuButtons(response.found);
+                }
+            },
+            error: function(error) {
+                console.log("\nError:", error);
+                $("#graphWrapper").html(error.responseText);
+                // showErrorMessage();
+            }
+        });
+    },
+    updateMenuButtons: function(data) {
+        this.menuButtons = data.sort(this.sortByProperty("name"));
+    },
+    updateContentView: function(e) {
+        var button = e.target;
+        var name = button.innerText; //button.getAttribute("data-exercise-name");
+        console.log(name);
+    },
+    // From: https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value-in-javascript
+    sortByProperty: function(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return function (a,b) {
+            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+            return result * sortOrder;
+        }
+    },
+    handleComplete: function(e) {
+        var idx = findWithAttr(this.todo, 'rid', e.target.rid);
+        var itm = this.todo[idx];
+        itm.task = e.target.task;
+        itm.user = this.$.tUser.value;
+        itm.type = "done";
+    },
+    handleEdit: function(e) {
+        var idx = findWithAttr(this.todo, 'rid', e.target.rid);
+        var itm = this.todo[idx];
+        itm.task = e.target.task;
+        itm.user = this.$.tUser.value;
+        itm.type = "edit";
+    },
+    // From: https://scotch.io/tutorials/build-a-real-time-polymer-to-do-app
+    findWithAttribute: function(array, attr, value) {
+        for (var i = 0; i < array.length; i += 1) {
+            if (array[i][attr] === value) { return i; }
+        }
+        return -1;
+    },
+    ready: function(e) {
+        //this.addEventListener('complete', this.handleComplete);
+        //this.addEventListener('edit', this.handleEdit);
+        this.setMenuButtons();
+    }
+  });
+</script>

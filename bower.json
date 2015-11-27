@@ -22,7 +22,8 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#1.0.0"
+    "polymer": "Polymer/polymer#1.0.0",
+    "pubnub-element": "~4.0.1"
   },
   "resolutions": {
     "polymer": "^1.2.0"

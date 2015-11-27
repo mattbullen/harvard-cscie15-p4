@@ -1,6 +1,5 @@
 // Main page loading sequence.
 $(document).ready(function() {
-    highlightActiveTab();
     
     // Set up the CSRF token.
     $.ajaxSetup({ headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") } });
@@ -12,9 +11,8 @@ $(document).ready(function() {
     console.log("\nApp JS loaded.");
 });
 
-// Highlight the active menu tab
-function highlightActiveTab() {
-    $("#a-home").addClass("button-active");
+function crossOver() {
+    console.log("crossOver()");
 }
 
 function createExercise() {
