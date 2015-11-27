@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
 use Request;
 use Response;
 
-class AuthController extends Controller
-{
+class EmailController extends Controller {
+    
     // Based on: 
     // http://laravel.com/docs/5.1/validation
     // http://daylerees.com/trick-validation-within-models/
@@ -32,7 +32,7 @@ class AuthController extends Controller
             $item = new \App\Email();
             $item->email = $reqEmail;
             $item->save();
-            return Response::json(array('user' => \App\User::all()));
+            return Response::json(array('user' => \App\Email::all()));
         }
     }
 }
