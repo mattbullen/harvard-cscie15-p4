@@ -58,14 +58,10 @@
                     <paper-item>Name</paper-item>
                     
                     <template is="dom-if" if="{{!userHeaderMessage.length}}">
-                        <paper-material>
-                            <paper-item id="userHeaderMessage">Please sign in with Google to access your saved exercise sessions.</paper-item>
-                        </paper-material>
+                        <paper-item id="userHeaderMessage">Please sign in with Google to access your saved exercise sessions.</paper-item> 
                     </template>
                     <template id="userHeaderMessageTemplate">
-                        <paper-material>
-                            <paper-item>{{userHeaderMessage}}</paper-item>
-                        </paper-material>
+                        <paper-item>{{userHeaderMessage}}</paper-item>
                     </template>
                     
                     <google-signin client-id="132101877152-mj6pbmmc8jt05q7o78sm39103fm00189.apps.googleusercontent.com" scopes="https://www.googleapis.com/auth/drive"></google-signin>

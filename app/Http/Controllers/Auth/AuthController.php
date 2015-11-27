@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use Request;
 use Response;
-use App\User;
+//use App\User;
 //use Validator;
-use App\Http\Controllers\Controller;
+//use App\Http\Controllers\Controller;
 //use Illuminate\Foundation\Auth\ThrottlesLogins;
 //use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
@@ -64,10 +64,13 @@ class AuthController extends Controller
         if ($retrieveEmail && sizeof($retrieveEmail) > 0) {
             return Response::json(array('user' => 'User exists and is logged in.'));
         } else {
-            User::create([
-                'email' => $reqEmail
-            ]);
-            return Response::json(array('user' => 'User created and logged in.'));
+            //User::create([
+            //    'email' => $reqEmail
+            //]);
+            $item = new \App\User();
+            $item->email = $reqEmail;
+            $item->save();
+            return Response::json(array('user' => \App\User::all()));
         }
     }
 }

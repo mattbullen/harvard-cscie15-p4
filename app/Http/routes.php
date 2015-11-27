@@ -19,7 +19,7 @@ Route::get('/debug', function() {
     catch (Exception $e) {
         echo '<strong style="background-color:crimson; padding:5px;">Caught exception: ', $e->getMessage(), "</strong>\n";
     }
-    echo '</pre>';
+    echo '</pre>'; 94zW1KxWaQ
 
 });
 
