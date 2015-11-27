@@ -12,8 +12,8 @@ class CreateEmailsTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->softDeletes();
-            $table->rememberToken();
-            $table->string('email')->unique();
+            //$table->rememberToken();
+            $table->string('email');//->unique();
         });
     }
 
