@@ -61,6 +61,23 @@ a:hover {
 
 /* base-app.html */
 
+.iron-overlay-backdrop-0 {
+    opacity: 0.75;
+}
+
+#welcomeModal {
+    margin: 0;
+    opacity: 1.0;
+}
+
+#welcomeModalContent {
+    margin: 0;
+    padding: 30px;
+    width: 300px;
+    height: 200px;
+    opacity: 1.0;
+}
+
 #menu {
     padding: 0;
 }

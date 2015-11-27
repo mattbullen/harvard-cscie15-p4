@@ -9,16 +9,21 @@
     <link href="../bower_components/paper-header-panel/paper-header-panel.html" rel="import">
     <link href="../bower_components/paper-toolbar/paper-toolbar.html" rel="import">
     <link href="../bower_components/paper-icon-button/paper-icon-button.html" rel="import">
+    <link href="../bower_components/paper-fab/paper-fab.html" rel="import">
     <link href="../bower_components/paper-material/paper-material.html" rel="import">
     <link href="../bower_components/paper-menu/paper-menu.html" rel="import">    
     <link href="../bower_components/paper-item/paper-item.html" rel="import">
     <link href="../bower_components/paper-input/paper-input.html" rel="import">
     <link href="../bower_components/paper-button/paper-button.html" rel="import">
     <link href="../bower_components/paper-dialog/paper-dialog.html" rel="import">
-    <link href="../bower_components/paper-dialog/paper-dialog.html" rel="import">
-    <link href="../bower_components/paper-dialog/paper-dialog.html" rel="import">
+    <link href="../bower_components/paper-dialog-behavior/paper-dialog-behavior.html" rel="import">
+    <link href="../bower_components/neon-animation/animations/scale-up-animation.html" rel="import">
+    <link href="../bower_components/neon-animation/animations/fade-out-animation.html" rel="import">
+    
+    <link href="../bower_components/iron-overlay-behavior/iron-overlay-behavior.html" rel="import">
+    <link href="../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html" rel="import">
+    
     <link href="../bower_components/iron-icons/iron-icons.html" rel="import">
-    <link href="../bower_components/paper-fab/paper-fab.html" rel="import">
     <link href="../bower_components/google-signin/google-signin.html" rel="import">
     <link href="../bower_components/platinum-https-redirect/platinum-https-redirect.html" rel="import">
     <script src="../js/jquery-2.1.4.min.js"> </script>
@@ -32,9 +37,23 @@
 
     <template>
         
-        <paper-dialog id="welcomeModal" entry-animation="scale-up-animation" exit-animation="fade-out-animation" opened="true">
-            <h2>Header</h2>
-            <div>Dialog body</div>
+        <paper-dialog 
+            id="welcomeModal" 
+            entry-animation="scale-up-animation" 
+            exit-animation="fade-out-animation" 
+
+            autoFitOnAttach="true"
+            modal="true"
+            withBackdrop="true">
+            
+            <div id="welcomeModalContent">
+            
+                <h2>Please Sign In</h2>
+                <div>
+                    <google-signin client-id="132101877152-mj6pbmmc8jt05q7o78sm39103fm00189.apps.googleusercontent.com" scopes="https://www.googleapis.com/auth/drive"></google-signin>
+                </div>
+            </div>
+            
         </paper-dialog>
     
         <paper-drawer-panel>
@@ -252,6 +271,7 @@ Polymer({
                 if (response.user) {
                     //model.userHeaderMessage = "You're good to go, " + name + "!";
                     model.set("userHeaderMessage", "You're good to go, " + name + "!"); console.log(model.userHeaderMessage);
+                    model.closeWelcomeModal();
                 }
             },
             error: function(error) {
@@ -281,7 +301,15 @@ Polymer({
         return -1;
     },
     openWelcomeModal: function() {
-        //this.$.welcomeModal.open();
+        this.$.welcomeModal.open();
+    },
+    closeWelcomeModal: function() {
+        this.$.welcomeModal.close();
+    },
+    patchOverlay: function (e) {
+        if (e.target.withBackdrop) {
+            e.target.parentNode.insertBefore(e.target._backdrop, e.target);
+        }
     },
     ready: function(e) {
         //this.addEventListener('complete', this.handleComplete);
