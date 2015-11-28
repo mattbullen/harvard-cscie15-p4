@@ -219,7 +219,7 @@ var createGraph = function(data) {
             return "coordinateCircle dot dot-" + (d.name).replace(/ /gi, "-");
         })
         .attr("data-id", function(d) { return d.id; })
-        .attr("data-data", function(d) { return d.data; })
+        .attr("data-date", function(d) { return d.date; })
         .attr("data-sets", function(d) { return d.sets; })
         .attr("data-reps", function(d) { return d.reps; })
         .attr("data-weight", function(d) { return d.weight; })
@@ -265,8 +265,8 @@ var createGraph = function(data) {
                     .attr("r", function(d) { return +d3.select(this).attr("data-size-base") + 1.618; })
                 
                 // Display any notes for the exercise session
-                var formattedDate = dateFormatter(getDate(d.date));
-                d3.select("#graphNotes").html(formattedDate + ": " + d.notes);
+                var formattedDate = dateFormatter(getDate(dot.attr("data-date")));
+                d3.select("#graphNotes").html(formattedDate + ": " + dot.attr("data-notes");
                 
                 // Set the tooltip's text content
                 tooltip.html(""
@@ -752,7 +752,7 @@ function updateGraph(data) {
             return "coordinateCircle dot dot-" + (d.name).replace(/ /gi, "-");
         })
         .attr("data-id", function(d) { return d.id; })
-        .attr("data-data", function(d) { return d.data; })
+        .attr("data-date", function(d) { return d.date; })
         .attr("data-sets", function(d) { return d.sets; })
         .attr("data-reps", function(d) { return d.reps; })
         .attr("data-weight", function(d) { return d.weight; })
@@ -798,8 +798,8 @@ function updateGraph(data) {
                     .attr("r", function(d) { return +d3.select(this).attr("data-size-base") + 1.618; })
                     
                 // Display any notes for the exercise session
-                var formattedDate = dateFormatter(getDate(d.date));
-                d3.select("#graphNotes").html(formattedDate + ": " + d.notes);
+                var formattedDate = dateFormatter(getDate(dot.attr("data-date")));
+                d3.select("#graphNotes").html(formattedDate + ": " + dot.attr("data-notes");
                 
                 // Set the tooltip's text content
                 tooltip.html(""
