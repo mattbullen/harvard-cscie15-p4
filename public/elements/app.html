@@ -132,7 +132,11 @@ Polymer({
     is: "base-app",
     properties: {
         currentUser: String,
-        currentUserFirstName: String,
+        currentUserFirstName: {
+            type: String,
+            value: "Your training log",
+            reflect: true
+        },
         menuButtons: {
             type: Array,
             value: [],
