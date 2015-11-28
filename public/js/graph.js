@@ -266,7 +266,7 @@ var createGraph = function(data) {
                 
                 // Display any notes for the exercise session
                 var formattedDate = dateFormatter(getDate(dot.attr("data-date")));
-                d3.select("#graphNotes").html(formattedDate + ": " + dot.attr("data-notes"));
+                d3.select("#graphData").html(formattedDate + ": " + dot.attr("data-notes"));
                 
                 // Set the tooltip's text content
                 tooltip.html(""
@@ -332,7 +332,7 @@ var createGraph = function(data) {
                 tooltip.html("");
                 
                 // Remove the notes
-                d3.select("#graphNotes").html("No notes to show!");
+                d3.select("#graphData").html("No notes to show!");
             }
             
             return false;
@@ -378,7 +378,7 @@ var createGraph = function(data) {
             tooltip.html("");
             
             // Remove the notes
-            d3.select("#graphNotes").html("No notes to show!");
+            d3.select("#graphData").html("No notes to show!");
             
             var extent = brush.extent();
             var extent0 = getDate(extent[0]);
@@ -476,7 +476,7 @@ var createGraph = function(data) {
     d3.select("#resetGraph").on("click", function(d) {
         
             // Remove the notes
-            d3.select("#graphNotes").html("No notes to show!");
+            d3.select("#graphData").html("No notes to show!");
             
             // Remove the tooltip
             var tooltip = d3.select("#tooltipContainer");
@@ -799,7 +799,7 @@ function updateGraph(data) {
                     
                 // Display any notes for the exercise session
                 var formattedDate = dateFormatter(getDate(dot.attr("data-date")));
-                d3.select("#graphNotes").html(formattedDate + ": " + dot.attr("data-notes"));
+                d3.select("#graphData").html(formattedDate + ": " + dot.attr("data-notes"));
                 
                 // Set the tooltip's text content
                 tooltip.html(""
@@ -865,7 +865,7 @@ function updateGraph(data) {
                 tooltip.html("");
                 
                 // Remove the notes
-                d3.select("#graphNotes").html("No notes to show!");
+                d3.select("#graphData").html("No notes to show!");
             
             }
             
@@ -893,7 +893,7 @@ function updateGraph(data) {
             tooltip.html("");
             
             // Remove the notes
-            d3.select("#graphNotes").html("No notes to show!");
+            d3.select("#graphData").html("No notes to show!");
             
             // Remove the tooltip
                 tooltip.transition()
@@ -953,7 +953,7 @@ function updateGraph(data) {
     d3.select("#resetGraph").on("click", function(d) {
             
             // Remove the notes
-            d3.select("#graphNotes").html("No notes to show!");
+            d3.select("#graphData").html("No notes to show!");
             
             // Remove the tooltip
             var tooltip = d3.select("#tooltipContainer");
