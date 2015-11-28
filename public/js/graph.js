@@ -100,7 +100,7 @@ var createGraph = function(data) {
     // Define the min/max canvas ranges for x and y values
     var x = d3.time.scale().range([0, paddedWidth]).domain([minDate, maxDate]);
     var xBrush = d3.time.scale().range([0, paddedWidth]).domain([minDate, maxDate]);
-    var y = d3.scale.linear().range([height, 0]).domain([minTotal, maxTotal]);
+    var y = d3.scale.linear().range([height, 0]).domain([0, maxTotal]);
     
     // Define the x-axis dimensions, ticks, and orientation
     var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b-%Y'));
@@ -687,7 +687,7 @@ function updateGraph(data) {
     // Define the min/max canvas ranges for x and y values
     var x = d3.time.scale().range([0, paddedWidth]).domain([minDate, maxDate]);
     var xBrush = d3.time.scale().range([0, paddedWidth]).domain([minDate, maxDate]);
-    var y = d3.scale.linear().range([height, 0]).domain([minTotal, maxTotal]);
+    var y = d3.scale.linear().range([height, 0]).domain([0, maxTotal]);
     
     // Define the x-axis dimensions, ticks, and orientation
     var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b-%Y'));
