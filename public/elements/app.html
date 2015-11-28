@@ -86,12 +86,15 @@
                     <paper-item class="toolbarTitle">Your Training Log</paper-item>
 
                     <div id="left-0">
-                        <template id="userHeaderMessageTemplate" is="dom-if" if="{{userHeaderMessage.length}}">
-                            <paper-item id="userHeaderMessage">{{userHeaderMessage}}</paper-item>
+                        <template id="userHeaderMessageTemplateDefault" is="dom-if" if="{{currentUser.length}}">
+                            <paper-item class="userHeaderMessage">Your Training Log</paper-item>
+                        </template>
+                        <template id="userHeaderMessageTemplateFilled" is="dom-if" if="{{currentUser.length}}">
+                            <paper-item class="userHeaderMessage">{{currentUser}}'s Training Log</paper-item>
                         </template>
                     </div>
                     
-                    <div id="left-1">
+                    <div id="left">
                         <google-signin client-id="132101877152-mj6pbmmc8jt05q7o78sm39103fm00189.apps.googleusercontent.com" scopes="https://www.googleapis.com/auth/drive" title="Sign in with Google!"></google-signin>
                     </div>
 
@@ -131,11 +134,6 @@ Polymer({
     is: "base-app",
     properties: {
         currentUser: String,
-        userHeaderMessage: {
-            type: String,
-            value: "Please sign in with Google:",
-            notify: true
-        },
         menuButtons: {
             type: Array,
             value: [],
@@ -273,8 +271,6 @@ Polymer({
                     showErrorMessage();
                 }*/
                 if (response.user) {
-                    //model.userHeaderMessage = "You're good to go, " + name + "!";
-                    model.set("userHeaderMessage", "You're good to go, " + name + "!"); console.log(model.userHeaderMessage);
                     model.closeWelcomeModal();
                 }
             },
@@ -296,7 +292,6 @@ Polymer({
     },
     clearModelProperties: function() {
         this.currentUser = "";
-        this.userHeaderMessage = "You are logged out. Thanks for using the app!";
         this.menuButtons = [];
         this.graphData = [];
     },
