@@ -82,14 +82,14 @@
             <paper-header-panel main class="main-panel">
             
                 <paper-toolbar>
+                
                     <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
-                    <paper-item class="toolbarTitle">Your Training Log</paper-item>
-
-                    <template id="userHeaderMessageTemplateDefault" is="dom-if" if="{{currentUser.length}}">
-                        <paper-item class="userHeaderMessage">Your Training Log</paper-item>
+                    
+                    <template id="userHeaderMessageTemplateDefault" is="dom-if" if="{{!currentUserFirstName.length}}">
+                        <paper-item class="toolbarTitle">Your Training Log</paper-item>
                     </template>
-                    <template id="userHeaderMessageTemplateFilled" is="dom-if" if="{{currentUser.length}}">
-                        <paper-item class="userHeaderMessage">{{currentUser}}'s Training Log</paper-item>
+                    <template id="userHeaderMessageTemplateFilled" is="dom-if" if="{{currentUserFirstName.length}}">
+                        <paper-item class="toolbarTitle">{{currentUserFirstName}}'s Training Log</paper-item>
                     </template>
                     
                     <div id="left">
@@ -132,6 +132,7 @@ Polymer({
     is: "base-app",
     properties: {
         currentUser: String,
+        currentUserFirstName: String,
         menuButtons: {
             type: Array,
             value: [],
@@ -243,7 +244,8 @@ Polymer({
         var firstName = user.Ph;
         console.log(user, email, firstName);
         
-        this.currentUser = user.po; console.log(this.currentUser);
+        this.currentUser = user.po;
+        this.currentUserFirstName = user.Ph;
         
         this.handleUser(user.po, user.Ph);
     },
@@ -290,6 +292,7 @@ Polymer({
     },
     clearModelProperties: function() {
         this.currentUser = "";
+        this.currentUserFirstName = "";
         this.menuButtons = [];
         this.graphData = [];
     },
