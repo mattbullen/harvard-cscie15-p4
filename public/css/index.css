@@ -1,18 +1,6 @@
 /* Fonts */
 
 @font-face {
-    font-family: "Halifax";
-    src: url("fonts/hallig-webfont.eot");
-    src: url("fonts/hallig-webfont.eot?#iefix") format("embedded-opentype"),
-         url("fonts/hallig-webfont.woff2") format("woff2"),
-         url("fonts/hallig-webfont.woff") format("woff"),
-         url("fonts/hallig-webfont.ttf") format("truetype"),
-         url("fonts/hallig-webfont.svg#halifaxlight") format("svg");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
     font-family: "Museo";
     src: url("fonts/MuseoSans_500-webfont.eot");
     src: url("fonts/MuseoSans_500-webfont.eot?#iefix") format("embedded-opentype"),
@@ -27,11 +15,11 @@
 /* Base Elements */
 
 * {
-    font-family: Halifax, Arial, sans-serif;
+    font-family: 'Roboto', 'Noto', sans-serif;
 }
 
 body {
-    background-color: cornsilk;
+    background-color: #c10c06;
 }
 
 h1, h2, h3, h4, h5 {
@@ -46,7 +34,7 @@ img {
 a {
     text-decoration: none !important;
     color: rgb(34, 34, 34);
-    transition: color 200ms cubic-bezier(0.250, 0.250, 0.750, 0.750);
+    transition: color 250ms cubic-bezier(0.250, 0.250, 0.750, 0.750);
 }
 
 a:active,
@@ -59,7 +47,35 @@ a:hover {
     color: #c06c20 !important;
 }
 
+.buttonHover {
+    /* From: http://matthewlein.com/ceaser/ */
+    transition: all 250ms cubic-bezier(0.420, 0.000, 0.580, 1.000) !important;
+}
+
+.buttonHover:hover {
+    background: #c10c06 !important;
+}
+
 /* base-app.html */
+
+paper-material {
+    position: relative;
+    max-width: 960px;
+    width: 95%;
+    margin: 25px auto;
+    color: #212121;
+    background-color: #fff;
+}
+
+paper-toolbar {
+    background: #d32f2f;
+}
+
+.toolbarTitle {
+    font-size: 20px !important;
+    text-transform: uppercase;
+    background: ;
+}
 
 .iron-overlay-backdrop-0 {
     opacity: 0.75;
@@ -78,12 +94,30 @@ a:hover {
     opacity: 1.0;
 }
 
-#menu {
-    padding: 0;
-}
-
 .message {
     border: 1px solid #ccc;
+}
+
+.centered {
+    width: 100%;
+    text-align: center;
+    color: #212121;
+}
+
+#left-0 {
+    position: absolute;
+    top: 8px;
+    right: 104px;
+}
+
+#left-1 {
+    position: absolute;
+    top: 14px;
+    right: 10px;
+}
+
+#menu {
+    padding: 0;
 }
 
 .menuButton {
@@ -119,105 +153,71 @@ a:hover {
 }
 
 #saveSession {
+    position: absolute;
     top: 12px;
-    right: 4%;
+    right: 3%;
     width: 56px;
     height: 56px;
 }
-
-    .list {
-        padding: 0;
-    }
-    
-    .list paper-item {
-        min-height: 80px;
-        border-bottom: 1px solid #dedede;
-        background-color: #fafafa;
-    }
-    
-    #todoEntry {
-        margin: 0;
-        width: 100%;
-        max-width: none;
-        border-bottom: 1px solid #ccc;
-    }
    
-    
-paper-material {
-    position: relative;
-    max-width: 960px;
-    width: 95%;
-    margin: 25px auto;
-    color: #212121;
-    background-color: #fff;
+.main-panel {
+    background-color: #eee;
+    height: 100vh;
+    overflow-y: hidden;
 }
-    
-    #todos {
-        overflow-y: scroll;
-        height: 66vh;
-    }
-    
-    #todos {
-        overflow-y: scroll;
-    }
-  
-    paper-fab {
-        position: absolute;
-        background: #00BCD4;
-        bottom: 2vh;
-        right: 2vw;
-    }
-    
-    .main-panel {
-        background-color: #eee;
-        height: 100vh;
-        overflow-y: hidden;
-    }
-    
-    .task-empty paper-item {
-        text-align: center;
-        padding: 25px;
-        color: #6f6f6f;
-    }
-    
-    paper-toolbar {
-        background:#D32F2F;
-    }
-    
-/* base-element.html */
 
-.todo {
-        padding: 10px;
-    }
-    
-    paper-checkbox {
-        float: right;
-        margin: 2vh 2vw;
-    }
-    
-    paper-button {
-        background: #ccc;
-    }
-    
-    paper-fab {
-        position: absolute;
-        bottom: 3vh;
-        right: 3vw;
-        background: #4DD0E1;
-    }
-    
-    .done {
-        background: green;
-    }
-    
-    .info {
-        font-style: italic;
-        font-size: 14px;
-        color: #696969;
-        padding-top: 0;
-        padding-bottom: 0;
-    }
-    
-    .info span {
-        margin-left: 5px;
-    }
+/* SVG */
+
+#graphWrapper {
+    position: relative;
+    width: 650px;
+    margin: 0 auto;
+}
+
+#resetGraph {
+    position: absolute;
+    top: 520px;
+    right: 15px;
+}
+
+.boldJustified {
+    font-weight: bold;
+    width: 60px;
+    float: left;
+}
+
+#deleteSession {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+
+.axis path,
+.axis line {
+    fill: none !important; 
+    stroke: rgb(0, 0, 0) !important; 
+    stroke-width: 1.0 !important;
+    shape-rendering: crispEdges !important;
+}
+
+.axis text {
+    font-size: 11px !important;
+    stroke-width: 0 !important;
+    shape-rendering: crispEdges !important;
+}
+
+.domain { 
+    fill: none !important; 
+    stroke: rgb(0, 0, 0) !important; 
+    stroke-width: 1.0 !important; 
+    shape-rendering: crispEdges !important;
+} 
+
+.dot {
+    stroke: rgb(255, 255, 255)!important; 
+    stroke-width: 0 !important; 
+}
+
+.legend text {
+    font-size: 11px !important; 
+}

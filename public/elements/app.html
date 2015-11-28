@@ -18,15 +18,15 @@
     <link href="../bower_components/paper-dialog/paper-dialog.html" rel="import">
     <link href="../bower_components/paper-dialog-behavior/paper-dialog-behavior.html" rel="import">
     <link href="../bower_components/neon-animation/animations/scale-up-animation.html" rel="import">
-    <link href="../bower_components/neon-animation/animations/fade-out-animation.html" rel="import">
-    
+    <link href="../bower_components/neon-animation/animations/fade-out-animation.html" rel="import">   
     <link href="../bower_components/iron-overlay-behavior/iron-overlay-behavior.html" rel="import">
     <link href="../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html" rel="import">
-    
     <link href="../bower_components/iron-icons/iron-icons.html" rel="import">
     <link href="../bower_components/google-signin/google-signin.html" rel="import">
     <link href="../bower_components/platinum-https-redirect/platinum-https-redirect.html" rel="import">
     <script src="../js/jquery-2.1.4.min.js"> </script>
+    <script src="../js/d3.v3.min.js"> </script>
+    <script src="../js/graph.js"> </script>
     <script src="../js/index.js"> </script>
 </head>
 
@@ -61,13 +61,15 @@
             <paper-header-panel class="side-panel" drawer>
             
                 <paper-toolbar>
-                    <paper-item>Exercises</paper-item>
+                    <paper-item class="toolbarTitle">Exercises</paper-item>
                 </paper-toolbar>
                 
                 <paper-menu id="menu">
                     <template is="dom-if" if="{{!menuButtons.length}}">
                         <paper-material>
-                            <paper-item class="message" elevation="2">Please log in!</paper-item>
+                            <paper-item class="message" elevation="2">
+                                <div class="centered">Please sign in!</div>
+                            </paper-item>
                         </paper-material>
                     </template>
                     <template id="menuButtons" is="dom-repeat" items="{{menuButtons}}">
@@ -81,36 +83,38 @@
             
                 <paper-toolbar>
                     <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
-                    <paper-item>Log</paper-item>
-                    <paper-item>Name</paper-item>
+                    <paper-item class="toolbarTitle">Your Training Log</paper-item>
 
-                    <template id="userHeaderMessageTemplate">
-                        <paper-item id="userHeaderMessage">{{userHeaderMessage}}</paper-item>
-                    </template>
+                    <div id="left-0">
+                        <template id="userHeaderMessageTemplate" is="dom-if" if="{{userHeaderMessage.length}}">
+                            <paper-item id="userHeaderMessage">{{userHeaderMessage}}</paper-item>
+                        </template>
+                    </div>
                     
-                    <google-signin client-id="132101877152-mj6pbmmc8jt05q7o78sm39103fm00189.apps.googleusercontent.com" scopes="https://www.googleapis.com/auth/drive"></google-signin>
+                    <div id="left-1">
+                        <google-signin client-id="132101877152-mj6pbmmc8jt05q7o78sm39103fm00189.apps.googleusercontent.com" scopes="https://www.googleapis.com/auth/drive" title="Sign in with Google!"></google-signin>
+                    </div>
+
                 </paper-toolbar>
                 
                 <div id="logWrapper">
                     <paper-material id="logSession" elevation="2">
-                        <paper-input id="enterSets" char-counter label="Sets" maxlength="3"></paper-input>
-                        <paper-input id="enterReps" char-counter label="Reps" maxlength="3"></paper-input>
+                        <paper-input id="enterSets" label="Sets" maxlength="3"></paper-input>
+                        <paper-input id="enterReps" label="Reps" maxlength="3"></paper-input>
                         <paper-input id="enterNotes" char-counter label="Notes" maxlength="140"></paper-input>
-                        <paper-fab id="saveSession" icon="icons:add" on-tap="logExercise"></paper-fab>
+                        <paper-fab id="saveSession" class="buttonHover" icon="icons:done" on-tap="logExercise" title="Save this session?"></paper-fab>
                     </paper-material>
                 </div>
                 
+                <div id="entryWrapper">
+                    <paper-material>
+                        <paper-item id="graphData" elevation="2">No notes to show!</paper-item>
+                    </paper-material>
+                </div>    
+                    
                 <div id="graphWrapper">
-                    <template is="dom-if" if="{{!graphData.length}}">
-                        <paper-material>
-                            <paper-item id="textArea" elevation="2">Graph here.</paper-item>
-                        </paper-material>
-                    </template>
-                    <template id="graphTemplate" is="dom-repeat" items="{{graphData}}">
-                        <paper-material>
-                            <paper-item elevation="2">{{item.entry}}</paper-item>
-                        </paper-material>
-                    </template>
+                    <div id="graph"> </div>
+                    <paper-fab id="resetGraph" class="buttonHover" icon="icons:autorenew" title="Reset the graph to its original view?"></paper-fab>
                 </div>
                 
             </paper-header-panel>
@@ -129,7 +133,7 @@ Polymer({
         currentUser: String,
         userHeaderMessage: {
             type: String,
-            value: "Please log in with Google.",
+            value: "Please sign in with Google:",
             notify: true
         },
         menuButtons: {
@@ -139,7 +143,7 @@ Polymer({
         },
         graphData: {
             type: Array,
-            value: [ { entry: 00 }, { entry: 01 }, { entry: 02 } ],
+            value: [],
             reflect: true
         }
     },
@@ -310,10 +314,87 @@ Polymer({
         this.$.welcomeModal.close();
         $(".iron-overlay-backdrop-0").hide();
     },
+    drawGraph: function() {
+        var data = {
+    "list": [
+        {   
+            "id": "a",
+            "date": "2014-1-01",
+            "name": "Bench Press",
+            "sets": "5",
+            "reps": "5",
+            "weight": "50",
+            "notes": "AAA"
+        },
+        {
+            "id": "b",
+            "date": "2015-11-05",
+            "name": "Bench Press",
+            "sets": "5",
+            "reps": "5",
+            "weight": "225",
+            "notes": "BBB"
+        },
+        {
+            "id": "c",
+            "date": "2016-5-09",
+            "name": "Bench Press",
+            "sets": "5",
+            "reps": "5",
+            "weight": "550",
+            "notes": "CCC"
+        }
+    ]
+};
+        var graph = createGraph(data);
+    },
     ready: function(e) {
         this.addEventListener('google-signin-success', this.signIn);
         this.addEventListener('google-signed-out', this.signOut);
-        this.openWelcomeModal();
+        //this.openWelcomeModal();
+        this.drawGraph();
+        
+        var data = {
+    "list": [
+        {   
+            "id": "200",
+            "date": "2012-1-01",
+            "name": "Bench Press",
+            "sets": "5",
+            "reps": "5",
+            "weight": "50",
+            "notes": "AAA"
+        },
+        {
+            "id": "201",
+            "date": "2013-7-05",
+            "name": "Bench Press",
+            "sets": "5",
+            "reps": "5",
+            "weight": "275",
+            "notes": "BBB"
+        },
+        {
+            "id": "202",
+            "date": "2014-2-15",
+            "name": "Bench Press",
+            "sets": "1",
+            "reps": "5",
+            "weight": "275",
+            "notes": "ccc"
+        },
+        {
+            "id": "203",
+            "date": "2017-5-09",
+            "name": "Bench Press",
+            "sets": "10",
+            "reps": "5",
+            "weight": "350",
+            "notes": "ddd"
+        }
+    ]
+};
+        $("#entryWrapper").click(function() { updateGraph(data); });
     }
   });
 </script>
