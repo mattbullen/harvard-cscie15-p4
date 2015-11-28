@@ -309,6 +309,7 @@ Polymer({
     closeWelcomeModal: function() {
         this.$.welcomeModal.close();
         $(".iron-overlay-backdrop-0").hide();
+        this.setMenuButtons();
     },
     drawGraph: function() {
         var data = {
