@@ -266,7 +266,7 @@ var createGraph = function(data) {
                 
                 // Display any notes for the exercise session
                 var formattedDate = dateFormatter(getDate(dot.attr("data-date")));
-                d3.select("#graphNotes").html(formattedDate + ": " + dot.attr("data-notes");
+                d3.select("#graphNotes").html(formattedDate + ": " + dot.attr("data-notes"));
                 
                 // Set the tooltip's text content
                 tooltip.html(""
@@ -799,7 +799,7 @@ function updateGraph(data) {
                     
                 // Display any notes for the exercise session
                 var formattedDate = dateFormatter(getDate(dot.attr("data-date")));
-                d3.select("#graphNotes").html(formattedDate + ": " + dot.attr("data-notes");
+                d3.select("#graphNotes").html(formattedDate + ": " + dot.attr("data-notes"));
                 
                 // Set the tooltip's text content
                 tooltip.html(""
