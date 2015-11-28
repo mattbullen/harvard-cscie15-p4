@@ -347,7 +347,7 @@ Polymer({
     ready: function(e) {
         this.addEventListener('google-signin-success', this.signIn);
         this.addEventListener('google-signed-out', this.signOut);
-        //this.openWelcomeModal();
+        this.openWelcomeModal();
         this.drawGraph();
         
         var data = {
