@@ -85,14 +85,12 @@
                     <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
                     <paper-item class="toolbarTitle">Your Training Log</paper-item>
 
-                    <div id="left-0">
-                        <template id="userHeaderMessageTemplateDefault" is="dom-if" if="{{currentUser.length}}">
-                            <paper-item class="userHeaderMessage">Your Training Log</paper-item>
-                        </template>
-                        <template id="userHeaderMessageTemplateFilled" is="dom-if" if="{{currentUser.length}}">
-                            <paper-item class="userHeaderMessage">{{currentUser}}'s Training Log</paper-item>
-                        </template>
-                    </div>
+                    <template id="userHeaderMessageTemplateDefault" is="dom-if" if="{{currentUser.length}}">
+                        <paper-item class="userHeaderMessage">Your Training Log</paper-item>
+                    </template>
+                    <template id="userHeaderMessageTemplateFilled" is="dom-if" if="{{currentUser.length}}">
+                        <paper-item class="userHeaderMessage">{{currentUser}}'s Training Log</paper-item>
+                    </template>
                     
                     <div id="left">
                         <google-signin client-id="132101877152-mj6pbmmc8jt05q7o78sm39103fm00189.apps.googleusercontent.com" scopes="https://www.googleapis.com/auth/drive" title="Sign in with Google!"></google-signin>
