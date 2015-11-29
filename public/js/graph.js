@@ -517,7 +517,8 @@ function updateGraph(data) {
     
     // Add click functionality to the legend
     var legendClick = d3.selectAll(".legendCheckMark").on("click", function(d) {
-            var formattedID = d.replace(/ /gi, "-");
+        console.log(d);
+            var formattedID = (d.name).replace(/ /gi, "-");
             var item = d3.select(this);
             var state = "" + item.attr("data-state").toLowerCase();      // console.log("\nrenderLegend() click state: ", state);
             if (state === "off") {
