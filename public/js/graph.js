@@ -378,17 +378,17 @@ function updateGraph(data) {
             }
             
             // Update the dots
-            clippedSVG.selectAll(".dot")
+            d3.selectAll(".dot")
                 .attr("data-click", "off")
                 .transition()
-                .attr("r", function(d) { return d3.select(this).attr("data-size-base"); })
                 .style("opacity", "0");
-            clippedSVG.selectAll(".dot")
+            d3.selectAll(".dot")
                 .data(values)
                 .attr("clip-path", "url(#clip)")
                 .transition()
                 .attr("cx", function(d) { return x(getDate(d.created_at)); })
                 .attr("cy", function(d) { return y(d.total); })
+                .attr("r", function(d) { console.log(d3.select(this).attr("data-size-base")); return d3.select(this).attr("data-size-base"); })
                 .style("opacity", function(d) {
                     var thisDot = d3.select(this);
                     var name = thisDot.attr("data-name");
