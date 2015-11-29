@@ -74,7 +74,7 @@ Polymer({
             email: model.currentUser,
             name: model.currentExercise
         }; 
-        console.log("model.readSessions():", data);
+        // console.log("\nPOST data():", data);
         
         // POST handling routine
         $.ajax({
