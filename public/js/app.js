@@ -322,7 +322,7 @@ Polymer({
     },
     signIn: function(e) {
         // Extract the user details from the Google OAuth2/JWT sign in object
-        if (gapi) {
+        if (gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()) {
             var user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
             this.currentUser = user.po;
             this.currentUserFirstName = user.Ph;
