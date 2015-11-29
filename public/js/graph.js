@@ -385,10 +385,10 @@ function updateGraph(data) {
             d3.selectAll(".dot")
                 .data(values)
                 .attr("clip-path", "url(#clip)")
+                .attr("r", function(d) { console.log(d3.select(this).attr("data-size-base")); return d3.select(this).attr("data-size-base"); })
                 .transition()
                 .attr("cx", function(d) { return x(getDate(d.created_at)); })
                 .attr("cy", function(d) { return y(d.total); })
-                .attr("r", function(d) { console.log(d3.select(this).attr("data-size-base")); return d3.select(this).attr("data-size-base"); })
                 .style("opacity", function(d) {
                     var thisDot = d3.select(this);
                     var name = thisDot.attr("data-name");
