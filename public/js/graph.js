@@ -380,7 +380,6 @@ function updateGraph(data) {
             // Update the dots
             clippedSVG.selectAll(".dot")
                 .attr("data-click", "off")
-                .attr("data-state", "off")
                 .attr("r", function(d) { return d3.select(this).attr("data-size-base"); })
                 .style("opacity", "0");
             clippedSVG.selectAll(".dot")
@@ -393,7 +392,7 @@ function updateGraph(data) {
                     var name = d3.select(this).attr("data-name");
                     name = "legendCheckMark-" + name.replace(/ /gi, "-");
                     if (document.getElementById(name)) {
-                        var checkState = d3.select("#" + name).attr("data-state");
+                        var checkState = d3.select("#" + name).attr("data-state"); console.log(document.getElementById(name), checkState);
                         if (checkState === "on") {
                             return "1.0";
                         } else {
@@ -517,7 +516,6 @@ function updateGraph(data) {
     
     // Add click functionality to the legend
     var legendClick = d3.selectAll(".legendCheckMark").on("click", function(d) {
-        console.log(d);
             var formattedID = (d.name).replace(/ /gi, "-");
             var item = d3.select(this);
             var state = "" + item.attr("data-state").toLowerCase();      // console.log("\nrenderLegend() click state: ", state);
