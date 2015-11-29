@@ -27,12 +27,12 @@ class EmailController extends Controller {
         $reqEmail = Request::input('email');
         $retrieveEmail = \App\Email::where('email', '=', $reqEmail)->get();
         if ($retrieveEmail && sizeof($retrieveEmail)) {
-            return Response::json(array('user' => 'User exists and is logged in.'));
+            return Response::json(array('user' => 'Existing user e-mail found: ' . $reqEmail));
         } else {
             $item = new \App\Email();
             $item->email = $reqEmail;
             $item->save();
-            return Response::json(array('user' => \App\Email::all()));
+            return Response::json(array('user' => 'New user e-mail saved: ' . $reqEmail));
         }
     }
 }
