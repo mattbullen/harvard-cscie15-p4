@@ -384,12 +384,20 @@ function updateGraph(data) {
                 .style("opacity", "0");
             clippedSVG.selectAll(".dot")
                 .data(values)
-                .attr("data-state", "on")
+                .attr("clip-path", "url(#clip)")
                 .transition()
                 .attr("cx", function(d) { return x(getDate(d.created_at)); })
                 .attr("cy", function(d) { return y(d.total); })
-                .attr("clip-path", "url(#clip)")
-                .transition().style("opacity", "1.0");
+                .style("opacity", function(d) {
+                    var name = d3.select(this).attr("data-name");
+                    name = "legendCheckMark-" + name.replace(/ /gi, "-");
+                    var checkState = d3.select("#" + name).attr("data-state");
+                    if (document.getElementById(name) && checkState === "on") {
+                        return "1.0";
+                    } else {
+                        return "0";
+                    }
+                });
         });
     brush.clear();
     d3.selectAll(".x.brush").transition().call(brush);
@@ -490,7 +498,11 @@ function updateGraph(data) {
         
     // Render the legend check marks
     legend.append("image")
+        .data(values)
         .attr("xlink:href", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH3wYbFBkXJBgGFwAAAEtJREFUOMvt07ERACAIA0DC/jvHCQzmwI50NH8ICJIxlYzBLCbDKYw3MBsdoYNJSGF0oRtGMRu424TbUfVMFLV9Z3Cgl21iP/pf7ABAcQ4jwRBahgAAAABJRU5ErkJggg==")
+        .attr("id", function(d) {
+            return "legendCheckMark legendCheckMark-" + (d.name).replace(/ /gi, "-");
+        })
         .attr("class", "legendCheckMark")
         .attr("x", 0)
         .attr("y", 0)
