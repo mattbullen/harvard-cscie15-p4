@@ -297,9 +297,9 @@ Polymer({
         
         // Add them to the local template model
         this.menuButtons = list;
+    },
+    toggleMenuButtonHighlighting: function() {
         
-        // Autoselect the first button in the list
-        $("#menu-" + list[0].hyphenated).click();
     },
     updateContentView: function(e) {
         // Retrieve the button's original exercise name from its template model: https://stackoverflow.com/questions/32212836/how-to-get-data-attribute-value-of-paper-card-from-on-tap-event
@@ -321,12 +321,17 @@ Polymer({
         }
     },
     signIn: function(e) {
+        
         // Extract the user details from the Google OAuth2/JWT sign in object
         if (gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()) {
+            
+            // Add the user first name and e-mail address to the local template's model
             var user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
             this.currentUser = user.po;
             this.currentUserFirstName = user.Ph;
             console.log("User signed in: " + user.Ph + ", " + user.po);
+            
+            // Move on to the "get the app ready for use" process
             this.handleUser(user.po, user.Ph);
         }
         // this.currentUser = "xyz@sample.com"; console.log(this.currentUser);
@@ -373,6 +378,9 @@ Polymer({
         this.$.welcomeModal.close();
         $(".iron-overlay-backdrop-0").hide();
         this.setMenuButtons();
+        
+        // Autoselect the summary view when the app first opens
+        $("#viewSummary").click();
     },
     handleGraph: function(data) {
         if ((data.sessions).length < 1) { createEmptyGraph(); return false; }
