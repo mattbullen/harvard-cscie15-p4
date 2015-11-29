@@ -64,7 +64,12 @@ function updateGraph(data) {
         .style("opacity", "0")
         .style("border", "none")
         .html("");
-        
+    
+    // User flow: remove any prior clicked dot states/effects
+    d3.selectAll(".dot")
+        .attr("r", function(d) { return d3.select(this).attr("data-size-base"); })
+        .attr("data-click", "off");
+                    
     // Get the graph & layout configurationObject
     var configurationObject = getConfiguration();
     
@@ -344,12 +349,6 @@ function updateGraph(data) {
             // Remove the notes
             d3.select("#graphData").html("No session selected!");
             
-            // Remove the tooltip
-            tooltip.style("padding", "0px")
-                .style("opacity", "0")
-                .style("border", "none");
-            tooltip.html("");
-            
             // Set the brush extent range
             var extent = brush.extent();
             var extent0 = getDate(extent[0]);
@@ -382,6 +381,7 @@ function updateGraph(data) {
             clippedSVG.selectAll(".dot")
                 .attr("data-click", "off")
                 .attr("data-state", "off")
+                .attr("r", function(d) { return d3.select(this).attr("data-size-base"); })
                 .style("opacity", "0");
             clippedSVG.selectAll(".dot")
                 .data(values)
@@ -440,9 +440,7 @@ function updateGraph(data) {
                 .attr("data-state", "on")
                 .attr("data-click", "off")
                 .transition().duration(200)
-                .attr("r", function(d) {
-                    return d3.select(this).attr("data-size-base");
-                })
+                .attr("r", function(d) { return d3.select(this).attr("data-size-base"); })
                 .attr("cx", function(d) { return x(getDate(d.created_at)); })
                 .attr("cy", function(d) { return y(d.total); })
                 .attr("clip-path", "url(#clip)")
