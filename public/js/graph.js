@@ -389,8 +389,10 @@ function updateGraph(data) {
                 .attr("cx", function(d) { return x(getDate(d.created_at)); })
                 .attr("cy", function(d) { return y(d.total); })
                 .style("opacity", function(d) {
-                    var name = d3.select(this).attr("data-name");
+                    var thisDot = d3.select(this);
+                    var name = thisDot.attr("data-name");
                     name = "legendCheckMark-" + name.replace(/ /gi, "-");
+                    console.log(document.getElementById(name));
                     if (document.getElementById(name)) {
                         var checkState = d3.select("#" + name).attr("data-state"); console.log(document.getElementById(name), checkState);
                         if (checkState === "on") {
@@ -398,7 +400,9 @@ function updateGraph(data) {
                         } else {
                             return "0";
                         }
+                        thisDot.attr("data-state", checkState);
                     }
+                    thisDot.attr("data-state", "on");
                     return "1.0";
                 });
         });
@@ -504,7 +508,7 @@ function updateGraph(data) {
         .data(values)
         .attr("xlink:href", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH3wYbFBkXJBgGFwAAAEtJREFUOMvt07ERACAIA0DC/jvHCQzmwI50NH8ICJIxlYzBLCbDKYw3MBsdoYNJSGF0oRtGMRu424TbUfVMFLV9Z3Cgl21iP/pf7ABAcQ4jwRBahgAAAABJRU5ErkJggg==")
         .attr("id", function(d) {
-            return "legendCheckMark legendCheckMark-" + (d.name).replace(/ /gi, "-");
+            return "legendCheckMark-" + (d.name).replace(/ /gi, "-");
         })
         .attr("class", "legendCheckMark")
         .attr("x", 0)
