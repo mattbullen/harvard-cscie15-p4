@@ -220,6 +220,7 @@ function updateGraph(data) {
             return "dot dot-" + (d.name).replace(/ /gi, "-");
         })
         .attr("data-id", function(d) { return d.id; })
+        .attr("data-name", function(d) { return d.name; })
         .attr("data-date", function(d) { return d.created_at; })
         .attr("data-sets", function(d) { return d.sets; })
         .attr("data-reps", function(d) { return d.reps; })
@@ -391,12 +392,15 @@ function updateGraph(data) {
                 .style("opacity", function(d) {
                     var name = d3.select(this).attr("data-name");
                     name = "legendCheckMark-" + name.replace(/ /gi, "-");
-                    var checkState = d3.select("#" + name).attr("data-state");
-                    if (document.getElementById(name) && checkState === "on") {
-                        return "1.0";
-                    } else {
-                        return "0";
+                    if (document.getElementById(name)) {
+                        var checkState = d3.select("#" + name).attr("data-state");
+                        if (checkState === "on") {
+                            return "1.0";
+                        } else {
+                            return "0";
+                        }
                     }
+                    return "1.0";
                 });
         });
     brush.clear();
