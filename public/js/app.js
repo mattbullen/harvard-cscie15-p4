@@ -380,12 +380,12 @@ Polymer({
         this.handleGraph(data);
     },
     ready: function() {
+        this.openWelcomeModal();
+        createEmptyGraph();
+        $("#enterWeight").on("keyup", this.validateWeight);
         this.addEventListener('google-signin-success', this.signIn);
         this.addEventListener('google-signed-out', this.signOut);
-        $("#enterWeight").on("keyup", this.validateWeight);
-        this.openWelcomeModal();
         this.signIn();
-        createEmptyGraph();
     },
     // From: https://scotch.io/tutorials/build-a-real-time-polymer-to-do-app
     findWithAttribute: function(array, attr, value) {
