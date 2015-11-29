@@ -217,7 +217,7 @@ function updateGraph(data) {
             return "dot-" + d.id;
         })
         .attr("class", function(d) {
-            return "coordinateCircle dot dot-" + (d.name).replace(/ /gi, "-");
+            return "dot dot-" + (d.name).replace(/ /gi, "-");
         })
         .attr("data-id", function(d) { return d.id; })
         .attr("data-date", function(d) { return d.created_at; })
@@ -508,40 +508,32 @@ function updateGraph(data) {
                 item.attr("data-state", "on");
                 d3.select(this)
                     .transition()
-                    .duration(300)
+                    .duration(200)
                     .style("opacity", "1.0");
                 svg.selectAll(".dot-" + formattedID)
                     .transition()
-                    .duration(300)
-                    .style("opacity", function(d) {
-                        var thisDot = d3.select(this);
-                        var thisState = thisDot.attr("data-state");
-                        if (thisState === "on") {
-                            return "1.0";
-                        } else {
-                            return "0";
-                        }
-                    })
-                    .attr("r", (configurationObject.circleStrokeSize || 2.0));
+                    .duration(200)
+                    .style("opacity", "1.0")
+                    .attr("r", function(d) { return d3.select(this).attr("data-size-base"); });
                 svg.select(".line-" + formattedID)
                     .transition()
-                    .duration(300)
+                    .duration(200)
                     .style("opacity", "1.0");
                 return false;
             } else {
                 item.attr("data-state", "off");
                 d3.select(this)
                     .transition()
-                    .duration(300)
+                    .duration(200)
                     .style("opacity", "0");
-                svg.selectAll(".dot-" + formattedID)
+                d3.selectAll(".dot-" + formattedID)
                     .transition()
-                    .duration(300)
+                    .duration(200)
                     .style("opacity", "0")
                     .attr("r", "0");
                 svg.select(".line-" + formattedID)
                     .transition()
-                    .duration(300)
+                    .duration(200)
                     .style("opacity", "0");
                 return false;
             }
