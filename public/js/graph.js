@@ -73,12 +73,12 @@ function updateGraph(data) {
     // Get the graph & layout configurationObject
     var configurationObject = getConfiguration();
     
-    // Set the screen layout dimensions for the base canvas
-    var baseXYBoxSize = parseFloat(configurationObject.graphWidth) || 900;
+    // Find the layout dimensions for the base canvas for later reference
+    var baseXYBoxSize = +configurationObject.graphWidth || 900;
     var margin = configurationObject.margin; 
-    var width = baseXYBoxSize - parseFloat(margin.left) - parseFloat(margin.right);
+    var width = baseXYBoxSize - +margin.left - +margin.right;
     var paddedWidth = width - 15;
-    var height = baseXYBoxSize - parseFloat(margin.top) - parseFloat(margin.bottom);
+    var height = baseXYBoxSize - +margin.top - +margin.bottom;
     var dateFormatter = d3.time.format('%B %e, %Y');
     
     // Map the values in the data object
@@ -87,7 +87,7 @@ function updateGraph(data) {
     var maxDate = minDate;
     var minTotal = +values[0].sets * +values[0].reps * +values[0].weight;
     var maxTotal = minTotal;
-    var mappedData = undefined;
+    var mappedData = undefined; // Make absolutely sure the old mapped object is empty!
     mappedData = values.map(function(d, i) {
         var thisDate = getDate(d.created_at);
         if (thisDate > maxDate) { maxDate = thisDate; }
@@ -130,10 +130,10 @@ function updateGraph(data) {
     d3.select("g.x.axis").transition().call(xAxis);
     d3.select("g.y.axis").transition().call(yAxis);
     
-    // Define the graph colors
+    // Define the graph colors getter function
     var color = getColors();
      
-    // Define the interpolation for the graphed lines
+    // Define the interpolation for the graphed line(s)
     var newLine = d3.svg.line()
         .x(function(d) { return x(getDate(d.date)); })
         .y(function (d) { return y(d.total); })
@@ -142,7 +142,7 @@ function updateGraph(data) {
     // Grab the rendering area on the canvas
     var clippedSVG = d3.select(".clippedSVG");
     
-    // Render the lines on the canvas
+    // Render the line(s) on the canvas
     var mappedLength = Object.keys(mappedData).length;
     var qsaLength = document.querySelectorAll(".line").length;
     if (qsaLength < mappedLength) {
@@ -177,7 +177,6 @@ function updateGraph(data) {
                 .style("opacity", "1.0");
         }      
     } else {
-        // Case: updating the summary view, which isn't currently used
         if (mappedLength > 1) {
             // console.log("Case 2");
             for (var i = 0; i < mappedLength; i++) {
@@ -570,12 +569,12 @@ var createEmptyGraph = function() {
     // Clear the graph's container of any prior content
     clearElement(configurationObject.graphID);
 
-    // Set the screen layout dimensions for the base canvas
-    var baseXYBoxSize = parseFloat(configurationObject.graphWidth) || 900;
+    // Find the layout dimensions for the base canvas for later reference
+    var baseXYBoxSize = +configurationObject.graphWidth || 900;
     var margin = configurationObject.margin; 
-    var width = baseXYBoxSize - parseFloat(margin.left) - parseFloat(margin.right);
+    var width = baseXYBoxSize - +margin.left - +margin.right;
     var paddedWidth = width - 15;
-    var height = baseXYBoxSize - parseFloat(margin.top) - parseFloat(margin.bottom);
+    var height = baseXYBoxSize - +margin.top - +margin.bottom;
     
     // Define the min/max canvas ranges for x and y values
     var x = d3.time.scale().range([0, paddedWidth]).domain([getDate("2015-01-01"), getDate(new Date())]);
@@ -721,5 +720,4 @@ var createEmptyGraph = function() {
         .style("shape-rendering", "crispEdges");
     
     return false;
-    
 };
