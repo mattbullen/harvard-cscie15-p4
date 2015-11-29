@@ -518,7 +518,7 @@ function updateGraph(data) {
                         }
                     })
                     .attr("r", (configurationObject.circleStrokeSize || 2.0));
-                svg.select("#line-" + formattedID)
+                svg.select(".line-" + formattedID)
                     .transition()
                     .duration(300)
                     .style("opacity", "1.0");
@@ -534,7 +534,7 @@ function updateGraph(data) {
                     .duration(300)
                     .style("opacity", "0")
                     .attr("r", "0");
-                svg.select("#line-" + formattedID)
+                svg.select(".line-" + formattedID)
                     .transition()
                     .duration(300)
                     .style("opacity", "0");
