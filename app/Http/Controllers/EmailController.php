@@ -26,7 +26,7 @@ class EmailController extends Controller {
         }
         $reqEmail = Request::input('email');
         $retrieveEmail = \App\Email::where('email', '=', $reqEmail)->get();
-        if ($retrieveEmail && sizeof($retrieveEmail) > 0) {
+        if ($retrieveEmail && sizeof($retrieveEmail)) {
             return Response::json(array('user' => 'User exists and is logged in.'));
         } else {
             $item = new \App\Email();

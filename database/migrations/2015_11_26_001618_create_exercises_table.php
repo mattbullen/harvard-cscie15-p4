@@ -12,6 +12,7 @@ class CreateExercisesTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->softDeletes();
+            $table->rememberToken();
             $table->string('name');
         });
     }

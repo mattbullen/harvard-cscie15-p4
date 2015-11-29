@@ -19,7 +19,7 @@
 }
 
 body {
-    background-color: #3f51b5;
+    background-color: #002147 !important;
 }
 
 h1, h2, h3, h4, h5 {
@@ -48,11 +48,17 @@ a:hover {
 }
 
 .buttonHover {
+    font-weight: normal !important;
+    color: #fff !important;
+    background: #4184f3 !important;
     /* From: http://matthewlein.com/ceaser/ */
     transition: all 250ms cubic-bezier(0.420, 0.000, 0.580, 1.000) !important;
 }
 
-.buttonHover:hover {
+.buttonHover:hover,
+.buttonHover:focus {
+    font-weight: normal !important;
+    color: #fff !important;
     background: #c10c06 !important;
 }
 
@@ -68,7 +74,7 @@ paper-material {
 }
 
 paper-toolbar {
-    background: #d32f2f;
+    background: #002147 !important;
 }
 
 .toolbarTitle {
@@ -114,9 +120,17 @@ paper-toolbar {
     padding: 0;
 }
 
+#menuButtonWrapper {
+    margin-top: 25px;
+}
+
 .menuButton {
     width: 96%;
-    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#editExercises {
+    margin-bottom: 0;
 }
 
 #mainPanel {
@@ -130,20 +144,26 @@ paper-toolbar {
 #enterSets,
 #enterReps {
     display: inline-block;
-    width: 7%;
+    width: 6%;
+}
+
+#enterWeight {
+    display: inline-block;
+    width: 8%;
 }
 
 #enterSets {
     margin: 0 4% 0 4%;
 }
 
-#enterReps {
+#enterReps,
+#enterWeight {
     margin: 0 4% 0 0;
 }
 
 #enterNotes {
     display: inline-block;
-    width: 60%;
+    width: 51%;
 }
 
 #saveSession {
@@ -164,7 +184,7 @@ paper-toolbar {
 
 #graphWrapper {
     position: relative;
-    width: 650px;
+    width: 900px;
     margin: 0 auto;
 }
 
@@ -176,14 +196,21 @@ paper-toolbar {
 
 .boldJustified {
     font-weight: bold;
-    width: 60px;
+    width: 70px;
     float: left;
 }
 
-#deleteSession {
+#editSession {
     position: absolute;
-    bottom: 5px;
-    right: 5px;
+    bottom: 8px;
+    right: 8px;
+    height: 30px;
+    width: 30px;
+}
+
+#editSession #icon {
+    height: 14px;
+    width: 14px;
 }
 
 .axis path,

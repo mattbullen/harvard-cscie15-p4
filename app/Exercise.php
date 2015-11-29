@@ -20,4 +20,8 @@ class Exercise extends ModelValidationLayer
         'min' => 'Typo? The exercise name needs to start with at least one letter or number.',
         'max' => 'You\'ve gone over the character limit! The exercise name may contain a maximum of twenty characters.'
     );
+    
+    public function email() {
+        return $this->belongsTo('\App\Email');
+    }
 }

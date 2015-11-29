@@ -4,22 +4,26 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CreateEmailsTable extends Migration
+class CreateSessionsTable extends Migration
 {
     public function up()
     {
-        Schema::create('emails', function (Blueprint $table) {
+        Schema::create('sessions', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
             $table->softDeletes();
             $table->rememberToken();
-            $table->string('email');
+            $table->string('name');
+            $table->integer('sets');
+            $table->integer('reps');
+            $table->integer('weight');
+            $table->string('notes');
         });
     }
 
     public function down()
     {
-        Schema::drop('emails');
+        Schema::drop('sessions');
     }
 
 }

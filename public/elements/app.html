@@ -24,10 +24,6 @@
     <link href="../bower_components/iron-icons/iron-icons.html" rel="import">
     <link href="../bower_components/google-signin/google-signin.html" rel="import">
     <link href="../bower_components/platinum-https-redirect/platinum-https-redirect.html" rel="import">
-    <script src="../js/jquery-2.1.4.min.js"> </script>
-    <script src="../js/d3.v3.min.js"> </script>
-    <script src="../js/graph.js"> </script>
-    <script src="../js/index.js"> </script>
 </head>
 
 <dom-module id="base-app">
@@ -40,8 +36,7 @@
         <paper-dialog 
             id="welcomeModal" 
             entry-animation="scale-up-animation" 
-            exit-animation="fade-out-animation" 
-
+            exit-animation="fade-out-animation"
             autoFitOnAttach="true"
             modal="true"
             withBackdrop="true">
@@ -72,9 +67,13 @@
                             </paper-item>
                         </paper-material>
                     </template>
-                    <template id="menuButtons" is="dom-repeat" items="{{menuButtons}}">
-                        <paper-button id="menu-{{item.name}}" class="menuButton" on-tap="updateContentView" raised>{{item.name}}</paper-button>
-                    </template>
+                    <div id="menuButtonWrapper" disabled>
+                        <template id="menuButtons" is="dom-repeat" items="{{menuButtons}}">
+                            <paper-button id="menu-{{item.hyphenated}}" class="menuButton buttonHover" on-tap="updateContentView" title="View your {{item.lowercase}} training log?" raised>{{item.original}}</paper-button>
+                        </template>
+                        <paper-button id="summaryView" class="menuButton buttonHover" on-tap="readAllSessions" title="View the summary of all exercises?" raised>View Summary</paper-button>
+                        <paper-button id="editExercises" class="menuButton buttonHover" on-tap="saveNewExercise" title="Edit the exercise list?" raised>Edit Exercise List</paper-button>
+                    </div>
                 </paper-menu>
                 
             </paper-header-panel>
@@ -100,16 +99,17 @@
                 
                 <div id="logWrapper">
                     <paper-material id="logSession" elevation="2">
-                        <paper-input id="enterSets" label="Sets" maxlength="3"></paper-input>
-                        <paper-input id="enterReps" label="Reps" maxlength="3"></paper-input>
+                        <paper-input type="number" min="0" max="500" id="enterSets" label="Sets" maxlength="3"></paper-input>
+                        <paper-input type="number" min="0" max="500" id="enterReps" label="Reps" maxlength="3"></paper-input>
+                        <paper-input id="enterWeight" label="Weight" maxlength="4"></paper-input>
                         <paper-input id="enterNotes" char-counter label="Notes" maxlength="140"></paper-input>
-                        <paper-fab id="saveSession" class="buttonHover" icon="icons:done" on-tap="logExercise" title="Save this session?"></paper-fab>
+                        <paper-fab id="saveSession" class="buttonHover" icon="icons:done" on-tap="saveNewSession" title="Save this session?"></paper-fab>
                     </paper-material>
                 </div>
                 
                 <div id="entryWrapper">
                     <paper-material>
-                        <paper-item id="graphData" elevation="2">No notes to show!</paper-item>
+                        <paper-item id="graphData" elevation="2">No session selected!</paper-item>
                     </paper-material>
                 </div>    
                     
@@ -126,276 +126,8 @@
     
 </dom-module>
 
-<script>
-
-Polymer({
-    is: "base-app",
-    properties: {
-        currentUser: String,
-        currentUserFirstName: {
-            type: String,
-            value: "",
-            reflect: true
-        },
-        menuButtons: {
-            type: Array,
-            value: [],
-            reflect: true
-        },
-        graphData: {
-            type: Array,
-            value: [],
-            reflect: true
-        }
-    },
-    logExercise: function(e) {
-
-        // Reference the local instance of the Polymer model for use inside the AJAX success callback
-        var model = this;
-        
-        // Set up the CSRF token.
-        $.ajaxSetup({ headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") } });
-    
-        // Extract the POST data and reset the input
-        var data = {
-            name: $("#enterNotes").val()
-        }
-        $("#enterNotes").val('');
-        
-        // POST handling routine.
-        $.ajax({
-            type: "POST",
-            url: "/record/exercise/create",
-            data: data,
-            success: function(response) {
-                console.log("\nResponse:", response);
-                $("#textArea").text(JSON.stringify(response));
-                if (response.exercises) {
-                    model.updateMenuButtons(response.exercises);
-                }
-                /*if (response.text) {
-                    showSuccessMessage(response.text);
-                } else {
-                    showErrorMessage();
-                }*/
-            },
-            error: function(error) {
-                console.log("\nError:", error);
-                $("#graphWrapper").html(error.responseText);
-                // showErrorMessage();
-            }
-        });
-    },
-    setMenuButtons: function(e) {
-        
-        // Reference the local instance of the Polymer model for use inside the AJAX success callback
-        var model = this;
-        
-        // Set up the CSRF token.
-        $.ajaxSetup({ headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") } });
-    
-        // POST handling routine.
-        $.ajax({
-            type: "POST",
-            url: "/record/exercise/read",
-            data: { name: "all" },
-            success: function(response) {
-                console.log("\nResponse:", response);
-                $("#textArea").text(JSON.stringify(response));
-                /*if (response.text) {
-                    showSuccessMessage(response.text);
-                } else {
-                    showErrorMessage();
-                }*/
-                if (response.found) {
-                    model.updateMenuButtons(response.found);
-                }
-            },
-            error: function(error) {
-                console.log("\nError:", error);
-                $("#graphWrapper").html(error.responseText);
-                // showErrorMessage();
-            }
-        });
-    },
-    updateMenuButtons: function(data) {
-        this.menuButtons = data.sort(this.sortByProperty("name"));
-    },
-    updateContentView: function(e) {
-        var button = e.target;
-        var name = button.innerText; //button.getAttribute("data-exercise-name");
-        console.log(name);
-    },
-    // From: https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value-in-javascript
-    sortByProperty: function(property) {
-        var sortOrder = 1;
-        if(property[0] === "-") {
-            sortOrder = -1;
-            property = property.substr(1);
-        }
-        return function (a,b) {
-            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-            return result * sortOrder;
-        }
-    },
-    signIn: function(e) {
-
-        console.log("Signed In");
-        
-        // Extract the user details from the Google JWT sign in object
-        var user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
-        var email = user.po;
-        var firstName = user.Ph;
-        console.log(user, email, firstName);
-        
-        this.currentUser = user.po;
-        this.currentUserFirstName = user.Ph;
-        
-        this.handleUser(user.po, user.Ph);
-    },
-    handleUser: function(email, name) {
-    
-        // Reference the local instance of the Polymer model for use inside the AJAX success callback
-        var model = this;
-
-        // Set up the CSRF token.
-        $.ajaxSetup({ headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") } });
-    
-        // POST handling routine.
-        $.ajax({
-            type: "POST",
-            url: "/email",
-            data: { email: email },
-            success: function(response) {
-                console.log("\nResponse:", response);
-                $("#textArea").text(JSON.stringify(response));
-                /*if (response.text) {
-                    showSuccessMessage(response.text);
-                } else {
-                    showErrorMessage();
-                }*/
-                if (response.user) {
-                    model.closeWelcomeModal();
-                }
-            },
-            error: function(error) {
-                console.log("\nError:", error);
-                $("#graphWrapper").html(error.responseText);
-                // showErrorMessage();
-            }
-        });
-    },
-    signOut: function(e) {
-
-        console.log("Signed Out");
-        
-        var user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile(); console.log(user);
-        this.clearModelProperties();
-        
-        
-    },
-    clearModelProperties: function() {
-        this.currentUser = "";
-        this.currentUserFirstName = "";
-        this.menuButtons = [];
-        this.graphData = [];
-    },
-    // From: https://scotch.io/tutorials/build-a-real-time-polymer-to-do-app
-    findWithAttribute: function(array, attr, value) {
-        for (var i = 0; i < array.length; i += 1) {
-            if (array[i][attr] === value) { return i; }
-        }
-        return -1;
-    },
-    openWelcomeModal: function() {
-        this.$.welcomeModal.open();
-    },
-    closeWelcomeModal: function() {
-        this.$.welcomeModal.close();
-        $(".iron-overlay-backdrop-0").hide();
-        this.setMenuButtons();
-    },
-    drawGraph: function() {
-        var data = {
-    "list": [
-        {   
-            "id": "a",
-            "date": "2014-1-01",
-            "name": "Bench Press",
-            "sets": "5",
-            "reps": "5",
-            "weight": "50",
-            "notes": "AAA"
-        },
-        {
-            "id": "b",
-            "date": "2015-11-05",
-            "name": "Bench Press",
-            "sets": "5",
-            "reps": "5",
-            "weight": "225",
-            "notes": "BBB"
-        },
-        {
-            "id": "c",
-            "date": "2016-5-09",
-            "name": "Bench Press",
-            "sets": "5",
-            "reps": "5",
-            "weight": "550",
-            "notes": "CCC"
-        }
-    ]
-};
-        var graph = createGraph(data);
-    },
-    ready: function(e) {
-        this.addEventListener('google-signin-success', this.signIn);
-        this.addEventListener('google-signed-out', this.signOut);
-        this.openWelcomeModal();
-        this.drawGraph();
-        
-        var data = {
-    "list": [
-        {   
-            "id": "200",
-            "date": "2012-1-01",
-            "name": "Bench Press",
-            "sets": "5",
-            "reps": "5",
-            "weight": "50",
-            "notes": "AAA"
-        },
-        {
-            "id": "201",
-            "date": "2013-7-05",
-            "name": "Bench Press",
-            "sets": "5",
-            "reps": "5",
-            "weight": "275",
-            "notes": "BBB"
-        },
-        {
-            "id": "202",
-            "date": "2014-2-15",
-            "name": "Bench Press",
-            "sets": "1",
-            "reps": "5",
-            "weight": "275",
-            "notes": "ccc"
-        },
-        {
-            "id": "203",
-            "date": "2017-5-09",
-            "name": "Bench Press",
-            "sets": "10",
-            "reps": "5",
-            "weight": "350",
-            "notes": "ddd"
-        }
-    ]
-};
-        $("#entryWrapper").click(function() { updateGraph(data); });
-    }
-  });
-</script>
+<script src="../js/jquery-2.1.4.min.js"> </script>
+<script src="../js/d3.v3.min.js"> </script>
+<script src="../js/graph.js"> </script>
+<script src="../js/index.js"> </script>
+<script src="../js/app.js"> </script>

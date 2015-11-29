@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Request;
 use Response;
 
-class RecordController extends Controller {
+class ExerciseController extends Controller {
     
     // Based on: 
     // http://laravel.com/docs/5.1/validation
@@ -19,24 +19,30 @@ class RecordController extends Controller {
         }
     }
     
+    private function getEmailObject() {
+        return \App\Email::where('email', '=', Request::input('email'))->first();
+    }
+    
     public function createExercise() {
         $reqErrors = self::validateInput();
         if ($reqErrors) {
             return Response::json(array('error' => $reqErrors));
         }
         $reqName = Request::input('name');
-        $retrieveName = \App\Exercise::where('name', '=', $reqName)->get();
+        $emailObject = self::getEmailObject(); //return Response::json(array('test' => $email));
+        $retrieveName = \App\Exercise::where('name', '=', $reqName)->where('email_id', '=', $emailObject->id)->get(); //$retrieveName = \App\Exercise::where('name', '=', $reqName)->get();
         if ($retrieveName && sizeof($retrieveName) > 0) {
             return Response::json(array('conflict' => 'exists'));
         } else {
             $item = new \App\Exercise();
             $item->name = $reqName;
+            $item->email()->associate($emailObject);
             $item->save();
             return Response::json(array('exercises' => \App\Exercise::all()));
         }
     }
     
-    public function readExercise() {
+    public function readExercises() {
         $reqErrors = self::validateInput();
         if ($reqErrors) {
             return Response::json(array('error' => $reqErrors));
