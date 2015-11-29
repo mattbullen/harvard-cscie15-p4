@@ -541,6 +541,11 @@ function updateGraph(data) {
                 return false;
             } else {
                 item.attr("data-state", "off");
+                d3.select("#tooltipContainer")
+                    .style("padding", "0px")
+                    .style("opacity", "0")
+                    .style("border", "none")
+                    .html("");
                 d3.select(this)
                     .transition()
                     .duration(200)
