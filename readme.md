@@ -20,5 +20,6 @@ TBD
 
 * Laravel 5: http://laravel.com
 * Polymer: https://www.polymer-project.org/1.0/ and this [tutorial](https://scotch.io/tutorials/build-a-real-time-polymer-to-do-app)
+* Google Web Components: OAuth2 sign in button: https://elements.polymer-project.org/elements/google-signin
 * D3.js: http://d3js.org/ and http://bl.ocks.org/mbostock
 * jQuery 2.1.4: https://jquery.com/download/
