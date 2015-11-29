@@ -237,7 +237,7 @@ function updateGraph(data) {
         .style("fill", function(d) { return color(d.name); })
         .style("cursor", "pointer")
         .style("opacity", "0")
-        .on("click", function(d){
+        .on("click", function(d) {
 
             var dot = d3.select(this);
             var tooltip = d3.select("#tooltipContainer");
@@ -385,7 +385,7 @@ function updateGraph(data) {
             d3.selectAll(".dot")
                 .data(values)
                 .attr("clip-path", "url(#clip)")
-                .attr("r", function(d) { console.log(d3.select(this).attr("data-size-base")); return d3.select(this).attr("data-size-base"); })
+                //.attr("r", function(d) { console.log(d3.select(this).attr("data-size-base")); return d3.select(this).attr("data-size-base"); })
                 .transition()
                 .attr("cx", function(d) { return x(getDate(d.created_at)); })
                 .attr("cy", function(d) { return y(d.total); })
@@ -405,6 +405,11 @@ function updateGraph(data) {
                     thisDot.attr("data-state", "on");
                     return "1.0";
                 });
+        })
+        .on("click", function() {
+            d3.selectAll(".dot")
+                .transition()
+                .attr("r", function(d) { console.log(d3.select(this).attr("data-size-base")); return d3.select(this).attr("data-size-base"); });
         });
     brush.clear();
     d3.selectAll(".x.brush").transition().call(brush);
@@ -454,7 +459,8 @@ function updateGraph(data) {
                 .data(values)
                 .attr("data-state", "on")
                 .attr("data-click", "off")
-                .transition().duration(200)
+                .transition()
+                .duration(200)
                 .attr("r", function(d) { return d3.select(this).attr("data-size-base"); })
                 .attr("cx", function(d) { return x(getDate(d.created_at)); })
                 .attr("cy", function(d) { return y(d.total); })
