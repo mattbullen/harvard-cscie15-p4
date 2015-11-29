@@ -23,7 +23,7 @@ body {
 }
 
 h1, h2, h3, h4, h5 {
-    font-family: Museo, Halifax, Arial, sans-serif;
+    font-family: Museo, Arial, sans-serif;
 }
 
 img {
@@ -47,6 +47,8 @@ a:hover {
     color: #c06c20 !important;
 }
 
+/* base-app.html */
+
 .buttonHover {
     font-weight: normal !important;
     color: #fff !important;
@@ -61,8 +63,6 @@ a:hover {
     color: #fff !important;
     background: #c10c06 !important;
 }
-
-/* base-app.html */
 
 paper-material {
     position: relative;

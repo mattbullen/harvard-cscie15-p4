@@ -68,7 +68,7 @@
                         </paper-material>
                     </template>
                     <div id="menuButtonWrapper" disabled>
-                        <paper-button id="summaryView" class="menuButton buttonHover" on-tap="readAllSessions" title="View the summary of all exercises?" raised>View Summary</paper-button>
+                        <paper-button id="viewSummary" class="menuButton buttonHover" on-tap="readAllSessions" title="View the summary of all exercises?" raised>View Summary</paper-button>
                         <template id="menuButtons" is="dom-repeat" items="{{menuButtons}}">
                             <paper-button id="menu-{{item.hyphenated}}" class="menuButton buttonHover" on-tap="updateContentView" title="View your {{item.lowercase}} training log?" raised>{{item.original}}</paper-button>
                         </template>
