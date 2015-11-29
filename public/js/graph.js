@@ -424,13 +424,14 @@ function updateGraph(data) {
                     console.log(mappedData[i]);
                     var lineID = ".line-" + (mappedData[i].key).replace(/ /gi, "-");
                     var newPath = newLine(mappedData[i].values);
-                    clippedSVG.select(lineID).transition().attr("d", newPath);
+                    clippedSVG.select(lineID).transition().attr("d", newPath).style("opacity", "1.0");
                 }
             } else {
                 var newPath = newLine(mappedData[0].values);
                 clippedSVG.select(".line")
                     .transition()
-                    .attr("d", newPath);
+                    .attr("d", newPath)
+                    .style("opacity", "1.0");
             }
             
             // Reset the dots
