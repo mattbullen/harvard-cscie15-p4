@@ -321,14 +321,16 @@ Polymer({
         }
     },
     signIn: function(e) {
-        console.log("Signed In");
-        // Extract the user details from the Google JWT sign in object
-        var user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
-        this.currentUser = user.po;
-        this.currentUserFirstName = user.Ph;
-        this.handleUser(user.po, user.Ph);
-        //this.currentUser = "xyz@sample.com"; console.log(this.currentUser);
-        //this.handleUser(this.currentUser, "XYZ");
+        // Extract the user details from the Google OAuth2/JWT sign in object
+        if (gapi) {
+            var user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
+            this.currentUser = user.po;
+            this.currentUserFirstName = user.Ph;
+            console.log("User signed in: " + user.Ph + ", " + user.po);
+            this.handleUser(user.po, user.Ph);
+        }
+        // this.currentUser = "xyz@sample.com"; console.log(this.currentUser);
+        // this.handleUser(this.currentUser, "XYZ");
     },
     handleUser: function(email, name) {
     
@@ -355,8 +357,8 @@ Polymer({
         });
     },
     signOut: function(e) {
-        console.log("Signed Out");
-        var user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
+        console.log("User signed out!");
+        console.log(gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile());
         this.clearModelProperties();
     },
     clearModelProperties: function() {
