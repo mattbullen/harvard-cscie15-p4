@@ -380,6 +380,7 @@ function updateGraph(data) {
             // Update the dots
             clippedSVG.selectAll(".dot")
                 .attr("data-click", "off")
+                .transition()
                 .attr("r", function(d) { return d3.select(this).attr("data-size-base"); })
                 .style("opacity", "0");
             clippedSVG.selectAll(".dot")
@@ -392,9 +393,8 @@ function updateGraph(data) {
                     var thisDot = d3.select(this);
                     var name = thisDot.attr("data-name");
                     name = "legendCheckMark-" + name.replace(/ /gi, "-");
-                    console.log(document.getElementById(name));
                     if (document.getElementById(name)) {
-                        var checkState = d3.select("#" + name).attr("data-state"); console.log(document.getElementById(name), checkState);
+                        var checkState = d3.select("#" + name).attr("data-state");
                         if (checkState === "on") {
                             return "1.0";
                         } else {
