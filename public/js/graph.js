@@ -358,7 +358,7 @@ function updateGraph(data) {
             // Update the line(s)
             if (mappedLength > 1){
                 for (var i = 0; i < mappedLength; i++) {
-                    console.log(mappedData[i]);
+                    // console.log(mappedData[i]);
                     var lineID = ".line-" + (mappedData[i].key).replace(/ /gi, "-");
                     var newPath = newLine(mappedData[i].values);
                     clippedSVG.select(lineID).transition().attr("d", newPath).attr("clip-path", "url(#clip)");

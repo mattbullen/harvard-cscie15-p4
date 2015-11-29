@@ -73,7 +73,8 @@ Polymer({
         var data = {
             email: model.currentUser,
             name: model.currentExercise
-        }; console.log(data);
+        }; 
+        console.log("model.readSessions():", data);
         
         // POST handling routine
         $.ajax({
@@ -304,7 +305,7 @@ Polymer({
     updateContentView: function(e) {
         // Retrieve the button's original exercise name from its template model: https://stackoverflow.com/questions/32212836/how-to-get-data-attribute-value-of-paper-card-from-on-tap-event
         var name = e.model.item.original;
-        console.log(name);
+        console.log("\nMenu button clicked:", name);
         this.currentExercise = name;
         this.readSessions();
     },
