@@ -174,6 +174,9 @@ function updateGraph(data) {
                 .style("stroke", lineColor)
                 .style("stroke-width", configurationObject.lineStrokeSize)
                 .style("fill", "none")
+                .style("opacity", "0")
+                .transition()
+                .delay(200)
                 .style("opacity", "1.0");
         }      
     } else {
