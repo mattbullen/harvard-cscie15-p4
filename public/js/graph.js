@@ -338,7 +338,7 @@ function updateGraph(data) {
     var brush = d3.svg.brush()
         .x(xBrush) 
         .on("brush", function() {
-            
+            console.log("Brushing");
             // Remove the tooltip
             var tooltip = d3.select("#tooltipContainer");
             tooltip.style("padding", "0px")
@@ -385,10 +385,10 @@ function updateGraph(data) {
             d3.selectAll(".dot")
                 .data(values)
                 .attr("clip-path", "url(#clip)")
-                //.attr("r", function(d) { console.log(d3.select(this).attr("data-size-base")); return d3.select(this).attr("data-size-base"); })
                 .transition()
                 .attr("cx", function(d) { return x(getDate(d.created_at)); })
                 .attr("cy", function(d) { return y(d.total); })
+                .attr("r", function(d) { var thisDot = d3.select(this); console.log(thisDot); return thisDot.attr("data-size-base"); })
                 .style("opacity", function(d) {
                     var thisDot = d3.select(this);
                     var name = thisDot.attr("data-name");
@@ -405,11 +405,6 @@ function updateGraph(data) {
                     thisDot.attr("data-state", "on");
                     return "1.0";
                 });
-        })
-        .on("click", function() {
-            d3.selectAll(".dot")
-                .transition()
-                .attr("r", function(d) { console.log(d3.select(this).attr("data-size-base")); return d3.select(this).attr("data-size-base"); });
         });
     brush.clear();
     d3.selectAll(".x.brush").transition().call(brush);
