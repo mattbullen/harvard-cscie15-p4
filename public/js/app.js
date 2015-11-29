@@ -366,6 +366,9 @@ Polymer({
         console.log("User signed out!");
         console.log(gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile());
         this.clearModelProperties();
+        $("#viewSummary").hide();
+        $("#editExercises").hide();
+        createEmptyGraph();
     },
     clearModelProperties: function() {
         this.currentUser = "";
@@ -379,6 +382,8 @@ Polymer({
         this.$.welcomeModal.close();
         $(".iron-overlay-backdrop-0").hide();
         this.setMenuButtons();
+        $("#viewSummary").show();
+        $("#editExercises").show();
         
         // Autoselect the summary view when the app first opens
         $("#viewSummary").click();
