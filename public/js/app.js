@@ -324,7 +324,7 @@ Polymer({
     signIn: function(e) {
         
         // Extract the user details from the Google OAuth2/JWT sign in object
-        if (gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()) {
+        if (gapi && gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()) {
             
             // Add the user first name and e-mail address to the local template's model
             var user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
