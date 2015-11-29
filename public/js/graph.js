@@ -58,6 +58,13 @@ function getColors() {
 // Draws and dynamically updates the graph's lines, dots, tooltips, brush and legend
 function updateGraph(data) {
     
+    // User flow: first empty, close and hide the tooltip, if open from a previous graph view
+    d3.select("#tooltipContainer")
+        .style("padding", "0px")
+        .style("opacity", "0")
+        .style("border", "none")
+        .html("");
+        
     // Get the graph & layout configurationObject
     var configurationObject = getConfiguration();
     
