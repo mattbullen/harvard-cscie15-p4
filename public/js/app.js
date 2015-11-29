@@ -107,7 +107,7 @@ Polymer({
         // Validate the POST data and reset the inputs
         var data = {
             email: model.currentUser
-        }; console.log(data);
+        };
         
         // POST handling routine
         $.ajax({
