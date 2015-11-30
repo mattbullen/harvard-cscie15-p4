@@ -24,43 +24,6 @@ class SessionController extends Controller {
         return \App\Email::where('email', '=', Request::input('email'))->first();
     }
     
-    public function readSessions() {
-        $reqErrors = self::validateInput();
-        if ($reqErrors) {
-            return Response::json(array('error' => $reqErrors));
-        }
-        $emailObject = self::getEmailObject();
-        $emailSaved = $emailObject->email;
-        $emailSubmitted = Request::input('email');
-        if ($emailSaved == $emailSubmitted) {
-            if (Request::input('name') == "summary") {
-                $sessions = \App\Session::where('email_id', '=', $emailObject->id)->get();
-                return Response::json(array('sessions' => $sessions));
-            } else {
-                $sessions = \App\Session::where('email_id', '=', $emailObject->id)->where('name', '=', Request::input('name'))->get();
-                return Response::json(array('sessions' => $sessions));
-            }
-        } else {
-            return Response::json(array('error' => 'Submitted e-mail does not match saved e-mail for this user.'));
-        }
-    }
-    
-    public function readAllSessions() {
-        $reqErrors = self::validateInput();
-        if ($reqErrors) {
-            return Response::json(array('error' => $reqErrors));
-        }
-        $emailObject = self::getEmailObject();
-        $emailSaved = $emailObject->email;
-        $emailSubmitted = Request::input('email');
-        if ($emailSaved == $emailSubmitted) {
-            $sessions = \App\Session::where('email_id', '=', $emailObject->id)->get();
-            return Response::json(array('sessions' => $sessions));
-        } else {
-            return Response::json(array('error' => 'Submitted e-mail does not match saved e-mail for this user.'));
-        }
-    }
-    
     public function createSession() {
         $reqErrors = self::validateInput();
         if ($reqErrors) {
@@ -80,6 +43,27 @@ class SessionController extends Controller {
             $item->save();
             $sessions = \App\Session::where('email_id', '=', $emailObject->id)->where('name', '=', Request::input('name'))->get();
             return Response::json(array('sessions' => $sessions));
+        } else {
+            return Response::json(array('error' => 'Submitted e-mail does not match saved e-mail for this user.'));
+        }
+    }
+    
+    public function readSessions() {
+        $reqErrors = self::validateInput();
+        if ($reqErrors) {
+            return Response::json(array('error' => $reqErrors));
+        }
+        $emailObject = self::getEmailObject();
+        $emailSaved = $emailObject->email;
+        $emailSubmitted = Request::input('email');
+        if ($emailSaved == $emailSubmitted) {
+            if (Request::input('name') == "summary") {
+                $sessions = \App\Session::where('email_id', '=', $emailObject->id)->get();
+                return Response::json(array('sessions' => $sessions));
+            } else {
+                $sessions = \App\Session::where('email_id', '=', $emailObject->id)->where('name', '=', Request::input('name'))->get();
+                return Response::json(array('sessions' => $sessions));
+            }
         } else {
             return Response::json(array('error' => 'Submitted e-mail does not match saved e-mail for this user.'));
         }
