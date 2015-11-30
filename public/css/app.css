@@ -117,6 +117,12 @@ paper-toolbar {
     color: #212121;
 }
 
+.exerciseTitle {
+    font-family: Museo, Arial, sans-serif;
+    font-size: 20px;
+    text-transform: capitalize;
+}
+
 #left {
     position: absolute;
     top: 14px;

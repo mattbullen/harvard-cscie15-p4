@@ -239,6 +239,7 @@ Polymer({
             this.$.enterNotes.disabled = false;
             this.$.saveSession.disabled = false;
         }
+        $("#entryMessage").html('<div class="centered"><div class="exerciseTitle">' + tag + '</div></div>');
         console.log("\nMenu button clicked:", tag);
         this.currentExercise = tag;
         this.readSessions();
