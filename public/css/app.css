@@ -121,10 +121,6 @@ paper-toolbar {
     padding: 6px !important;
 }
 
-#entryMessage:focus {
-    background: #fff !important;
-}
-
 .exerciseTitle {
     font-family: Museo, Arial, sans-serif;
     font-size: 30px;
