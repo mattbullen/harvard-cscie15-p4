@@ -225,9 +225,9 @@ Polymer({
             var tag = (e.target.innerText).toLowerCase();
         }
         if (tag === "summary") {
-            $("#createSession").disable();
+            this.$.saveSession.disabled = true;
         } else {
-            $("#createSession").enable();
+            this.$.saveSession.disabled = false;
         }
         console.log("\nMenu button clicked:", tag);
         this.currentExercise = tag;
