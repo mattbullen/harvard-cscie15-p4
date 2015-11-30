@@ -24,7 +24,7 @@ Polymer({
         this.createEmptyGraph();
         
         // Add page element event listeners
-        $("#entryMessage").on("click", function() { $(this).fadeOut().hide(); }).show();
+        $("#entryMessage").fadeIn().show(); //.on("click", function() { $(this).fadeOut().hide(); })
         $("#enterWeight").on("keyup", this.validateNewSessionWeight);
         
         // Set up the CSRF token for later use in POST requests
@@ -286,8 +286,8 @@ Polymer({
         console.log("User signed out!");
         console.log(gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile());
         this.clearModelProperties();
-        $("#viewSummary").hide();
-        $("#editExercises").hide();
+        $("#viewSummary").fadeOut().hide();
+        $("#editExercises").fadeOut().hide();
         $("#entryMessage").fadeOut().hide();
         this.createEmptyGraph();
     },
@@ -303,8 +303,8 @@ Polymer({
         this.$.welcomeModal.close();
         $(".iron-overlay-backdrop-0").hide();
         this.setMenuButtons();
-        $("#viewSummary").show();
-        $("#editExercises").show();
+        $("#viewSummary").fadeIn().show();
+        $("#editExercises").fadeIn().show();
         // Autoselect the summary view when the app first opens
         $("#viewSummary").click();
     },
