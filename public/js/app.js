@@ -305,6 +305,7 @@ Polymer({
         this.menuButtons = [];
     },
     openWelcomeModal: function() {
+        $(".iron-overlay-backdrop-0").show();
         this.$.welcomeModal.open();
     },
     closeWelcomeModal: function() {
