@@ -24,7 +24,7 @@ Polymer({
         this.createEmptyGraph();
         
         // Add page element event listeners
-        $("#entryMessage").fadeIn().show(); //.on("click", function() { $(this).fadeOut().hide(); })
+        // $("#entryMessage").on("click", function() { $(this).fadeOut().hide(); })
         $("#enterWeight").on("keyup", this.validateNewSessionWeight);
         
         // Set up the CSRF token for later use in POST requests
