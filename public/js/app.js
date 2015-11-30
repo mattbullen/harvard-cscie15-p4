@@ -225,8 +225,14 @@ Polymer({
             var tag = (e.target.innerText).toLowerCase();
         }
         if (tag === "summary") {
+            this.$.enterSets.disabled = true;
+            this.$.enterReps.disabled = true;
+            this.$.enterWeight.disabled = true;
             this.$.saveSession.disabled = true;
         } else {
+            this.$.enterSets.disabled = false;
+            this.$.enterReps.disabled = false;
+            this.$.enterWeight.disabled = false;
             this.$.saveSession.disabled = false;
         }
         console.log("\nMenu button clicked:", tag);
