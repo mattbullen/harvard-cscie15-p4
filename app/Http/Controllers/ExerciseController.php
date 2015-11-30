@@ -29,8 +29,8 @@ class ExerciseController extends Controller {
             return Response::json(array('error' => $reqErrors));
         }
         $reqName = Request::input('name');
-        $emailObject = self::getEmailObject(); //return Response::json(array('test' => $email));
-        $retrieveName = \App\Exercise::where('name', '=', $reqName)->where('email_id', '=', $emailObject->id)->get(); //$retrieveName = \App\Exercise::where('name', '=', $reqName)->get();
+        $emailObject = self::getEmailObject();
+        $retrieveName = \App\Exercise::where('name', '=', $reqName)->where('email_id', '=', $emailObject->id)->get();
         if ($retrieveName && sizeof($retrieveName) > 0) {
             return Response::json(array('conflict' => 'exists'));
         } else {
@@ -99,5 +99,4 @@ class ExerciseController extends Controller {
             return Response::json(array('conflict' => 'none'));
         }
     }
-    
 }

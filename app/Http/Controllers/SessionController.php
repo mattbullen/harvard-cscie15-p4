@@ -119,5 +119,4 @@ class SessionController extends Controller {
             return Response::json(array('error' => 'Submitted e-mail does not match saved e-mail for this user.'));
         }
     }
-    
 }

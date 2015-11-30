@@ -19,7 +19,7 @@ Route::get('/debug', function() {
     catch (Exception $e) {
         echo '<strong style="background-color:crimson; padding:5px;">Caught exception: ', $e->getMessage(), "</strong>\n";
     }
-    echo '</pre>'; //94zW1KxWaQ
+    echo '</pre>';
 });
 
 // For the table of exercise names/types
@@ -41,4 +41,3 @@ Route::post('/email', 'EmailController@handleUser');
 Route::get('/', function () {
     return view('layouts.master');
 });
-
