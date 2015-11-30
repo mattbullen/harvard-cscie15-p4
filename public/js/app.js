@@ -224,6 +224,11 @@ Polymer({
         } else {
             var tag = (e.target.innerText).toLowerCase();
         }
+        if (tag === "summary") {
+            $("#createSession").disable();
+        } else {
+            $("#createSession").enable();
+        }
         console.log("\nMenu button clicked:", tag);
         this.currentExercise = tag;
         this.readSessions();
