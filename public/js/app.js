@@ -373,6 +373,14 @@ Polymer({
         
         // Get the graph & layout configurationObject
         var configurationObject = model.getConfiguration();
+
+        // Find the layout dimensions for the base canvas for later reference
+        var baseXYBoxSize = +configurationObject.graphWidth || 900;
+        var margin = configurationObject.margin; 
+        var width = baseXYBoxSize - +margin.left - +margin.right;
+        var paddedWidth = width - 15;
+        var height = baseXYBoxSize - +margin.top - +margin.bottom;
+        var dateFormatter = d3.time.format('%B %e, %Y');
         
         // For empty graphs
         if (data.sessions.length === 0) {
@@ -393,14 +401,6 @@ Polymer({
             d3.select("#xAxisBrush").transition().call(xAxisBrush);
             return false;
         }
-
-        // Find the layout dimensions for the base canvas for later reference
-        var baseXYBoxSize = +configurationObject.graphWidth || 900;
-        var margin = configurationObject.margin; 
-        var width = baseXYBoxSize - +margin.left - +margin.right;
-        var paddedWidth = width - 15;
-        var height = baseXYBoxSize - +margin.top - +margin.bottom;
-        var dateFormatter = d3.time.format('%B %e, %Y');
         
         // Map the values in the data object
         var values = data.sessions;
