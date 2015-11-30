@@ -678,10 +678,6 @@ Polymer({
                         .style("opacity", "0")
                         .style("border", "none");
                     tooltip.html("");
-                    
-                    // Remove the notes
-                    d3.select("#entryMessage").html("No session selected!");
-                
                 }
                 
                 return false;
@@ -699,9 +695,6 @@ Polymer({
                     .style("opacity", "0")
                     .style("border", "none");
                 tooltip.html("");
-                
-                // Remove the notes
-                d3.select("#entryMessage").html("No session selected!");
                 
                 // Set the brush extent range
                 var extent = brush.extent();
