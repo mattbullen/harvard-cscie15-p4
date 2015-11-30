@@ -376,6 +376,9 @@ Polymer({
         
         // For empty graphs
         if (data.sessions.length === 0) {
+            d3.selectAll(".line").remove();
+            d3.selectAll(".dot").remove();
+            d3.selectAll(".legend").remove();
             var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate("2015-01-01"), model.getDate(new Date())]);
             var xBrush = d3.time.scale().range([0, paddedWidth]).domain([model.getDate("2015-01-01"), model.getDate(new Date())]);
             var y = d3.scale.linear().range([height, 0]).domain([0, 10000]);
