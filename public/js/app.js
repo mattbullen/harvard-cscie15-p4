@@ -23,8 +23,10 @@ Polymer({
         // Pre-render the basic graph scaffolding
         this.createEmptyGraph();
         
-        // Add page element event listeners
-        $("#entryMessage").show(); //.on("click", function() { $(this).fadeOut().hide(); })
+        // User flow: add initial page element event listeners
+        $("#viewSummary").hide();
+        $("#editExercises").hide();
+        $("#entryMessage").hide();
         $("#enterWeight").on("keyup", this.validateNewSessionWeight);
         
         // Set up the CSRF token for later use in POST requests
@@ -228,11 +230,13 @@ Polymer({
             this.$.enterSets.disabled = true;
             this.$.enterReps.disabled = true;
             this.$.enterWeight.disabled = true;
+            this.$.enterNotes.disabled = true;
             this.$.saveSession.disabled = true;
         } else {
             this.$.enterSets.disabled = false;
             this.$.enterReps.disabled = false;
             this.$.enterWeight.disabled = false;
+            this.$.enterNotes.disabled = false;
             this.$.saveSession.disabled = false;
         }
         console.log("\nMenu button clicked:", tag);
@@ -316,6 +320,7 @@ Polymer({
         this.setMenuButtons();
         $("#viewSummary").fadeIn().show();
         $("#editExercises").fadeIn().show();
+        $("#entryMessage").fadeIn().show();
         // Autoselect the summary view when the app first opens
         $("#viewSummary").click();
     },
