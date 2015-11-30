@@ -304,7 +304,6 @@ Polymer({
         this.setMenuButtons();
         $("#viewSummary").show();
         $("#editExercises").show();
-        this.toggleButtonHighlighting();
         // Autoselect the summary view when the app first opens
         $("#viewSummary").click();
     },
