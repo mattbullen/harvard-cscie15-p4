@@ -371,6 +371,9 @@ Polymer({
             .attr("r", function(d) { return d3.select(this).attr("data-size-base"); })
             .attr("data-click", "off");
         
+        // Get the graph & layout configurationObject
+        var configurationObject = model.getConfiguration();
+        
         // For empty graphs
         if (data.sessions.length === 0) {
             var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate("2015-01-01"), model.getDate(new Date())]);
@@ -387,10 +390,7 @@ Polymer({
             d3.select("#xAxisBrush").transition().call(xAxisBrush);
             return false;
         }
-        
-        // Get the graph & layout configurationObject
-        var configurationObject = model.getConfiguration();
-        
+
         // Find the layout dimensions for the base canvas for later reference
         var baseXYBoxSize = +configurationObject.graphWidth || 900;
         var margin = configurationObject.margin; 
