@@ -18,7 +18,7 @@ Polymer({
     ready: function() {
         
         // Open the welcome message / sign in modal
-        // this.openWelcomeModal();
+        this.openWelcomeModal();
         
         // Pre-render the basic graph scaffolding
         this.createEmptyGraph();
@@ -243,7 +243,7 @@ Polymer({
     signIn: function(e) {
         
         // Extract the user details from the Google OAuth2/JWT sign in object
-        /*if (gapi && gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()) {
+        if (gapi && gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()) {
             
             // Add the user first name and e-mail address to the local template's model
             var user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
@@ -253,10 +253,10 @@ Polymer({
             
             // Move on to the "get the app ready for use" process
             this.handleUser(user.po, user.Ph);
-        }*/
-        this.currentUser = "xyz@sample.com"; 
-        this.currentUserFirstName = "XYZ";
-        this.handleUser(this.currentUser, "XYZ");
+        }
+        //this.currentUser = "xyz@sample.com"; 
+        //this.currentUserFirstName = "XYZ";
+        //this.handleUser(this.currentUser, "XYZ");
     },
     handleUser: function(email, name) {
     
