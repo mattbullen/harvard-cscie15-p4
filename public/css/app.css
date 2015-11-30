@@ -117,9 +117,17 @@ paper-toolbar {
     color: #212121;
 }
 
+#entryMessage {
+    padding: 6px !important;
+}
+
+#entryMessage:focus {
+    background: #fff !important;
+}
+
 .exerciseTitle {
     font-family: Museo, Arial, sans-serif;
-    font-size: 20px;
+    font-size: 30px;
     text-transform: capitalize;
 }
 
@@ -186,11 +194,7 @@ paper-toolbar {
     width: 56px;
     height: 56px;
 }
-
-#entryMessage {
-    padding: 25px !important;
-}
-   
+  
 .main-panel {
     background-color: #eee;
     height: 100vh;
