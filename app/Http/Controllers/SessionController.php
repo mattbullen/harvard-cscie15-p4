@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Request;
 use Response;
+use Illuminate\Database\Eloquent\Collection;
 
 class SessionController extends Controller {
     
@@ -32,8 +33,13 @@ class SessionController extends Controller {
         $emailSaved = $emailObject->email;
         $emailSubmitted = Request::input('email');
         if ($emailSaved == $emailSubmitted) {
-            $sessions = \App\Session::where('email_id', '=', $emailObject->id)->where('name', '=', Request::input('name'))->get();
-            return Response::json(array('sessions' => $sessions));
+            if (Request::input('name') == "summary") {
+                $sessions = \App\Session::where('email_id', '=', $emailObject->id)->get();
+                return Response::json(array('sessions' => $sessions));
+            } else {
+                $sessions = \App\Session::where('email_id', '=', $emailObject->id)->where('name', '=', Request::input('name'))->get();
+                return Response::json(array('sessions' => $sessions));
+            }
         } else {
             return Response::json(array('error' => 'Submitted e-mail does not match saved e-mail for this user.'));
         }
@@ -49,7 +55,6 @@ class SessionController extends Controller {
         $emailSubmitted = Request::input('email');
         if ($emailSaved == $emailSubmitted) {
             $sessions = \App\Session::where('email_id', '=', $emailObject->id)->get();
-            //$sessions = "x"; //$emailSaved; //\App\Session::all(); //\App\Email::with('sessions')->find($id)->sessions;
             return Response::json(array('sessions' => $sessions));
         } else {
             return Response::json(array('error' => 'Submitted e-mail does not match saved e-mail for this user.'));
@@ -89,14 +94,20 @@ class SessionController extends Controller {
         $emailSaved = $emailObject->email;
         $emailSubmitted = Request::input('email');
         if ($emailSaved == $emailSubmitted) {
-            $item = \App\Session::where('email_id', '=', $emailObject->id)->where('id', '=', Request::input('id'))->get();
+            $item = \App\Session::where('email_id', '=', $emailObject->id)->where('id', '=', Request::input('id'))->first();
+            $item->created_at = Request::input('date');
             $item->sets = Request::input('sets');
             $item->reps = Request::input('reps');
             $item->weight = Request::input('weight');
             $item->notes = Request::input('notes');
             $item->save();
-            $sessions = \App\Session::where('email_id', '=', $emailObject->id)->where('name', '=', Request::input('name'))->get();
-            return Response::json(array('sessions' => $sessions));
+            if (Request::input('view') == "summary") {
+                $sessions = \App\Session::where('email_id', '=', $emailObject->id)->get();
+                return Response::json(array('sessions' => $sessions));
+            } else {
+                $sessions = \App\Session::where('email_id', '=', $emailObject->id)->where('name', '=', Request::input('name'))->get();
+                return Response::json(array('sessions' => $sessions));
+            }
         } else {
             return Response::json(array('error' => 'Submitted e-mail does not match saved e-mail for this user.'));
         }
@@ -111,10 +122,15 @@ class SessionController extends Controller {
         $emailSaved = $emailObject->email;
         $emailSubmitted = Request::input('email');
         if ($emailSaved == $emailSubmitted) {
-            $item = \App\Session::where('email_id', '=', $emailObject->id)->where('id', '=', Request::input('id'))->get();
+            $item = \App\Session::where('email_id', '=', $emailObject->id)->where('id', '=', Request::input('id'))->first();
             $item->delete();
-            $sessions = \App\Session::where('email_id', '=', $emailObject->id)->where('name', '=', Request::input('name'))->get();
-            return Response::json(array('sessions' => $sessions));
+            if (Request::input('view') == "summary") {
+                $sessions = \App\Session::where('email_id', '=', $emailObject->id)->get();
+                return Response::json(array('sessions' => $sessions));
+            } else {
+                $sessions = \App\Session::where('email_id', '=', $emailObject->id)->where('name', '=', Request::input('name'))->get();
+                return Response::json(array('sessions' => $sessions));
+            }
         } else {
             return Response::json(array('error' => 'Submitted e-mail does not match saved e-mail for this user.'));
         }

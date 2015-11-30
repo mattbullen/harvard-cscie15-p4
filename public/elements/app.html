@@ -3,7 +3,6 @@
 <html>
 
 <head>
-    <meta name="csrf-token" content="<?php echo csrf_token() ?>" />
     <link href="../bower_components/polymer/polymer.html" rel="import">
     <link href="../bower_components/paper-drawer-panel/paper-drawer-panel.html" rel="import">
     <link href="../bower_components/paper-header-panel/paper-header-panel.html" rel="import">
@@ -68,11 +67,11 @@
                         </paper-material>
                     </template>
                     <div id="menuButtonWrapper" disabled>
-                        <paper-button id="viewSummary" class="menuButton buttonHover" on-tap="readAllSessions" title="View the summary of all exercises?" raised>View Summary</paper-button>
+                        <paper-button id="viewSummary" class="menuButton buttonHover" on-tap="updateContentView" title="View a summary of all exercises?" raised>Summary</paper-button>
                         <template id="menuButtons" is="dom-repeat" items="{{menuButtons}}">
                             <paper-button id="menu-{{item.hyphenated}}" class="menuButton buttonHover" on-tap="updateContentView" title="View your {{item.lowercase}} training log?" raised>{{item.original}}</paper-button>
                         </template>
-                        <paper-button id="editExercises" class="menuButton buttonHover" on-tap="saveNewExercise" title="Edit the exercise list?" raised>Edit Exercise List</paper-button>
+                        <paper-button id="editExercises" class="menuButton buttonHover" on-tap="createExercise" title="Edit the exercise list?" raised>Edit Exercise List</paper-button>
                     </div>
                 </paper-menu>
                 
@@ -103,15 +102,15 @@
                         <paper-input type="number" min="0" max="500" id="enterReps" label="Reps" maxlength="3"></paper-input>
                         <paper-input id="enterWeight" label="Weight" maxlength="4"></paper-input>
                         <paper-input id="enterNotes" char-counter label="Notes" maxlength="140"></paper-input>
-                        <paper-fab id="saveSession" class="buttonHover" icon="icons:done" on-tap="saveNewSession" title="Save this session?"></paper-fab>
+                        <paper-fab id="saveSession" class="buttonHover" icon="icons:done" on-tap="createSession" title="Save this session?"></paper-fab>
                     </paper-material>
                 </div>
                 
                 <div id="entryWrapper">
                     <paper-material>
-                        <paper-item id="graphData" elevation="2">No session selected!</paper-item>
+                        <paper-item id="entryMessage" elevation="2">Welcome! Use the menu to the left to select an exercise, and the toolbar above to save training sessions. You can edit or delete saved sessions by clicking on a session's dot inside the graph below. Click me to hide this message!</paper-item>
                     </paper-material>
-                </div>    
+                </div>
                     
                 <div id="graphWrapper">
                     <div id="graph"> </div>
@@ -128,6 +127,4 @@
 
 <script src="../js/jquery-2.1.4.min.js"> </script>
 <script src="../js/d3.v3.min.js"> </script>
-<script src="../js/graph.js"> </script>
-<script src="../js/index.js"> </script>
 <script src="../js/app.js"> </script>

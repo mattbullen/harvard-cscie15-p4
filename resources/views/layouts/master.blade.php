@@ -18,7 +18,7 @@
         
         <!-- CSS-->
         <link rel="stylesheet" href="{{ URL::asset('css/normalize.css') }}">
-        <link rel="stylesheet" href="{{ URL::asset('css/index.css') }}">
+        <link rel="stylesheet" href="{{ URL::asset('css/app.css') }}">
 
         <!-- Polymer JS -->
         <script src="{{ URL::asset('bower_components/webcomponentsjs/webcomponents-lite.min.js') }}"> </script>

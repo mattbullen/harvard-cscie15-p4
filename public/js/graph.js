@@ -262,44 +262,34 @@ function updateGraph(data) {
                 var formattedDate = dateFormatter(getDate(dot.attr("data-date")));
                 d3.select("#graphData").html(formattedDate + ": " + dot.attr("data-notes"));
                 
-                // Set the tooltip's text content
+                // Set the tooltip content
                 tooltip.html(""
-                    + '<div class="boldJustified">Date</div>'
-                    + formattedDate
-                    + "<br/>"
-                    + '<span class="boldJustified">Sets</span>'
-                    + d.sets
-                    + "<br/>"
-                    + '<span class="boldJustified">Reps</span>'                   
-                    + d.reps
-                    + "<br/>"
-                    + '<span class="boldJustified">Weight</span>'
-                    + d.weight + " lbs"
-                    + "<br/>"
-                    + '<span class="boldJustified">Total</span>'
-                    + (d.total).toLocaleString() + " lbs"
-                    + "<br/>"
-                    + '<paper-fab id="editSession" class="buttonHover" icon="icons:settings" title="Edit this session?" on-tap="deleteExercise"></paper-fab>');
+                   // + '<template is="auto-binding">'
+                    + '<paper-material id="tooltipSessionWrapper" elevation="2">'
+                    + '<paper-input type="date" id="sessionDate" class="tooltipSession tooltipSessionDate" label="' + formattedDate + '" value=" "></paper-input>'
+                    + '<paper-input type="number" min="0" max="500" id="sessionSets" class="tooltipSession" label="Sets" maxlength="3" value="' + dot.attr("data-sets") + '"></paper-input>'
+                    + '<paper-input type="number" min="0" max="500" id="sessionReps" class="tooltipSession" label="Reps" maxlength="3" value="' + dot.attr("data-reps") + '"></paper-input>'
+                    + '<paper-input id="sessionWeight" class="tooltipSession tooltipSessionWeight" label="Weight" maxlength="4" value="' + dot.attr("data-weight") + '"></paper-input>'
+                    + '<paper-input id="sessionNotes" class="tooltipSession tooltipSessionNotes" char-counter label="Notes" maxlength="140" value="' + dot.attr("data-notes") + '"></paper-input>'
+                    + '<paper-fab id="updateSession" class="buttonHover" icon="icons:done" on-tap="updateSession" data-updated-date="' + dot.attr("data-date") + '" title="Update this session?"></paper-fab>'
+                    + '<paper-fab id="deleteSession" class="buttonHover" icon="icons:content-cut" on-tap="deleteSession" title="Delete this session?"></paper-fab>'
+                    + '</paper-material>');
+                   // + '</template>');
                 
-                // Set the tooltip's CSS
-                tooltip
-                    .style("position", "absolute")
-                    .style("outline", "none")
-                    .style("border", "1px solid #000")
-                    .style("background", "#fff")
-                    .style("font-family", "'Roboto', 'Noto', sans-serif")
-                    .style("-webkit-font-smoothing", "subpixel-antialiased !important")
-                    .style("color", "#000")
-                    .style("font-size", "12px")
-                    .style("line-height", "1.618")
-                    .style("padding", "10px 20px 10px 22px")
-                    .style("min-width", "170px");
+                // Attach validation to the dynamically-created weight input
+                $("#sessionWeight").on("keyup", function() {
+                    var input = $("#sessionWeight #input");
+                    var value = input.val();
+                    var checked = value.replace(/\D*/g, "");
+                    input.val(checked);
+                });
                 
                 // Set the tooltip's location on the canvas
+                tooltip.style("position", "absolute").style("-webkit-font-smoothing", "subpixel-antialiased !important");
                 var pageXValue = +d3.select(this).attr("cx");
                 var pageYValue = +d3.select(this).attr("cy");
                 var xOffset = Math.round(pageXValue + 45);
-                var yOffset = Math.round(pageYValue - 120);
+                var yOffset = Math.round(pageYValue - 188);
                 tooltip
                     .style("left", "" + xOffset + "px")
                     .style("top", "" + yOffset + "px");
@@ -338,7 +328,7 @@ function updateGraph(data) {
     var brush = d3.svg.brush()
         .x(xBrush) 
         .on("brush", function() {
-            console.log("Brushing");
+            
             // Remove the tooltip
             var tooltip = d3.select("#tooltipContainer");
             tooltip.style("padding", "0px")
@@ -388,7 +378,10 @@ function updateGraph(data) {
                 .transition()
                 .attr("cx", function(d) { return x(getDate(d.created_at)); })
                 .attr("cy", function(d) { return y(d.total); })
-                .attr("r", function(d) { var thisDot = d3.select(this); console.log(thisDot); return thisDot.attr("data-size-base"); })
+                .attr("r", function(d) {
+                    var thisDot = d3.select(this);
+                    return thisDot.attr("data-size-base");
+                })
                 .style("opacity", function(d) {
                     var thisDot = d3.select(this);
                     var name = thisDot.attr("data-name");
@@ -523,7 +516,7 @@ function updateGraph(data) {
     var legendClick = d3.selectAll(".legendCheckMark").on("click", function(d) {
             var formattedID = (d.name).replace(/ /gi, "-");
             var item = d3.select(this);
-            var state = "" + item.attr("data-state").toLowerCase();      // console.log("\nrenderLegend() click state: ", state);
+            var state = "" + item.attr("data-state").toLowerCase();
             if (state === "off") {
                 item.attr("data-state", "on");
                 d3.select(this)

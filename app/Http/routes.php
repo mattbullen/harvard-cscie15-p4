@@ -30,8 +30,7 @@ Route::post('/exercise/delete', 'ExerciseController@deleteExercise');
 
 // For the table of individual work out sessions
 Route::post('/session/create', 'SessionController@createSession');
-Route::post('/session/read/individual', 'SessionController@readSessions');
-Route::post('/session/read/all', 'SessionController@readAllSessions');
+Route::post('/session/read', 'SessionController@readSessions');
 Route::post('/session/update', 'SessionController@updateSession');
 Route::post('/session/delete', 'SessionController@deleteSession');
 
