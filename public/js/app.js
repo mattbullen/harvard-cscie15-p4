@@ -291,18 +291,24 @@ Polymer({
     },
     signOut: function(e) {
         console.log("User signed out!");
-        console.log(gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile());
-        this.clearModelProperties();
-        $("#viewSummary").fadeOut().hide();
-        $("#editExercises").fadeOut().hide();
-        $("#entryMessage").fadeOut().hide();
-        this.createEmptyGraph();
-        this.openWelcomeModal();
-    },
-    clearModelProperties: function() {
+        // console.log(gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile());
         this.currentUser = "";
         this.currentUserFirstName = "";
         this.menuButtons = [];
+        $("#viewSummary").fadeOut().hide();
+        $("#editExercises").fadeOut().hide();
+        $("#entryMessage").text("Logged Out!");
+        $("#enterSets").val("");
+        this.$.enterSets.disabled = true;
+        $("#enterReps").val("");
+        this.$.enterReps.disabled = true;
+        $("#enterWeight").val("");
+        this.$.enterWeight.disabled = true;
+        $("#enterNotes").val("");
+        this.$.enterNotes.disabled = true;
+        this.$.saveSession.disabled = true;
+        this.createEmptyGraph();
+        this.openWelcomeModal();
     },
     openWelcomeModal: function() {
         $(".iron-overlay-backdrop-0").show();
