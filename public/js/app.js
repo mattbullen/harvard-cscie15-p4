@@ -376,6 +376,9 @@ Polymer({
             var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate("2015-01-01"), model.getDate(new Date())]);
             var xBrush = d3.time.scale().range([0, paddedWidth]).domain([model.getDate("2015-01-01"), model.getDate(new Date())]);
             var y = d3.scale.linear().range([height, 0]).domain([0, 10000]);
+            var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b-%Y'));
+            var xAxisBrush = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b-%Y'));
+            var yAxis = d3.svg.axis().scale(y).orient("left").ticks(configurationObject.yAxisTicks);
             d3.select("g.x.axis").transition().call(xAxis);
             d3.select("g.y.axis").transition().call(yAxis);
             var brush = d3.svg.brush().x(xBrush);
