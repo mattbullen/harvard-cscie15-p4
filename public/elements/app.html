@@ -96,6 +96,12 @@
 
                 </paper-toolbar>
                 
+                <div id="entryWrapper">
+                    <paper-material>
+                        <paper-item id="entryMessage" elevation="2"></paper-item>
+                    </paper-material>
+                </div>
+                
                 <div id="logWrapper">
                     <paper-material id="logSession" elevation="2">
                         <paper-input type="number" min="0" max="500" id="enterSets" label="Sets" maxlength="3"></paper-input>
@@ -105,13 +111,7 @@
                         <paper-fab id="saveSession" class="buttonHover" icon="icons:done" on-tap="createSession" title="Save this session?"></paper-fab>
                     </paper-material>
                 </div>
-                
-                <div id="entryWrapper">
-                    <paper-material>
-                        <paper-item id="entryMessage" elevation="2">Welcome! Use the menu to the left to select an exercise, and the toolbar above to save training sessions. You can edit or delete saved sessions by clicking on a session's dot inside the graph below. Click me to hide this message!</paper-item>
-                    </paper-material>
-                </div>
-                    
+
                 <div id="graphWrapper">
                     <div id="graph"> </div>
                     <paper-fab id="resetGraph" class="buttonHover" icon="icons:autorenew" title="Reset the graph to its original view?"></paper-fab>
