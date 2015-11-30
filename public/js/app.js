@@ -297,6 +297,7 @@ Polymer({
         $("#editExercises").fadeOut().hide();
         $("#entryMessage").fadeOut().hide();
         this.createEmptyGraph();
+        this.openWelcomeModal();
     },
     clearModelProperties: function() {
         this.currentUser = "";
