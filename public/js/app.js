@@ -350,7 +350,7 @@ Polymer({
     // Calls new graph content
     handleGraph: function(data) {
         var model = this;
-        if ((data.sessions).length < 1) { model.createEmptyGraph(); return false; }
+        // if ((data.sessions).length < 1) { model.createEmptyGraph(); return false; }
         model.updateGraph(data);
     },
     // Draws and dynamically updates the graph's lines, dots, tooltips, brush and legend
@@ -370,7 +370,20 @@ Polymer({
         d3.selectAll(".dot")
             .attr("r", function(d) { return d3.select(this).attr("data-size-base"); })
             .attr("data-click", "off");
-                        
+        
+        // For empty graphs
+        if (data.sessions.length === 0) {
+            var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate("2015-01-01"), model.getDate(new Date())]);
+            var xBrush = d3.time.scale().range([0, paddedWidth]).domain([model.getDate("2015-01-01"), model.getDate(new Date())]);
+            var y = d3.scale.linear().range([height, 0]).domain([0, 10000]);
+            d3.select("g.x.axis").transition().call(xAxis);
+            d3.select("g.y.axis").transition().call(yAxis);
+            brush.clear();
+            d3.selectAll(".x.brush").transition().call(brush);
+            d3.select("#xAxisBrush").call(xAxisBrush);
+            return false;
+        }
+        
         // Get the graph & layout configurationObject
         var configurationObject = model.getConfiguration();
         
