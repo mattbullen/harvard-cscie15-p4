@@ -24,7 +24,7 @@ Polymer({
         this.createEmptyGraph();
         
         // Add page element event listeners
-        $("#entryMessage").on("click", function() { $(this).fadeOut().hide(); });
+        $("#entryMessage").on("click", function() { $(this).fadeOut().hide(); }).show();
         $("#enterWeight").on("keyup", this.validateNewSessionWeight);
         
         // Set up the CSRF token for later use in POST requests
@@ -288,7 +288,8 @@ Polymer({
         this.clearModelProperties();
         $("#viewSummary").hide();
         $("#editExercises").hide();
-        createEmptyGraph();
+        $("#entryMessage").fadeOut().hide();
+        this.createEmptyGraph();
     },
     clearModelProperties: function() {
         this.currentUser = "";
