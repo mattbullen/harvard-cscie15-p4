@@ -66,7 +66,7 @@ Polymer({
             success: function(response) {
                 console.log("\nResponse:", response);
                 if (response.sessions) {
-                    model.handleGraph(response);
+                    model.updateGraph(response);
                 }
             },
             error: function(error) {
@@ -99,7 +99,7 @@ Polymer({
             success: function(response) {
                 console.log("\nResponse:", response);
                 if (response.sessions) {
-                    model.handleGraph(response);
+                    model.updateGraph(response);
                 }
             },
             error: function(error) {
@@ -210,15 +210,6 @@ Polymer({
         // Add them to the local template model
         this.menuButtons = list;
     },
-    toggleButtonHighlighting: function() {
-        $(".menuButton").on("click", function(e) {
-            $(".buttonFocused").removeClass("buttonFocused"); console.log($(".buttonFocused"));
-            $(this).addClass("buttonFocused");
-        });
-        $(".hoverButton").on("click", function() {
-            $(this).blur();
-        });
-    },
     updateContentView: function(e) {
         // Retrieve the button's original exercise name from its template model: https://stackoverflow.com/questions/32212836/how-to-get-data-attribute-value-of-paper-card-from-on-tap-event
         if (e.model) {
@@ -325,13 +316,6 @@ Polymer({
         // Autoselect the summary view when the app first opens
         $("#viewSummary").click();
     },
-    // From: https://scotch.io/tutorials/build-a-real-time-polymer-to-do-app
-    findWithAttribute: function(array, attr, value) {
-        for (var i = 0; i < array.length; i += 1) {
-            if (array[i][attr] === value) { return i; }
-        }
-        return -1;
-    },
     // Inject new DOM HTML while retaining data-binding
     // From: https://stackoverflow.com/questions/30836412/polymer-1-0-injectboundhtml-alternative
     injectBoundHTML: function(html, element) {
@@ -346,12 +330,6 @@ Polymer({
             }
         }
         element.appendChild(Polymer.Base.instanceTemplate(template));
-    },
-    // Calls new graph content
-    handleGraph: function(data) {
-        var model = this;
-        // if ((data.sessions).length < 1) { model.createEmptyGraph(); return false; }
-        model.updateGraph(data);
     },
     // Draws and dynamically updates the graph's lines, dots, tooltips, brush and legend
     updateGraph: function(data) {
@@ -646,7 +624,7 @@ Polymer({
                             success: function(response) {
                                 console.log("\nResponse:", response);
                                 if (response.sessions) {
-                                    model.handleGraph(response);
+                                    model.updateGraph(response);
                                 }
                             },
                             error: function(error) {
@@ -676,7 +654,7 @@ Polymer({
                             success: function(response) {
                                 console.log("\nResponse:", response);
                                 if (response.sessions) {
-                                    model.handleGraph(response);
+                                    model.updateGraph(response);
                                 }
                             },
                             error: function(error) {
