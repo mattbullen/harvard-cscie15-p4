@@ -26,7 +26,7 @@ Polymer({
         // User flow: add initial page element event listeners
         $("#viewSummary").hide();
         $("#editExercises").hide();
-        $("#entryMessage").hide();
+        $("#entryMessage").html('<div class="centered"><div class="exerciseTitle">Please Sign In!</div></div>');
         $("#enterWeight").on("keyup", this.validateNewSessionWeight);
         
         // Set up the CSRF token for later use in POST requests
@@ -37,36 +37,40 @@ Polymer({
         this.addEventListener('google-signed-out', this.signOut);
         this.signIn();
     },
-    createSession: function() {
+    // Authenticate a user with the Google OAuth2 sign in API
+    signIn: function(e) {
         
+        // Extract the user details from the Google OAuth2/JWT sign in object
+        if (gapi && gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()) {
+            
+            // Add the user first name and e-mail address to the local template's model
+            var user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
+            this.currentUser = user.po;
+            this.currentUserFirstName = user.Ph;
+            console.log("User signed in: " + user.Ph + ", " + user.po);
+            
+            // Move on to the "get the app ready for use" process
+            this.handleUser(user.po, user.Ph);
+        }
+        //this.currentUser = "xyz@sample.com"; 
+        //this.currentUserFirstName = "XYZ";
+        //this.handleUser(this.currentUser, "XYZ");
+    },
+    // POST to the server to verify an existing user e-mail, or to create a new entry for one
+    handleUser: function(email) {
+    
         // Reference the local instance of the Polymer model
         var model = this;
-        
-        // Can't save a session without a signed in user and a selected exercise!
-        if (model.currentUser === "" || model.currentExercise === "") { return false; }
-        
-        // Set up the CSRF token
-        $.ajaxSetup({ headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") } });
-    
-        // Validate the POST data and reset the inputs
-        var data = {
-            email: model.currentUser,
-            name: model.currentExercise,
-            sets: model.validateSessionValues($("#enterSets")),
-            reps: model.validateSessionValues($("#enterReps")),
-            weight: model.validateSessionValues($("#enterWeight")),
-            notes: model.validateSessionValues($("#enterNotes"))
-        };
-        
-        // POST handling routine
+
+        // POST handling routine.
         $.ajax({
             type: "POST",
-            url: "/session/create",
-            data: data,
+            url: "/email",
+            data: { email: email },
             success: function(response) {
                 console.log("\nResponse:", response);
-                if (response.sessions) {
-                    model.updateGraph(response);
+                if (response.user) {
+                    model.closeWelcomeModal();
                 }
             },
             error: function(error) {
@@ -74,83 +78,54 @@ Polymer({
             }
         });
     },
-    readSessions: function() {
-        
-        // Reference the local instance of the Polymer model
-        var model = this;
-        
-        // Prevent server activity without a signed in user (probably redundant, but just in case)
-        if (model.currentUser === "") { return false; }
-        
-        // Set up the CSRF token
-        $.ajaxSetup({ headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") } });
-    
-        // Validate the POST data and reset the inputs
-        var data = {
-            email: model.currentUser,
-            name: model.currentExercise
-        };
-        
-        // POST handling routine
-        $.ajax({
-            type: "POST",
-            url: "/session/read",
-            data: data,
-            success: function(response) {
-                console.log("\nResponse:", response);
-                if (response.sessions) {
-                    model.updateGraph(response);
-                }
-            },
-            error: function(error) {
-                console.log("\nError:", error);
-            }
-        });
+    // User flow: layout changes when a user signs out
+    signOut: function(e) {
+        console.log("User signed out!");
+        // console.log(gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile());
+        this.currentUser = "";
+        this.currentUserFirstName = "";
+        this.menuButtons = [];
+        $("#viewSummary").fadeOut().hide();
+        $("#editExercises").fadeOut().hide();
+        $("#entryMessage").html('<div class="centered"><div class="exerciseTitle">Signed Out!</div></div>');
+        $("#enterSets").val("");
+        this.$.enterSets.disabled = true;
+        $("#enterReps").val("");
+        this.$.enterReps.disabled = true;
+        $("#enterWeight").val("");
+        this.$.enterWeight.disabled = true;
+        $("#enterNotes").val("");
+        this.$.enterNotes.disabled = true;
+        this.$.saveSession.disabled = true;
+        this.updateGraph({ sessions: [] });
+        this.openWelcomeModal();
     },
-    validateSessionValues: function(item) {
-        var value = $(item).val()
-        if (value.length) {
-            return value;
-        } else {
-            if ($(item).attr("id") === "enterNotes") {
-                return "No notes saved for this session.";
-            }
-            return "0";
-        }
+    // User flow: handles the initial welcome / sign in modal on app load and user sign out
+    openWelcomeModal: function() {
+        $(".iron-overlay-backdrop-0").show();
+        this.$.welcomeModal.open();
     },
-    validateNewSessionWeight: function() {
-        var input = $("#enterWeight #input");
-        var value = input.val();
-        var checked = value.replace(/\D*/g, "");
-        input.val(+checked);
+    // User flow: handles the initial welcome / sign in modal on app load
+    closeWelcomeModal: function() {
+        this.$.welcomeModal.close();
+        $(".iron-overlay-backdrop-0").hide();
+        $("#viewSummary").fadeIn().show();
+        $("#editExercises").fadeIn().show();
+        this.setMenuButtons();
+        $("#viewSummary").click();
     },
-    validateExistingSessionWeight: function() {
-        var input = $("#sessionWeight #input");
-        var value = input.val();
-        var checked = value.replace(/\D*/g, "");
-        input.val(+checked);
-    },
-    validateSessionDate: function(originalDate) {
-        var inputDate = $("#sessionDate").val();
-        if (inputDate.length !== 10) {
-            return originalDate;
-        }
-        return inputDate;
-    },
+    // The "create" in the CRUD routines for the list of exercise names
     createExercise: function() {
 
         // Reference the local instance of the Polymer model
         var model = this;
         
-        // Set up the CSRF token
-        $.ajaxSetup({ headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") } });
-    
         // Extract the POST data and reset the input
         var data = {
-            name: $("#enterNotes").val(),
+            name: $("#enterNotes").val(),           // <---------------------------
             email: model.currentUser
         }
-        $("#enterNotes").val("");
+        $("#enterNotes").val("");                   // <---------------------------
         
         // POST handling routine
         $.ajax({
@@ -168,14 +143,12 @@ Polymer({
             }
         });
     },
-    setMenuButtons: function(e) {
+    // The "read" in the CRUD routines for the list of exercise names
+    setMenuButtons: function(e) {                   // <---------------------------
         
-        // Reference the local instance of the Polymer model for use inside the AJAX success callback
+        // Reference the local instance of the Polymer model
         var model = this;
         
-        // Set up the CSRF token
-        $.ajaxSetup({ headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") } });
-    
         // POST handling routine
         $.ajax({
             type: "POST",
@@ -192,6 +165,7 @@ Polymer({
             }
         });
     },
+    // Response handler for setMenuButtons()
     updateMenuButtons: function(data) {
         
         // Sort and process the exercise name strings
@@ -210,6 +184,7 @@ Polymer({
         // Add them to the local template model
         this.menuButtons = list;
     },
+    // Event listener to update the menu button list, session entry toolbar, and graph content
     updateContentView: function(e) {
         // Retrieve the button's original exercise name from its template model: https://stackoverflow.com/questions/32212836/how-to-get-data-attribute-value-of-paper-card-from-on-tap-event
         if (e.model) {
@@ -247,41 +222,42 @@ Polymer({
             return result * sortOrder;
         }
     },
-    signIn: function(e) {
+    // The "update" in the CRUD routines for the list of exercise names
+    updateExercise: function() {                    // <---------------------------
         
-        // Extract the user details from the Google OAuth2/JWT sign in object
-        if (gapi && gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()) {
-            
-            // Add the user first name and e-mail address to the local template's model
-            var user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
-            this.currentUser = user.po;
-            this.currentUserFirstName = user.Ph;
-            console.log("User signed in: " + user.Ph + ", " + user.po);
-            
-            // Move on to the "get the app ready for use" process
-            this.handleUser(user.po, user.Ph);
-        }
-        //this.currentUser = "xyz@sample.com"; 
-        //this.currentUserFirstName = "XYZ";
-        //this.handleUser(this.currentUser, "XYZ");
     },
-    handleUser: function(email, name) {
-    
+    // The "delete" in the CRUD routines for the list of exercise names
+    deleteExercise: function() {                    // <---------------------------
+        
+    },
+    // The "create" in the CRUD routines for managing individual workout sessions per exercise
+    createSession: function() {
+        
         // Reference the local instance of the Polymer model
         var model = this;
-
-        // Set up the CSRF token
-        $.ajaxSetup({ headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") } });
-    
-        // POST handling routine.
+        
+        // Can't save a session without a signed in user and a selected exercise!
+        if (model.currentUser === "" || model.currentExercise === "") { return false; }
+        
+        // Validate the POST data and reset the inputs
+        var data = {
+            email: model.currentUser,
+            name: model.currentExercise,
+            sets: model.validateSessionValues($("#enterSets")),
+            reps: model.validateSessionValues($("#enterReps")),
+            weight: model.validateSessionValues($("#enterWeight")),
+            notes: model.validateSessionValues($("#enterNotes"))
+        };
+        
+        // POST handling routine
         $.ajax({
             type: "POST",
-            url: "/email",
-            data: { email: email },
+            url: "/session/create",
+            data: data,
             success: function(response) {
                 console.log("\nResponse:", response);
-                if (response.user) {
-                    model.closeWelcomeModal();
+                if (response.sessions) {
+                    model.updateGraph(response);
                 }
             },
             error: function(error) {
@@ -289,40 +265,70 @@ Polymer({
             }
         });
     },
-    signOut: function(e) {
-        console.log("User signed out!");
-        // console.log(gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile());
-        this.currentUser = "";
-        this.currentUserFirstName = "";
-        this.menuButtons = [];
-        $("#viewSummary").fadeOut().hide();
-        $("#editExercises").fadeOut().hide();
-        $("#entryMessage").text("Logged Out!");
-        $("#enterSets").val("");
-        this.$.enterSets.disabled = true;
-        $("#enterReps").val("");
-        this.$.enterReps.disabled = true;
-        $("#enterWeight").val("");
-        this.$.enterWeight.disabled = true;
-        $("#enterNotes").val("");
-        this.$.enterNotes.disabled = true;
-        this.$.saveSession.disabled = true;
-        this.createEmptyGraph();
-        this.openWelcomeModal();
+    // The "read" in the CRUD routines for managing individual workout sessions per exercise
+    readSessions: function() {
+        
+        // Reference the local instance of the Polymer model
+        var model = this;
+        
+        // Prevent server activity without a signed in user (probably redundant, but just in case)
+        if (model.currentUser === "") { return false; }
+        
+        // Validate the POST data and reset the inputs
+        var data = {
+            email: model.currentUser,
+            name: model.currentExercise
+        };
+        
+        // POST handling routine
+        $.ajax({
+            type: "POST",
+            url: "/session/read",
+            data: data,
+            success: function(response) {
+                console.log("\nResponse:", response);
+                if (response.sessions) {
+                    model.updateGraph(response);
+                }
+            },
+            error: function(error) {
+                console.log("\nError:", error);
+            }
+        });
     },
-    openWelcomeModal: function() {
-        $(".iron-overlay-backdrop-0").show();
-        this.$.welcomeModal.open();
+    // Workout session general input validation
+    validateSessionValues: function(item) {
+        var value = $(item).val()
+        if (value.length) {
+            return value;
+        } else {
+            if ($(item).attr("id") === "enterNotes") {
+                return "No notes saved for this session.";
+            }
+            return "0";
+        }
     },
-    closeWelcomeModal: function() {
-        this.$.welcomeModal.close();
-        $(".iron-overlay-backdrop-0").hide();
-        this.setMenuButtons();
-        $("#viewSummary").fadeIn().show();
-        $("#editExercises").fadeIn().show();
-        $("#entryMessage").fadeIn().show();
-        // Autoselect the summary view when the app first opens
-        $("#viewSummary").click();
+    // Weight input validation for new sessions
+    validateNewSessionWeight: function() {
+        var input = $("#enterWeight #input");
+        var value = input.val();
+        var checked = value.replace(/\D*/g, "");
+        input.val(+checked);
+    },
+    // Weight input validation for saved sessions
+    validateExistingSessionWeight: function() {
+        var input = $("#sessionWeight #input");
+        var value = input.val();
+        var checked = value.replace(/\D*/g, "");
+        input.val(+checked);
+    },
+    // Date input validation for saved sessions
+    validateSessionDate: function(originalDate) {
+        var inputDate = $("#sessionDate").val();
+        if (inputDate.length !== 10) {
+            return originalDate;
+        }
+        return inputDate;
     },
     // Inject new DOM HTML while retaining data-binding
     // From: https://stackoverflow.com/questions/30836412/polymer-1-0-injectboundhtml-alternative
