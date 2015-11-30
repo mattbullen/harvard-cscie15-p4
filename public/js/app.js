@@ -378,9 +378,10 @@ Polymer({
             var y = d3.scale.linear().range([height, 0]).domain([0, 10000]);
             d3.select("g.x.axis").transition().call(xAxis);
             d3.select("g.y.axis").transition().call(yAxis);
+            var brush = d3.svg.brush().x(xBrush);
             brush.clear();
             d3.selectAll(".x.brush").transition().call(brush);
-            d3.select("#xAxisBrush").call(xAxisBrush);
+            d3.select("#xAxisBrush").transition().call(xAxisBrush);
             return false;
         }
         
@@ -705,7 +706,7 @@ Polymer({
         
         // Define the brush
         var brush = d3.svg.brush()
-            .x(xBrush) 
+            .x(xBrush)
             .on("brush", function() {
                 
                 // Remove the tooltip
@@ -780,7 +781,7 @@ Polymer({
             });
         brush.clear();
         d3.selectAll(".x.brush").transition().call(brush);
-        d3.select("#xAxisBrush").call(xAxisBrush);
+        d3.select("#xAxisBrush").transition().call(xAxisBrush);
             
         // Set the graph reset button
         d3.select("#resetGraph").on("click", function(d) {
