@@ -162,6 +162,7 @@ Polymer({
             this.menuButtons = list;
         } else {
             var lowercaseList = [];
+            this.menuButtons = [];
         }
         
         // Add event listeners to the edit menu pop ups
