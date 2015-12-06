@@ -91,7 +91,7 @@ Polymer({
         this.menuButtons = [];
         $("#viewSummary").fadeOut().hide();
         $("#editExercises").fadeOut().hide();
-        $("#entryMessage").html('<div class="centered"><div class="exerciseTitle">Signed Out!</div></div>');
+        $("#entryMessage").html('<div class="centered"><div class="exerciseTitle">Signed Out</div></div>');
         $("#enterSets").val("");
         this.$.enterSets.disabled = true;
         $("#enterReps").val("");
