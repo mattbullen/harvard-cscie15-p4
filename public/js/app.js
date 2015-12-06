@@ -1126,8 +1126,8 @@ Polymer({
         var y = d3.scale.linear().range([height, 0]).domain([0, 10000]);
         
         // Define the x-axis dimensions, ticks, and orientation
-        var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b. e%'));
-        var xAxisBrush = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b. e%'));
+        var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
+        var xAxisBrush = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
         
         // Define the y-axis dimensions, ticks, and orientation
         var yAxis = d3.svg.axis().scale(y).orient("left").ticks(configurationObject.yAxisTicks);
