@@ -363,7 +363,7 @@ Polymer({
                 console.log("\nResponse:", response);
                 if (response.updated) {
                     model.updateMenuButtons(response.updated);
-                    if (name === model.currentExercise || response.updated.length < 1) {
+                    if (name === "summary" || name === model.currentExercise || response.updated.length < 1) {
                         $("#viewSummary").click();
                     }
                 }
@@ -485,11 +485,7 @@ Polymer({
         var model = this;
         
         // User flow: first empty, close and hide the tooltip, if open from a previous graph view
-        d3.select("#tooltipContainer")
-            .style("padding", "0px")
-            .style("opacity", "0")
-            .style("border", "none")
-            .html("");
+        model.removeTooltip();
         
         // User flow: remove any prior clicked dot states/effects
         d3.selectAll(".dot")
@@ -818,12 +814,7 @@ Polymer({
                         .attr("data-click", "off");
                         
                     // Remove the tooltip
-                    tooltip.transition()
-                        .duration(200)
-                        .style("padding", "0px")
-                        .style("opacity", "0")
-                        .style("border", "none");
-                    tooltip.html("");
+                    model.removeTooltip();
                 }
                 
                 return false;
@@ -836,11 +827,7 @@ Polymer({
             .on("brush", function() {
                 
                 // Remove the tooltip
-                var tooltip = d3.select("#tooltipContainer");
-                tooltip.style("padding", "0px")
-                    .style("opacity", "0")
-                    .style("border", "none");
-                tooltip.html("");
+                model.removeTooltip();
                 
                 // Set the brush extent range
                 var extent = brush.extent();
@@ -910,13 +897,7 @@ Polymer({
         d3.select("#resetGraph").on("click", function(d) {
                 
                 // Remove the tooltip
-                var tooltip = d3.select("#tooltipContainer");
-                tooltip.transition()
-                    .duration(200)
-                    .style("padding", "0px")
-                    .style("opacity", "0")
-                    .style("border", "none");
-                tooltip.html("");
+                model.removeTooltip();
                 
                 // Reset the brush
                 brush.clear();
@@ -958,7 +939,8 @@ Polymer({
                 // If present, reset the legend
                 d3.selectAll(".legendCheckMark")
                     .attr("data-state", "on")
-                    .transition().duration(200)
+                    .transition()
+                    .duration(200)
                     .style("opacity", "1.0");
                     
                 return false;   
@@ -989,13 +971,6 @@ Polymer({
                     return "translate(" + ((j * 160) + legendMarginLeft) + ", " + (height + 138) + ")";
                 }
             });
-            
-        // For boxes in the legend
-        /*legend.append("rect")
-            .attr("x", 0)
-            .attr("width", 22)
-            .attr("height", 22)
-            .style("fill", color);*/
             
         // Define the selection circles in the legend
         legend.append("circle")
@@ -1028,11 +1003,7 @@ Polymer({
         var legendClick = d3.selectAll(".legendCheckMark").on("click", function(d) {
             
                 // Remove the tooltip
-                var tooltip = d3.select("#tooltipContainer");
-                tooltip.style("padding", "0px")
-                    .style("opacity", "0")
-                    .style("border", "none");
-                tooltip.html("");
+                model.removeTooltip();
                 
                 // Reset the dots
                 clippedSVG.selectAll(".dot")
@@ -1265,6 +1236,16 @@ Polymer({
             .style("shape-rendering", "crispEdges");
         
         return false;
+    },
+    // Helper function to hide the graph's tooltip
+    removeTooltip: function() {
+        var tooltip = d3.select("#tooltipContainer");
+        tooltip.transition()
+            .duration(200)
+            .style("padding", "0px")
+            .style("opacity", "0")
+            .style("border", "none");
+        tooltip.html("");
     },
     // Helper function to clear the a DOM element of content
     clearElement: function(a) {
