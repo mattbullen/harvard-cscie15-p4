@@ -365,6 +365,10 @@ Polymer({
                     if (name === model.currentExercise || response.updated.length < 1) {
                         $("#viewSummary").click();
                     }
+                    var menuButton = $("#menu-" + name).replace(/ /gi, "-");
+                    if (menuButton) {
+                        menuButton.fadeOut().remove();
+                    }
                 }
             },
             error: function(error) {
@@ -1190,7 +1194,7 @@ Polymer({
             .style("stroke-width", "1.0")
             .style("shape-rendering", "crispEdges");
         
-    // Define the range slider base canvas
+        // Define the range slider base canvas
         var context = svg.append("g")
             .attr("transform", "translate(0," + configurationObject.brushOffset + ")")
             .attr("class", "context");
