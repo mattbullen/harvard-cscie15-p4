@@ -88,9 +88,10 @@ Polymer({
         console.log("User signed out!");
         this.currentUser = "";
         this.currentUserFirstName = "";
+        $("#editMenuWrapper").fadeOut();
         this.menuButtons = [];
-        $("#viewSummary").fadeOut().hide();
-        $("#editExercises").fadeOut().hide();
+        $("#viewSummary").fadeOut();
+        $("#editExercises").fadeOut();
         $("#entryMessage").html('<div class="centered"><div class="exerciseTitle">Signed Out</div></div>');
         $("#enterSets").val("");
         this.$.enterSets.disabled = true;
