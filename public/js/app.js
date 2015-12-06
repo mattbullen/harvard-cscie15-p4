@@ -84,14 +84,14 @@ Polymer({
         });
     },
     // User flow: clear the layout when a user signs out
-    signOut: function(e) {
+    signOut: function() {
         console.log("User signed out!");
         this.currentUser = "";
         this.currentUserFirstName = "";
-        $("#editMenuWrapper").fadeOut();
         this.menuButtons = [];
-        $("#viewSummary").fadeOut();
-        $("#editExercises").fadeOut();
+        $("#editMenuWrapper").fadeOut().hide();
+        $("#viewSummary").fadeOut().hide();
+        $("#editExercises").fadeOut().hide();
         $("#entryMessage").html('<div class="centered"><div class="exerciseTitle">Signed Out</div></div>');
         $("#enterSets").val("");
         this.$.enterSets.disabled = true;
