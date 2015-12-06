@@ -5,8 +5,10 @@ http://p4.matthewbullen.me
 
 #### Description
 
-A Laravel 5, Google Polymer, and D3.js one page web app. Details:
-* TBD 
+A Laravel 5, Google Polymer, and D3.js one page web app for fitness tracking. Details:
+* Laravel handles all of the server-side functionality.
+* Polymer handles the browser-side layout, templating, data-binding, and general user flow.
+* I used D3 for the main graph that tracks work out sessions.
 
 #### Demo
 
