@@ -32,7 +32,7 @@ class ExerciseController extends Controller {
         $emailObject = self::getEmailObject();
         $retrieveName = \App\Exercise::where('name', '=', $reqName)->where('email_id', '=', $emailObject->id)->get();
         if ($retrieveName && sizeof($retrieveName) > 0) {
-            return Response::json(array('conflict' => 'exists'));
+            return Response::json(array('conflict' => 'Already exists!'));
         } else {
             $item = new \App\Exercise();
             $item->name = $reqName;
@@ -53,7 +53,7 @@ class ExerciseController extends Controller {
         if ($item && sizeof($item) > 0) {
             return Response::json(array('found' => $item));
         } else {
-            return Response::json(array('conflict' => 'none'));
+            return Response::json(array('conflict' => $reqName . ' not found!'));
         }
     }
     
@@ -65,18 +65,19 @@ class ExerciseController extends Controller {
         $reqNameOld = Request::input('name');
         $reqNameUpdateTo = Request::input('updateTo');
         if ($reqNameOld == $reqNameUpdateTo) {
-            return Response::json(array('error' => 'names are the same'));
+            return Response::json(array('error' => 'Names are the same!'));
         }
         if ($reqNameUpdateTo == '') {
-            return Response::json(array('error' => 'need update-to name'));
+            return Response::json(array('error' => 'Need an update-to name!'));
         }
         $item = \App\Exercise::where('name', '=', $reqNameOld)->first();
         if ($item) {
-            $item->name = Request::input('updateTo');
+            $item->name = $reqNameUpdateTo;
             $item->save();
+            \App\Session::where('name', $reqNameOld)->update(array('name' => $reqNameUpdateTo));
             return Response::json(array('updated' => \App\Exercise::all()));
         } else {
-            return Response::json(array('conflict' => 'none'));
+            return Response::json(array('conflict' => $reqNameOld . ' not found!'));
         }
     }
     
@@ -85,18 +86,14 @@ class ExerciseController extends Controller {
         if ($reqErrors) {
             return Response::json(array('error' => $reqErrors));
         }
-        $item = \App\Exercise::where('name', '=', Request::input('name'))->first();
+        $reqName = Request::input('name');
+        $item = \App\Exercise::where('name', '=', $reqName)->first();
         if ($item) {
             $item->delete();
-            $remainder = \App\Exercise::all();
-            if (sizeof($remainder) < 1) {
-                $message = 'no saved exercises';
-            } else {
-                $message = $remainder;
-            }
-            return Response::json(array('updated' => $message));
+            \App\Session::where('name', $reqName)->delete();
+            return Response::json(array('updated' => \App\Exercise::all()));
         } else {
-            return Response::json(array('conflict' => 'none'));
+            return Response::json(array('conflict' => $reqName . ' not found!'));
         }
     }
 }

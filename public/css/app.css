@@ -52,23 +52,15 @@ a:hover {
 .buttonHover {
     font-weight: normal !important;
     color: #fff !important;
-    background: #4184f3 !important;
+    background: #4184f3;
     /* From: http://matthewlein.com/ceaser/ */
     transition: background-color 250ms cubic-bezier(0.420, 0.000, 0.580, 1.000) !important;
 }
 
-.buttonHover:hover,
-.buttonHover:focus {
+.buttonHover:hover {
     font-weight: normal !important;
     color: #fff !important;
     background: #c10c06 !important;
-}
-
-#createSession  #icon,
-#updateSession  #icon,
-#deleteSession  #icon,
-#resetGraph  #icon {
-   
 }
 
 paper-material {
@@ -99,12 +91,29 @@ paper-toolbar {
     opacity: 1.0;
 }
 
-#welcomeModalContent {
+#welcomeModalBase {
+    height: auto;
+    width: 600px;
     margin: 0;
-    padding: 30px;
-    width: 300px;
-    height: 200px;
+    padding: 0;
+    border: 1px solid #002147 !important;
     opacity: 1.0;
+}
+
+#welcomeModalTitle {
+    border-bottom: 1px solid #002147 !important;
+}
+
+#welcomeModalContent {
+    padding: 25px 25px 30px 25px;
+}
+
+#welcomeModalContent p {
+    font-family: Roboto, Noto, sans-serif;
+}
+
+.spacer {
+    padding-bottom: 20px;
 }
 
 .message {
@@ -123,8 +132,8 @@ paper-toolbar {
 
 .exerciseTitle {
     font-family: Museo, Arial, sans-serif;
-    font-size: 30px;
-    text-transform: capitalize;
+    font-size: 24px;
+    text-transform: uppercase !important;
 }
 
 #left {
@@ -146,8 +155,91 @@ paper-toolbar {
     margin-bottom: 15px;
 }
 
-#editExercises {
+.editMenuButton {
+    width: 200px;
+}
+
+.editExercises {
     margin-bottom: 0;
+}
+
+.editExerciseModal {
+    position: fixed;
+    box-sizing: border-box;
+    top: 40px;
+    height: auto;
+    background: #eee;
+}
+
+#createExerciseModal {  
+    left: 301px;
+    width: 320px;
+}
+
+#updateExerciseModal {
+    top: 40px;
+    left: 515px;
+}
+
+#deleteExerciseModal {
+    top: 40px;
+    left: 728px;
+}
+
+.editExerciseWrapper {
+    width: 320px;
+    margin: 0 !important;
+    padding: 0;
+    border-bottom: 1px solid #ccc;
+    background: #eee;
+}
+
+#updateExerciseModal .editExerciseWrapper {
+    width: 535px;
+}
+
+.editExerciseWrapper .internal {
+    width: 320px;
+    padding: 0;
+    margin-top: 1px !important;
+    border-top: 1px solid #ccc;
+    background: #fff;
+}
+
+#updateExerciseModal .editExerciseWrapper .internal {
+    width: 535px;
+}
+
+.exerciseTitle {
+    height: 60px;
+    line-height: 65px;   
+    background: #fff;
+}
+
+.editExerciseContent {
+    box-sizing: border-box;
+    padding: 0 20px !important;
+}
+
+.editExerciseInput {
+    width: 205px;
+    margin-right: 20px;
+}
+
+.editExerciseClose {
+    width: 100%;
+    padding-right: 20px;
+    text-align: right;
+}
+
+.textClose {
+    cursor: pointer;
+    /* From: http://matthewlein.com/ceaser/ */
+    transition: color 250ms cubic-bezier(0.420, 0.000, 0.580, 1.000) !important;
+}
+
+.textClose:hover {
+    color: #4184f3 !important;
 }
 
 #mainPanel {

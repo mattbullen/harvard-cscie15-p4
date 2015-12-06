@@ -1,6 +1,8 @@
 // Polymer app functionality
 Polymer({
+    // Identifies the template area inside master.blade.php
     is: "base-app",
+    // Holds the values that Polymer's data-binding will inject into the DOM template
     properties: {
         currentUser: String,
         currentExercise: String,
@@ -15,6 +17,7 @@ Polymer({
             reflect: true
         }
     },
+    // Runs when the app loads
     ready: function() {
         
         // Open the welcome message / sign in modal
@@ -23,12 +26,12 @@ Polymer({
         // Pre-render the basic graph scaffolding
         this.createEmptyGraph();
         
-        // User flow: add initial page element event listeners
+        // User flow: initial element presentation and event listeners
+        $("#editMenuWrapper").hide();
         $("#viewSummary").hide();
         $("#editExercises").hide();
-        $("#entryMessage").html('<div class="centered"><div class="exerciseTitle">Please Sign In!</div></div>');
-        $("#enterWeight").on("keyup", this.validateNewSessionWeight);
-        
+        $("#entryMessage").html('<div class="centered"><div class="exerciseTitle">Signed Out</div></div>');
+
         // Set up the CSRF token for later use in POST requests
         $.ajaxSetup({ headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") } });
         
@@ -38,7 +41,7 @@ Polymer({
         this.signIn();
     },
     // Authenticate a user with the Google OAuth2 sign in API
-    signIn: function(e) {
+    signIn: function() {
         
         // Extract the user details from the Google OAuth2/JWT sign in object
         if (gapi && gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()) {
@@ -52,11 +55,13 @@ Polymer({
             // Move on to the "get the app ready for use" process
             this.handleUser(user.po, user.Ph);
         }
-        //this.currentUser = "xyz@sample.com"; 
-        //this.currentUserFirstName = "XYZ";
-        //this.handleUser(this.currentUser, "XYZ");
+        
+        // For debugging:
+        // this.currentUser = "xyz@sample.com"; 
+        // this.currentUserFirstName = "XYZ";
+        // this.handleUser(this.currentUser, "XYZ");
     },
-    // POST to the server to verify an existing user e-mail, or to create a new entry for one
+    // POST to the server to verify an existing user e-mail, or to create a new emails table entry if it's the first time the email has been used
     handleUser: function(email) {
     
         // Reference the local instance of the Polymer model
@@ -78,10 +83,9 @@ Polymer({
             }
         });
     },
-    // User flow: layout changes when a user signs out
+    // User flow: clear the layout when a user signs out
     signOut: function(e) {
         console.log("User signed out!");
-        // console.log(gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile());
         this.currentUser = "";
         this.currentUserFirstName = "";
         this.menuButtons = [];
@@ -105,7 +109,6 @@ Polymer({
         $(".iron-overlay-backdrop-0").show();
         this.$.welcomeModal.open();
     },
-    // User flow: handles the initial welcome / sign in modal on app load
     closeWelcomeModal: function() {
         this.$.welcomeModal.close();
         $(".iron-overlay-backdrop-0").hide();
@@ -114,37 +117,8 @@ Polymer({
         this.setMenuButtons();
         $("#viewSummary").click();
     },
-    // The "create" in the CRUD routines for the list of exercise names
-    createExercise: function() {
-
-        // Reference the local instance of the Polymer model
-        var model = this;
-        
-        // Extract the POST data and reset the input
-        var data = {
-            name: $("#enterNotes").val(),           // <---------------------------
-            email: model.currentUser
-        }
-        $("#enterNotes").val("");                   // <---------------------------
-        
-        // POST handling routine
-        $.ajax({
-            type: "POST",
-            url: "/exercise/create",
-            data: data,
-            success: function(response) {
-                console.log("\nResponse:", response);
-                if (response.exercises) {
-                    model.updateMenuButtons(response.exercises);
-                }
-            },
-            error: function(error) {
-                console.log("\nError:", error);
-            }
-        });
-    },
     // The "read" in the CRUD routines for the list of exercise names
-    setMenuButtons: function(e) {                   // <---------------------------
+    setMenuButtons: function(e) {
         
         // Reference the local instance of the Polymer model
         var model = this;
@@ -158,6 +132,8 @@ Polymer({
                 console.log("\nResponse:", response);
                 if (response.found) {
                     model.updateMenuButtons(response.found);
+                } else {
+                    model.updateMenuButtons([]);
                 }
             },
             error: function(error) {
@@ -169,26 +145,39 @@ Polymer({
     updateMenuButtons: function(data) {
         
         // Sort and process the exercise name strings
-        data = data.sort(this.sortByProperty("name"));
-        var list = [];
-        var item;
-        for (var i = 0; i < data.length; i++) {
-            item = data[i].name;
-            list.push({
-                original: item,
-                lowercase: item.toLowerCase(),
-                hyphenated: (item.toLowerCase()).replace(/ /gi, "-")
-            });
+        if (data.length > 0) {
+            data = data.sort(this.sortByProperty("name"));
+            var list = [];
+            var lowercaseList = [];
+            var item, lowercased;
+            for (var i = 0; i < data.length; i++) {
+                item = data[i].name;
+                lowercased = item.toLowerCase();
+                list.push({
+                    lowercase: lowercased,
+                    hyphenated: lowercased.replace(/ /gi, "-")
+                });
+                lowercaseList.push(lowercased);
+            }
+            this.menuButtons = list;
+        } else {
+            var lowercaseList = [];
         }
         
-        // Add them to the local template model
-        this.menuButtons = list;
+        // Add event listeners to the edit menu pop ups
+        var vCEI = this.validateCreateExerciseInput;
+        this.$.enterCreateExerciseName.addEventListener("keyup", function() { vCEI(lowercaseList); });
+        var vUEI = this.validateUpdateExerciseInput;
+        this.$.enterUpdateOldName.addEventListener("keyup", function() { vUEI(lowercaseList); });
+        this.$.enterUpdateNewName.addEventListener("keyup", function() { vUEI(lowercaseList); });
+        var vDEI = this.validateDeleteExerciseInput;
+        this.$.enterDeleteExerciseName.addEventListener("keyup", function() { vDEI(lowercaseList); });
     },
     // Event listener to update the menu button list, session entry toolbar, and graph content
     updateContentView: function(e) {
         // Retrieve the button's original exercise name from its template model: https://stackoverflow.com/questions/32212836/how-to-get-data-attribute-value-of-paper-card-from-on-tap-event
         if (e.model) {
-            var tag = e.model.item.original;
+            var tag = e.model.item.lowercase;
         } else {
             var tag = (e.target.innerText).toLowerCase();
         }
@@ -222,13 +211,166 @@ Polymer({
             return result * sortOrder;
         }
     },
-    // The "update" in the CRUD routines for the list of exercise names
-    updateExercise: function() {                    // <---------------------------
+    // User flow: toggles the visibility of the menu bar to add/update/delete exercise names
+    toggleEditMenuWrapper: function() {
+        var menu = $("#editMenuWrapper");
+        if (menu.css("display") === "none") {
+            menu.fadeIn();
+        } else {
+            menu.fadeOut();
+        }
+    },
+    // User flow: toggle the modal to create a new exercise
+    openCreateExerciseModal: function() {
+        this.$.createExerciseModal.open();
+    },
+    closeCreateExerciseModal: function() {
+        this.$.createExerciseModal.close();
+    },
+    // Validate the name: must be new, no duplicate exercise names
+    validateCreateExerciseInput: function(list) {
+        var val = $("#enterCreateExerciseName").val().toLowerCase();
+        if (val.length > 0 && list && list.indexOf(val) < 0) {
+            $("#enterCreateExerciseName").parent().find(".buttonHover").removeAttr("disabled");
+        } else {
+            $("#enterCreateExerciseName").parent().find(".buttonHover").attr("disabled", true);
+        }
+    },
+    // The "create" in the CRUD routines for the list of exercise names
+    createExercise: function() {
+
+        // Reference the local instance of the Polymer model
+        var model = this;
         
+        // Extract the POST data and reset the input
+        var name = $("#enterCreateExerciseName").val().toLowerCase();
+        var data = {
+            name: name,
+            email: model.currentUser
+        }
+        $("#enterCreateExerciseName").val("");
+        $("#createExerciseButton").attr("disabled", true);
+        
+        // POST handling routine
+        $.ajax({
+            type: "POST",
+            url: "/exercise/create",
+            data: data,
+            success: function(response) {
+                console.log("\nResponse:", response);
+                if (response.exercises) {
+                    model.updateMenuButtons(response.exercises);
+                }
+            },
+            error: function(error) {
+                console.log("\nError:", error);
+            }
+        });
+    },
+    // User flow: toggle the modal to update an exercise's name
+    openUpdateExerciseModal: function() {
+        this.$.updateExerciseModal.open();
+    },
+    closeUpdateExerciseModal: function() {
+        this.$.updateExerciseModal.close();
+    },
+    // Validate the inputted names: the exercise name must exist, and the new name must be unique in the list of existing exercise names
+    validateUpdateExerciseInput: function(list) {
+        var valOld = $("#enterUpdateOldName").val().toLowerCase();
+        var valNew = $("#enterUpdateNewName").val().toLowerCase();
+        if (valOld !== valNew && valOld.length > 0 && valNew.length > 0 && list.indexOf(valOld) > -1 && list && list.indexOf(valNew) < 0) {
+            $("#enterUpdateOldName").parent().find(".buttonHover").removeAttr("disabled");
+        } else {
+            $("#enterUpdateOldName").parent().find(".buttonHover").attr("disabled", true);
+        }
+    },
+    // The "update" in the CRUD routines for the list of exercise names
+    updateExercise: function() {
+        
+        // Reference the local instance of the Polymer model
+        var model = this;
+        
+        // Extract the POST data and reset the input
+        var name = $("#enterUpdateOldName").val().toLowerCase();
+        var updateTo = $("#enterUpdateNewName").val().toLowerCase();
+        var data = {
+            name: name,
+            updateTo: updateTo,
+            email: model.currentUser
+        }
+        $("#enterUpdateOldName").val("");
+        $("#enterUpdateNewName").val("");
+        $("#updateExerciseButton").attr("disabled", true);
+        
+        // POST handling routine
+        $.ajax({
+            type: "POST",
+            url: "/exercise/update",
+            data: data,
+            success: function(response) {
+                console.log("\nResponse:", response);
+                if (response.updated) {
+                    model.updateMenuButtons(response.updated);
+                    if (name === model.currentExercise) {
+                        $("#entryMessage").fadeOut().html('<div class="centered"><div class="exerciseTitle">' + updateTo + '</div></div>').fadeIn();
+                        model.currentExercise = updateTo;
+                    }
+                }
+            },
+            error: function(error) {
+                console.log("\nError:", error);
+            }
+        });
+    },
+    // User flow: toggle the modal to delete an exercise and all of its associated sessions
+    openDeleteExerciseModal: function() {
+        this.$.deleteExerciseModal.open();
+    },
+    closeDeleteExerciseModal: function() {
+        this.$.deleteExerciseModal.close();
+    },
+    // Validate the inputted name: must exist in the list of exercises
+    validateDeleteExerciseInput: function(list) {
+        var val = $("#enterDeleteExerciseName").val().toLowerCase();
+        if (val.length > 0 && list && list.indexOf(val) > -1) {
+            $("#enterDeleteExerciseName").parent().find(".buttonHover").removeAttr("disabled");
+        } else {
+            $("#enterDeleteExerciseName").parent().find(".buttonHover").attr("disabled", true);
+        }
     },
     // The "delete" in the CRUD routines for the list of exercise names
-    deleteExercise: function() {                    // <---------------------------
+    deleteExercise: function() {
+    
+        // Reference the local instance of the Polymer model
+        var model = this;
         
+        // Extract the POST data and reset the input
+        var name = $("#enterDeleteExerciseName").val().toLowerCase();
+        var data = {
+            name: name,
+            email: model.currentUser
+        }
+        $("#enterDeleteExerciseName").val("");
+        $("#deleteExerciseButton").attr("disabled", true);
+        
+        // POST handling routine
+        $.ajax({
+            type: "POST",
+            url: "/exercise/delete",
+            data: data,
+            success: function(response) {
+                console.log("\nResponse:", response);
+                if (response.updated) {
+                    model.updateMenuButtons(response.updated);
+                    if (name === model.currentExercise || response.updated.length < 1) {
+                        $("#viewSummary").click();
+                    }
+                }
+            },
+            error: function(error) {
+                console.log("\nError:", error);
+            }
+        });
     },
     // The "create" in the CRUD routines for managing individual workout sessions per exercise
     createSession: function() {
@@ -238,6 +380,9 @@ Polymer({
         
         // Can't save a session without a signed in user and a selected exercise!
         if (model.currentUser === "" || model.currentExercise === "") { return false; }
+        
+        // If the values for sets, reps AND weight are all zero, do nothing - prevents accidental entries.
+        if ($("#enterSets").val() === "" && $("#enterReps").val() === "" && $("#enterWeight").val() === "") { return false; }
         
         // Validate the POST data and reset the inputs
         var data = {
@@ -308,20 +453,6 @@ Polymer({
             return "0";
         }
     },
-    // Weight input validation for new sessions
-    validateNewSessionWeight: function() {
-        var input = $("#enterWeight #input");
-        var value = input.val();
-        var checked = value.replace(/\D*/g, "");
-        input.val(+checked);
-    },
-    // Weight input validation for saved sessions
-    validateExistingSessionWeight: function() {
-        var input = $("#sessionWeight #input");
-        var value = input.val();
-        var checked = value.replace(/\D*/g, "");
-        input.val(+checked);
-    },
     // Date input validation for saved sessions
     validateSessionDate: function(originalDate) {
         var inputDate = $("#sessionDate").val();
@@ -346,6 +477,7 @@ Polymer({
         element.appendChild(Polymer.Base.instanceTemplate(template));
     },
     // Draws and dynamically updates the graph's lines, dots, tooltips, brush and legend
+    // This code is pretty verbose and monolithic; given time, I would refactor it to make it shorter and more modular.
     updateGraph: function(data) {
         
         // Reference the Polymer model object
@@ -372,7 +504,7 @@ Polymer({
         var width = baseXYBoxSize - +margin.left - +margin.right;
         var paddedWidth = width - 15;
         var height = baseXYBoxSize - +margin.top - +margin.bottom;
-        var dateFormatter = d3.time.format('%B %e, %Y');
+        var dateFormatter = d3.time.format('%b. %e');
         
         // For empty graphs
         if (data.sessions.length === 0) {
@@ -382,8 +514,8 @@ Polymer({
             var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate("2015-01-01"), model.getDate(new Date())]);
             var xBrush = d3.time.scale().range([0, paddedWidth]).domain([model.getDate("2015-01-01"), model.getDate(new Date())]);
             var y = d3.scale.linear().range([height, 0]).domain([0, 10000]);
-            var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b-%Y'));
-            var xAxisBrush = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b-%Y'));
+            var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
+            var xAxisBrush = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
             var yAxis = d3.svg.axis().scale(y).orient("left").ticks(configurationObject.yAxisTicks);
             d3.select("g.x.axis").transition().call(xAxis);
             d3.select("g.y.axis").transition().call(yAxis);
@@ -433,8 +565,8 @@ Polymer({
         var y = d3.scale.linear().range([height, 0]).domain([0, maxTotal]);
         
         // Define the x-axis dimensions, ticks, and orientation
-        var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b-%Y'));
-        var xAxisBrush = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b-%Y'));
+        var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
+        var xAxisBrush = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
         
         // Define the y-axis dimensions, ticks, and orientation
         var yAxis = d3.svg.axis().scale(y).orient("left").ticks(configurationObject.yAxisTicks);
@@ -580,7 +712,7 @@ Polymer({
                         + '<paper-input type="date" id="sessionDate" class="tooltipSession tooltipSessionDate" label="' + formattedDate + '" value=" "></paper-input>'
                         + '<paper-input type="number" min="0" max="500" id="sessionSets" class="tooltipSession" label="Sets" maxlength="3" value="' + dot.attr("data-sets") + '"></paper-input>'
                         + '<paper-input type="number" min="0" max="500" id="sessionReps" class="tooltipSession" label="Reps" maxlength="3" value="' + dot.attr("data-reps") + '"></paper-input>'
-                        + '<paper-input id="sessionWeight" class="tooltipSession tooltipSessionWeight" label="Weight" maxlength="4" value="' + dot.attr("data-weight") + '"></paper-input>'
+                        + '<paper-input type="number" id="sessionWeight" class="tooltipSession tooltipSessionWeight" label="Weight" maxlength="4" value="' + dot.attr("data-weight") + '"></paper-input>'
                         + '<paper-input id="sessionNotes" class="tooltipSession tooltipSessionNotes" char-counter label="Notes" maxlength="140" value="' + dot.attr("data-notes") + '"></paper-input>'
                         + '<paper-fab id="updateSession" class="buttonHover" icon="icons:done" on-tap="updateSession" title="Update this session?"></paper-fab>'
                         + '<paper-fab id="deleteSession" class="buttonHover" icon="icons:content-cut" on-tap="deleteSession" title="Delete this session?"></paper-fab>'
@@ -597,7 +729,6 @@ Polymer({
                     tooltip.style("left", "" + xOffset + "px").style("top", "" + yOffset + "px");
 
                     // Attach event listeners to the inputs and buttons
-                    $("#sessionWeight").on("keyup", model.validateExistingSessionWeight);
                     $("#sessionDate").on("change", function() {
                         if ($(this).val() === "") { $(this).val(" "); }
                     });
@@ -809,7 +940,7 @@ Polymer({
                         .attr("d", newPath)
                         .style("opacity", "1.0");
                 }
-                
+
                 // Reset the dots
                 clippedSVG.selectAll(".dot")
                     .data(values)
@@ -858,11 +989,19 @@ Polymer({
                 }
             });
             
-        // Define the selection boxes in the legend
-        legend.append("rect")
+        // For boxes in the legend
+        /*legend.append("rect")
             .attr("x", 0)
             .attr("width", 22)
             .attr("height", 22)
+            .style("fill", color);*/
+            
+        // Define the selection circles in the legend
+        legend.append("circle")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("r", 12)
+            .attr("transform", "translate(11, 11)")
             .style("fill", color);
             
         // Render the legend check marks
@@ -879,12 +1018,34 @@ Polymer({
             .attr("data-state", "on")
             .attr("x", 0)
             .attr("y", 0)
-            .attr("width", 22)
-            .attr("height", 22)
+            .attr("width", 18)
+            .attr("height", 18)
+            .attr("transform", "translate(2, 2)")
             .style("cursor", "pointer");
         
         // Add click functionality to the legend
         var legendClick = d3.selectAll(".legendCheckMark").on("click", function(d) {
+            
+                // Remove the tooltip
+                var tooltip = d3.select("#tooltipContainer");
+                tooltip.style("padding", "0px")
+                    .style("opacity", "0")
+                    .style("border", "none");
+                tooltip.html("");
+                
+                // Reset the dots
+                clippedSVG.selectAll(".dot")
+                    .data(values)
+                    .attr("data-state", "on")
+                    .attr("data-click", "off")
+                    .transition()
+                    .duration(200)
+                    .attr("r", function(d) { return d3.select(this).attr("data-size-base"); })
+                    .attr("cx", function(d) { return x(model.getDate(d.created_at)); })
+                    .attr("cy", function(d) { return y(d.total); })
+                    .attr("clip-path", "url(#clip)")
+                    .style("opacity", "1.0");
+                
                 var item = d3.select(this);
                 var referenceName = item.attr("data-name");
                 var state = "" + item.attr("data-state").toLowerCase();

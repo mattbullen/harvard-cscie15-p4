@@ -21,7 +21,7 @@
         <link rel="stylesheet" href="{{ URL::asset('css/app.css') }}">
 
         <!-- Polymer JS -->
-        <script src="{{ URL::asset('bower_components/webcomponentsjs/webcomponents-lite.min.js') }}"> </script>
+        <script src="{{ URL::asset('polymer/webcomponentsjs/webcomponents-lite.min.js') }}"> </script>
         
         <!-- Polymer Elements Import -->
         <link href="{{ URL::asset('elements/app.html') }}" rel="import">
@@ -30,7 +30,7 @@
    
     <body fullbleed unresolved>
         
-        <!-- Imported Polymer App -->
+        <!-- Imported Polymer Template -->
         <base-app> <base-app>
         
     </body>

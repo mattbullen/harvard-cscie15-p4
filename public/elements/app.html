@@ -3,26 +3,26 @@
 <html>
 
 <head>
-    <link href="../bower_components/polymer/polymer.html" rel="import">
-    <link href="../bower_components/paper-drawer-panel/paper-drawer-panel.html" rel="import">
-    <link href="../bower_components/paper-header-panel/paper-header-panel.html" rel="import">
-    <link href="../bower_components/paper-toolbar/paper-toolbar.html" rel="import">
-    <link href="../bower_components/paper-icon-button/paper-icon-button.html" rel="import">
-    <link href="../bower_components/paper-fab/paper-fab.html" rel="import">
-    <link href="../bower_components/paper-material/paper-material.html" rel="import">
-    <link href="../bower_components/paper-menu/paper-menu.html" rel="import">    
-    <link href="../bower_components/paper-item/paper-item.html" rel="import">
-    <link href="../bower_components/paper-input/paper-input.html" rel="import">
-    <link href="../bower_components/paper-button/paper-button.html" rel="import">
-    <link href="../bower_components/paper-dialog/paper-dialog.html" rel="import">
-    <link href="../bower_components/paper-dialog-behavior/paper-dialog-behavior.html" rel="import">
-    <link href="../bower_components/neon-animation/animations/scale-up-animation.html" rel="import">
-    <link href="../bower_components/neon-animation/animations/fade-out-animation.html" rel="import">   
-    <link href="../bower_components/iron-overlay-behavior/iron-overlay-behavior.html" rel="import">
-    <link href="../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html" rel="import">
-    <link href="../bower_components/iron-icons/iron-icons.html" rel="import">
-    <link href="../bower_components/google-signin/google-signin.html" rel="import">
-    <link href="../bower_components/platinum-https-redirect/platinum-https-redirect.html" rel="import">
+    <link href="../polymer/polymer/polymer.html" rel="import">
+    <link href="../polymer/paper-drawer-panel/paper-drawer-panel.html" rel="import">
+    <link href="../polymer/paper-header-panel/paper-header-panel.html" rel="import">
+    <link href="../polymer/paper-toolbar/paper-toolbar.html" rel="import">
+    <link href="../polymer/paper-icon-button/paper-icon-button.html" rel="import">
+    <link href="../polymer/paper-fab/paper-fab.html" rel="import">
+    <link href="../polymer/paper-material/paper-material.html" rel="import">
+    <link href="../polymer/paper-menu/paper-menu.html" rel="import">    
+    <link href="../polymer/paper-item/paper-item.html" rel="import">
+    <link href="../polymer/paper-input/paper-input.html" rel="import">
+    <link href="../polymer/paper-button/paper-button.html" rel="import">
+    <link href="../polymer/paper-dialog/paper-dialog.html" rel="import">
+    <link href="../polymer/paper-dialog-behavior/paper-dialog-behavior.html" rel="import">
+    <link href="../polymer/neon-animation/animations/scale-up-animation.html" rel="import">
+    <link href="../polymer/neon-animation/animations/fade-out-animation.html" rel="import">   
+    <link href="../polymer/iron-overlay-behavior/iron-overlay-behavior.html" rel="import">
+    <link href="../polymer/iron-overlay-behavior/iron-overlay-backdrop.html" rel="import">
+    <link href="../polymer/iron-icons/iron-icons.html" rel="import">
+    <link href="../polymer/google-signin/google-signin.html" rel="import">
+    <link href="../polymer/platinum-https-redirect/platinum-https-redirect.html" rel="import">
 </head>
 
 <dom-module id="base-app">
@@ -39,15 +39,92 @@
             autoFitOnAttach="true"
             modal="true"
             withBackdrop="true">
-            
-            <div id="welcomeModalContent">
-            
-                <h2>Please Sign In</h2>
-                <div>
-                    <google-signin client-id="132101877152-mj6pbmmc8jt05q7o78sm39103fm00189.apps.googleusercontent.com" scopes="https://www.googleapis.com/auth/drive"></google-signin>
+            <paper-material id="welcomeModalBase">
+                
+                <div id="welcomeModalTitle" class="centered">
+                    <h1>CSCI E-15 Final Project</h1>
                 </div>
-            </div>
+                    
+                <div id="welcomeModalContent">
+
+                    <h2>What does this app do?</h2>
+                    <p>This is a fitness tracker for weightlifting exercises. It's a little different from other fitness tracking apps: instead of grouping all exercises done in a work out session by day or by session, this app tracks each exercise separately. That makes measuring your progress in each exercise easier and more accurate. This app is ideally suited for weightlifters on competitive training programs, but it works with any weight-loaded exercise.</p>
+                    
+                    <h2>How do I use it?</h2>
+                    <p>First things first, you'll need to sign in using a Google ID. After signing in, you'll probably want to add a new exercise. You can do that using the menu button on the left side of the top menu bar (it looks like a square with an arrow inside it).</p>
+                    
+                    <p>After creating a new exercise, use the input bar directly above the graph to start logging work out sessions. As you add each session, the graph will automatically update. To view or edit details about a particular session, click on its corresponding dot inside the graph to load a summary/editing tooltip. If you're unsure of what a button does, hover over it for a brief description.</p>
+                    
+                    <h2 class="spacer">Ready to start? Please sign in!</h2>
+                    <div class="centered">
+                        <google-signin class="buttonGoogle" client-id="132101877152-mj6pbmmc8jt05q7o78sm39103fm00189.apps.googleusercontent.com" scopes=""></google-signin>
+                    </div>
+                
+                </div>
+
+            </paper-material>
+        </paper-dialog>
+        
+        <paper-dialog 
+            id="createExerciseModal"
+            class="editExerciseModal"
+            entry-animation="scale-up-animation"
+            exit-animation="fade-out-animation">
+            <paper-material class="editExerciseWrapper" elevation="2">
+                <div class="centered">
+                    <div id="createExerciseTitle" class="exerciseTitle">Add Exercise</div>
+                </div>
+                <paper-item class="editExerciseContent internal">
+                    <paper-input id="enterCreateExerciseName" class="editExerciseInput" char-counter label="New Exercise Name" maxlength="20"></paper-input>
+                    <paper-fab id="createExerciseButton" class="buttonHover" icon="icons:done" on-tap="createExercise" title="Create a new exercise?" disabled></paper-fab>
+                </paper-item>           
+                <paper-item class="closeEditExerciseModal internal" on-tap="closeCreateExerciseModal">
+                    <div class="editExerciseClose textClose">CLOSE</div>
+                </paper-item> 
+            </paper-material>
+        </paper-dialog>
+        
+        <paper-dialog 
+            id="updateExerciseModal"
+            class="editExerciseModal"
+            entry-animation="scale-up-animation"
+            exit-animation="fade-out-animation">
+            <paper-material class="editExerciseWrapper" elevation="2">
             
+                <div class="centered">
+                    <div id="updateExerciseTitle" class="exerciseTitle">Update Name</div>
+                </div>
+                    
+                <paper-item class="editExerciseContent internal">
+                    <paper-input id="enterUpdateOldName" class="editExerciseInput" char-counter label="Old Exercise Name" maxlength="20"></paper-input>
+                    <paper-input id="enterUpdateNewName" class="editExerciseInput" char-counter label="New Exercise Name" maxlength="20"></paper-input>
+                    <paper-fab id="updateExerciseButton" class="buttonHover" icon="icons:done" on-tap="updateExercise" title="Update the exercise's name?" disabled></paper-fab>
+                </paper-item>
+
+                <paper-item class="closeEditExerciseModal internal" on-tap="closeUpdateExerciseModal">
+                    <div class="editExerciseClose textClose">CLOSE</div>
+                </paper-item>
+                    
+            </paper-material>
+        </paper-dialog>
+        
+        <paper-dialog 
+            id="deleteExerciseModal"
+            class="editExerciseModal"
+            entry-animation="scale-up-animation"
+            exit-animation="fade-out-animation">
+            <paper-material class="editExerciseWrapper" elevation="2">
+                <div class="centered">
+                    <div id="deleteExerciseTitle" class="exerciseTitle">Delete Exercise</div>
+                </div>
+                <paper-item class="editExerciseContent internal">
+                    <paper-input id="enterDeleteExerciseName" class="editExerciseInput" char-counter label="Exercise Name" maxlength="20"></paper-input>
+                    <paper-fab id="deleteExerciseButton" class="buttonHover" icon="icons:done" on-tap="deleteExercise" title="Delete this exercise?" disabled></paper-fab>
+                </paper-item>                   
+                <paper-item class="closeEditExerciseModal internal" on-tap="closeDeleteExerciseModal">
+                    <div class="editExerciseClose textClose">CLOSE</div>
+                </paper-item>   
+            </paper-material>
         </paper-dialog>
     
         <paper-drawer-panel>
@@ -55,23 +132,21 @@
             <paper-header-panel class="side-panel" drawer>
             
                 <paper-toolbar>
-                    <paper-item class="toolbarTitle">Exercises</paper-item>
+                    <template id="userHeaderMessageTemplateDefault" is="dom-if" if="{{!currentUserFirstName.length}}">
+                        <paper-item class="toolbarTitle">Signed Out</paper-item>
+                    </template>
+                    <template id="userHeaderMessageTemplateFilled" is="dom-if" if="{{currentUserFirstName.length}}">
+                        <paper-item class="toolbarTitle">{{currentUserFirstName}}'s Log</paper-item>
+                    </template>
                 </paper-toolbar>
                 
                 <paper-menu id="menu">
-                    <template is="dom-if" if="{{!menuButtons.length}}">
-                        <paper-material>
-                            <paper-item class="message" elevation="2">
-                                <div class="centered">Sign in to view!</div>
-                            </paper-item>
-                        </paper-material>
-                    </template>
+  
                     <div id="menuButtonWrapper" disabled>
                         <paper-button id="viewSummary" class="menuButton buttonHover" on-tap="updateContentView" title="View a summary of all exercises?" raised>Summary</paper-button>
                         <template id="menuButtons" is="dom-repeat" items="{{menuButtons}}">
-                            <paper-button id="menu-{{item.hyphenated}}" class="menuButton buttonHover" on-tap="updateContentView" title="View your {{item.lowercase}} training log?" raised>{{item.original}}</paper-button>
+                            <paper-button id="menu-{{item.hyphenated}}" class="menuButton buttonHover" on-tap="updateContentView" title="View your {{item.lowercase}} training log?" raised>{{item.lowercase}}</paper-button>
                         </template>
-                        <paper-button id="editExercises" class="menuButton buttonHover" on-tap="createExercise" title="Edit the exercise list?" raised>Edit Exercise List</paper-button>
                     </div>
                 </paper-menu>
                 
@@ -83,15 +158,16 @@
                 
                     <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
                     
-                    <template id="userHeaderMessageTemplateDefault" is="dom-if" if="{{!currentUserFirstName.length}}">
-                        <paper-item class="toolbarTitle">Your Training Log</paper-item>
-                    </template>
-                    <template id="userHeaderMessageTemplateFilled" is="dom-if" if="{{currentUserFirstName.length}}">
-                        <paper-item class="toolbarTitle">{{currentUserFirstName}}'s Training Log</paper-item>
-                    </template>
+                    <paper-icon-button id="editMenuButton" icon="icons:open-in-new" on-tap="toggleEditMenuWrapper"></paper-icon-button>
+                    
+                    <div id="editMenuWrapper">
+                        <paper-button id="createExercise" class="editMenuButton buttonHover" on-tap="openCreateExerciseModal" title="Add a new exercise to the list?" raised>Add Exercise</paper-button>
+                        <paper-button id="createExercise" class="editMenuButton buttonHover" on-tap="openUpdateExerciseModal" title="Add a new exercise to the list?" raised>Update Name</paper-button>
+                        <paper-button id="createExercise" class="editMenuButton buttonHover" on-tap="openDeleteExerciseModal" title="Add a new exercise to the list?" raised>Delete Exercise</paper-button>
+                    </div>
                     
                     <div id="left">
-                        <google-signin client-id="132101877152-mj6pbmmc8jt05q7o78sm39103fm00189.apps.googleusercontent.com" scopes="https://www.googleapis.com/auth/drive" title="Sign out of your traing log?"></google-signin>
+                        <google-signin class="buttonGoogle" client-id="132101877152-mj6pbmmc8jt05q7o78sm39103fm00189.apps.googleusercontent.com" scopes="" title="Sign out of your traing log?"></google-signin>
                     </div>
 
                 </paper-toolbar>
@@ -106,7 +182,7 @@
                     <paper-material id="logSession" elevation="2">
                         <paper-input type="number" min="0" max="500" id="enterSets" label="Sets" maxlength="3"></paper-input>
                         <paper-input type="number" min="0" max="500" id="enterReps" label="Reps" maxlength="3"></paper-input>
-                        <paper-input id="enterWeight" label="Weight" maxlength="4"></paper-input>
+                        <paper-input type="number" id="enterWeight" label="Weight" maxlength="4"></paper-input>
                         <paper-input id="enterNotes" char-counter label="Notes" maxlength="140"></paper-input>
                         <paper-fab id="saveSession" class="buttonHover" icon="icons:done" on-tap="createSession" title="Save this session?"></paper-fab>
                     </paper-material>
