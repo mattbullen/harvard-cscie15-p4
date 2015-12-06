@@ -89,9 +89,9 @@ Polymer({
         this.currentUser = "";
         this.currentUserFirstName = "";
         this.menuButtons = [];
-        $("#editMenuWrapper").fadeOut().hide();
-        $("#viewSummary").fadeOut().hide();
-        $("#editExercises").fadeOut().hide();
+        $("#editMenuWrapper").fadeOut();
+        $("#viewSummary").fadeOut();
+        $("#editExercises").fadeOut();
         $("#entryMessage").html('<div class="centered"><div class="exerciseTitle">Signed Out</div></div>');
         $("#enterSets").val("");
         this.$.enterSets.disabled = true;
