@@ -172,18 +172,16 @@ paper-toolbar {
 }
 
 #createExerciseModal {  
-    left: 301px;
+    left: 278px;
     width: 320px;
 }
 
 #updateExerciseModal {
-    top: 40px;
-    left: 515px;
+    left: 492px;
 }
 
 #deleteExerciseModal {
-    top: 40px;
-    left: 728px;
+    left: 705px;
 }
 
 .editExerciseWrapper {
@@ -289,7 +287,7 @@ paper-toolbar {
     overflow-y: hidden;
 }
 
-/* SVG */
+/* SVG Layout */
 
 #graphWrapper {
     position: relative;
@@ -357,6 +355,8 @@ paper-toolbar {
     height: 14px;
     width: 14px;
 }
+
+/* SVG Internals */
 
 .axis path,
 .axis line {

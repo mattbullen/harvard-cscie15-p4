@@ -156,9 +156,9 @@
             
                 <paper-toolbar>
                 
-                    <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+                    <paper-icon-button icon="menu" title="Open the sidebar menu?" paper-drawer-toggle></paper-icon-button>
                     
-                    <paper-icon-button id="editMenuButton" icon="icons:open-in-new" on-tap="toggleEditMenuWrapper"></paper-icon-button>
+                    <paper-icon-button id="editMenuButton" icon="icons:open-in-new" title="Toggle the menu to edit the list of exercises?" on-tap="toggleEditMenuWrapper"></paper-icon-button>
                     
                     <div id="editMenuWrapper">
                         <paper-button id="createExercise" class="editMenuButton buttonHover" on-tap="openCreateExerciseModal" title="Add a new exercise to the list?" raised>Add Exercise</paper-button>
