@@ -363,7 +363,7 @@ Polymer({
                 console.log("\nResponse:", response);
                 if (response.updated) {
                     model.updateMenuButtons(response.updated);
-                    if (name === "summary" || name === model.currentExercise || response.updated.length < 1) {
+                    if (model.currentExercise === "summary" || model.currentExercise === name || response.updated.length < 1) {
                         $("#viewSummary").click();
                     }
                 }
@@ -947,7 +947,7 @@ Polymer({
             });
         
         // No legend needed when displaying individual exercises
-        if (mappedLength === 1 ) {
+        if (mappedLength < 2) {
             d3.selectAll(".legend").remove();
             return false;
         }
