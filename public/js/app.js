@@ -366,10 +366,6 @@ Polymer({
                     if (name === model.currentExercise || response.updated.length < 1) {
                         $("#viewSummary").click();
                     }
-                    var menuButton = $("#menu-" + name.replace(/ /gi, "-"));
-                    if (menuButton) {
-                        menuButton.fadeOut().remove();
-                    }
                 }
             },
             error: function(error) {
