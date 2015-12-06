@@ -9,6 +9,8 @@ A Laravel 5, Google Polymer, and D3.js one page web app for fitness tracking. De
 * Laravel handles all of the server-side functionality.
 * Polymer handles the browser-side layout, templating, data-binding, and general user flow.
 * I used D3 for the main graph that tracks work out sessions.
+* The app uses two sets of CRUD operations: the first set manages the list of exercise names/categories, and the second manages the records of individual work out sessions.
+* Users are authenticated using the Google OAuth2 API. After passing Google authentication, the app only needs the user's e-mail address to link exercises/sessions to that user.
 
 #### Demo
 
