@@ -104,8 +104,12 @@ paper-toolbar {
     border-bottom: 1px solid #002147 !important;
 }
 
+#welcomeModalTitle h1 {
+    margin: 25px 0;
+}
+
 #welcomeModalContent {
-    padding: 25px 25px 30px 25px;
+    padding: 30px 30px 35px 30px;
 }
 
 #welcomeModalContent p {
