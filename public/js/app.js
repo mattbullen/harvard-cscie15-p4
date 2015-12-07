@@ -383,14 +383,17 @@ Polymer({
             error: function(error) {
                 console.log("\nError:", error);
             }
-        });
+        });              
     },
     // Only activate the save session button when the main fields have usable values
     toggleSaveSession: function() {
-        if ($("#enterSets").val() !== "" && $("#enterReps").val() !== "" && $("#enterWeight").val() !== "") {
-            this.$.saveSession.disabled = false;
+        var sets = $("#enterSets").val();
+        var reps = $("#enterReps").val();
+        var weight = $("#enterWeight").val();
+        if (sets !== "" && parseInt(sets) && reps !== "" && parseInt(reps) && weight !== "" && parseInt(weight)) {
+            $("#saveSession").removeAttr("disabled");
         } else {
-            this.$.saveSession.disabled = true;
+            $("#saveSession").attr("disabled", true);
         }
     },
     // The "create" in the CRUD routines for managing individual workout sessions per exercise
@@ -465,7 +468,7 @@ Polymer({
     // Workout session general input validation
     validateSessionValues: function(item) {
         var value = $(item).val()
-        if (value.length) {
+        if (parseInt(value)) {
             return value;
         } else {
             if ($(item).attr("id") === "enterNotes") {
