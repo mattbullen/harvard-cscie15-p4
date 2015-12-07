@@ -205,7 +205,7 @@ Polymer({
             this.$.enterReps.disabled = false;
             this.$.enterWeight.disabled = false;
             this.$.enterNotes.disabled = false;
-            this.$.saveSession.disabled = false;
+            this.$.saveSession.disabled = true;
         }
         $("#entryMessage").html('<div class="centered"><div class="exerciseTitle">' + tag + '</div></div>');
         console.log("\nMenu button clicked:", tag);
@@ -388,9 +388,9 @@ Polymer({
     // Only activate the save session button when the main fields have usable values
     toggleSaveSession: function() {
         if ($("#enterSets").val() !== "" && $("#enterReps").val() !== "" && $("#enterWeight").val() !== "") {
-            $("#saveSession").removeAttr("disabled");
+            this.$.saveSession.disabled = false;
         } else {
-            $("#saveSession").attr("disabled", true);
+            this.$.saveSession.disabled = true;
         }
     },
     // The "create" in the CRUD routines for managing individual workout sessions per exercise
