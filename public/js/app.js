@@ -1023,7 +1023,17 @@ Polymer({
             .attr("height", 18)
             .attr("transform", "translate(2, 2)")
             .style("cursor", "pointer");
-        
+            
+        // Define the text labels in the legend
+        legend.append("text")
+            .attr("x", 26)
+            .attr("y", 11)
+            .attr("dy", "0.35em")
+            .style("text-anchor", "start")
+            .style("font-family", "'Roboto', 'Noto', sans-serif")
+            .style("font-size", "12px")
+            .text(function(d) { console.log(d, d.key); return model.capString(d.key); });
+            
         // Add click functionality to the legend
         var legendClick = d3.selectAll(".legendCheckMark").on("click", function(d) {
             
@@ -1086,17 +1096,7 @@ Polymer({
                 }
                 return false;
             });
-        
-        // Define the text labels in the legend
-        legend.append("text")
-            .attr("x", 26)
-            .attr("y", 11)
-            .attr("dy", "0.35em")
-            .style("text-anchor", "start")
-            .style("font-family", "'Roboto', 'Noto', sans-serif")
-            .style("font-size", "12px")
-            .text(function(d) { return model.capString(d); });
-            
+
         return false;
     },
     // Draws an empty graph / sets the basic SVG scaffolding for use by the updateGraph() function
