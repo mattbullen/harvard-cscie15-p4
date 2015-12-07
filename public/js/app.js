@@ -50,7 +50,7 @@ Polymer({
     signIn: function() {
         
         // Extract the user details from the Google OAuth2/JWT sign in object
-        if (gapi && gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()) {
+         if (gapi && gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()) {
             
             // Add the user first name and e-mail address to the local template's model
             var user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
@@ -529,12 +529,12 @@ Polymer({
             .attr("r", function(d) { return d3.select(this).attr("data-size-base"); })
             .attr("data-click", "off");
         
-        // Get the graph & layout configurationObject
-        var configurationObject = model.getConfiguration();
+        // Get the graph & layout graphConfig
+        var graphConfig = model.getConfiguration();
 
         // Find the layout dimensions for the base canvas for later reference
-        var baseXYBoxSize = +configurationObject.graphWidth || 900;
-        var margin = configurationObject.margin; 
+        var baseXYBoxSize = +graphConfig.graphWidth || 900;
+        var margin = graphConfig.margin; 
         var width = baseXYBoxSize - +margin.left - +margin.right;
         var paddedWidth = width - 15;
         var height = baseXYBoxSize - +margin.top - +margin.bottom;
@@ -547,9 +547,9 @@ Polymer({
             var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate("2015-01-01"), model.getDate(new Date())]);
             var xBrush = d3.time.scale().range([0, paddedWidth]).domain([model.getDate("2015-01-01"), model.getDate(new Date())]);
             var y = d3.scale.linear().range([height, 0]).domain([0, 10000]);
-            var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
-            var xAxisBrush = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
-            var yAxis = d3.svg.axis().scale(y).orient("left").ticks(configurationObject.yAxisTicks);
+            var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(graphConfig.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
+            var xAxisBrush = d3.svg.axis().scale(x).orient("bottom").ticks(graphConfig.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
+            var yAxis = d3.svg.axis().scale(y).orient("left").ticks(graphConfig.yAxisTicks);
             d3.select("g.x.axis").transition().call(xAxis);
             d3.select("g.y.axis").transition().call(yAxis);
             var brush = d3.svg.brush().x(xBrush);
@@ -600,11 +600,11 @@ Polymer({
         var y = d3.scale.linear().range([height, 0]).domain([0, maxTotal]);
         
         // Define the x-axis dimensions, ticks, and orientation
-        var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
-        var xAxisBrush = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
+        var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(graphConfig.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
+        var xAxisBrush = d3.svg.axis().scale(x).orient("bottom").ticks(graphConfig.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
         
         // Define the y-axis dimensions, ticks, and orientation
-        var yAxis = d3.svg.axis().scale(y).orient("left").ticks(configurationObject.yAxisTicks);
+        var yAxis = d3.svg.axis().scale(y).orient("left").ticks(graphConfig.yAxisTicks);
         
         // Call the axes
         d3.select("g.x.axis").transition().call(xAxis);
@@ -616,7 +616,7 @@ Polymer({
         
         // Append a <div> to act as the container for the tooltip
         if (!document.getElementById("tooltipContainer")) {
-            var tooltipDiv = d3.select("#" + (configurationObject.graphID || "graph"))
+            var tooltipDiv = d3.select("#" + (graphConfig.graphID || "graph"))
                 .append("div")
                 .attr("id", "tooltipContainer")
                 .style("z-index", "9999")
@@ -653,8 +653,8 @@ Polymer({
             .attr("data-click", "off")
             .attr("cx", function(d) { return x(model.getDate(d.created_at)); })       
             .attr("cy", function(d) { return y(d.total); })
-            .attr("r", configurationObject.circleStrokeSize)
-            .attr("data-size-base", configurationObject.circleStrokeSize)
+            .attr("r", graphConfig.circleRadiusSize)
+            .attr("data-size-base", graphConfig.circleRadiusSize)
             .style("stroke", function(d) { return color(d.name); })
             .style("fill", function(d) { return color(d.name); })
             .style("cursor", "pointer")
@@ -678,7 +678,7 @@ Polymer({
                     dot.attr("data-click", "on")
                     dot.transition()
                         .duration(200)
-                        .attr("r", function(d) { return +d3.select(this).attr("data-size-base") + 1.618; })
+                        .attr("r", function(d) { return +d3.select(this).attr("data-size-base") + graphConfig.circleRadiusExpandedPadding; })
                         
                     // Set the tooltip HTML content
                     var formattedDate = dateFormatter(model.getDate(dot.attr("data-date")));
@@ -698,8 +698,8 @@ Polymer({
                     // Set the tooltip's location on the canvas
                     var pageXValue = +d3.select(this).attr("cx");
                     var pageYValue = +d3.select(this).attr("cy");
-                    var xOffset = Math.round(pageXValue - 185);
-                    var yOffset = Math.round(pageYValue - 188);
+                    var xOffset = Math.round(pageXValue - graphConfig.tooltipXOffset);
+                    var yOffset = Math.round(pageYValue - graphConfig.tooltipYOffset);
                     tooltip.style("left", "" + xOffset + "px").style("top", "" + yOffset + "px");
 
                     // Attach event listeners to the inputs and buttons
@@ -848,7 +848,7 @@ Polymer({
                             .attr("d", newPath)
                             .attr("data-name", mappedData[i].key)
                             .style("stroke", function() { return d3.select(".dot-" + d3.select(this).attr("data-name")).style("fill"); })
-                            .style("stroke-width", configurationObject.lineStrokeSize)
+                            .style("stroke-width", graphConfig.lineStrokeSize)
                             .style("fill", "none")
                             .style("opacity", "1.0");
                     }
@@ -947,7 +947,7 @@ Polymer({
                 
                 // Reset the x-axis
                 x.domain([minDate, maxDate]);
-                d3.select(".x.axis").transition().duration(200).call(xAxis.ticks(configurationObject.xAxisTicks));
+                d3.select(".x.axis").transition().duration(200).call(xAxis.ticks(graphConfig.xAxisTicks));
                 
                 // Reset the line(s)
                 if (mappedLength > 1){
@@ -1118,15 +1118,15 @@ Polymer({
         
         var model = this;
         
-        // Get the graph & layout configurationObject
-        var configurationObject = model.getConfiguration();
+        // Get the graph & layout graphConfig
+        var graphConfig = model.getConfiguration();
         
         // Clear the graph's container of any prior content
-        model.clearElement(configurationObject.graphID);
+        model.clearElement(graphConfig.graphID);
 
         // Find the layout dimensions for the base canvas for later reference
-        var baseXYBoxSize = +configurationObject.graphWidth || 900;
-        var margin = configurationObject.margin; 
+        var baseXYBoxSize = +graphConfig.graphWidth || 900;
+        var margin = graphConfig.margin; 
         var width = baseXYBoxSize - +margin.left - +margin.right;
         var paddedWidth = width - 15;
         var height = baseXYBoxSize - +margin.top - +margin.bottom;
@@ -1137,14 +1137,14 @@ Polymer({
         var y = d3.scale.linear().range([height, 0]).domain([0, 10000]);
         
         // Define the x-axis dimensions, ticks, and orientation
-        var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
-        var xAxisBrush = d3.svg.axis().scale(x).orient("bottom").ticks(configurationObject.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
+        var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(graphConfig.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
+        var xAxisBrush = d3.svg.axis().scale(x).orient("bottom").ticks(graphConfig.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
         
         // Define the y-axis dimensions, ticks, and orientation
-        var yAxis = d3.svg.axis().scale(y).orient("left").ticks(configurationObject.yAxisTicks);
+        var yAxis = d3.svg.axis().scale(y).orient("left").ticks(graphConfig.yAxisTicks);
         
         // Append the base canvas for the graph
-        var graphContainer = document.getElementById(configurationObject.graphID);
+        var graphContainer = document.getElementById(graphConfig.graphID);
         var svg = d3.select(graphContainer)
             .append("svg")
             .attr("id", "graph-svg")
@@ -1161,8 +1161,8 @@ Polymer({
             .attr("id", "clip-rect")
             .attr("x", 1)
             .attr("y", 1)
-            .attr("width", 840)
-            .attr("height", 444)
+            .attr("width", graphConfig.clippedSVGWidth)
+            .attr("height", graphConfig.clippedSVGHeight)
             .style("cursor", "default")
             .style("fill", "white");      
         clip.append("use").attr("xlink:href", "#clip-rect");
@@ -1203,20 +1203,20 @@ Polymer({
         
         // Define the range slider base canvas
         var context = svg.append("g")
-            .attr("transform", "translate(0," + configurationObject.brushOffset + ")")
+            .attr("transform", "translate(0," + graphConfig.brushOffset + ")")
             .attr("class", "context");
         
         // Define the range slider's tick marks
         context.append("g")
             .attr("id", "xAxisBrush")
             .attr("class", "x axis")
-            .attr("transform", "translate(0," + configurationObject.brushHeight + ")")
+            .attr("transform", "translate(0," + graphConfig.brushHeight + ")")
             .call(xAxisBrush);
         
         // Define the range slider's background color
         context.append("rect")
             .attr("x", 0)
-            .attr("height", configurationObject.brushHeight)
+            .attr("height", graphConfig.brushHeight)
             .attr("width", width - 15)
             .attr("fill", "#fff")
             .style("cursor", "pointer");
@@ -1229,7 +1229,7 @@ Polymer({
             .attr("class", "x brush")
             .call(brush)
             .selectAll("rect")
-            .attr("height", configurationObject.brushHeight)
+            .attr("height", graphConfig.brushHeight)
             .attr("fill", "#002147")
             .style("cursor", "pointer");
             
@@ -1237,9 +1237,9 @@ Polymer({
         svg.append("line")
             .attr("id", "topBorderBrush")
             .attr("x1", 0)
-            .attr("y1", configurationObject.brushOffset)
+            .attr("y1", graphConfig.brushOffset)
             .attr("x2", width - 15)
-            .attr("y2", configurationObject.brushOffset)
+            .attr("y2", graphConfig.brushOffset)
             .style("stroke", "rgb(0, 0, 0)")
             .style("stroke-width", "1.0")
             .style("shape-rendering", "crispEdges");
@@ -1248,9 +1248,9 @@ Polymer({
         svg.append("line")
             .attr("id", "rightBorderBrush")
             .attr("x1", 0)
-            .attr("y1", configurationObject.brushOffset)
+            .attr("y1", graphConfig.brushOffset)
             .attr("x2", 0)
-            .attr("y2", configurationObject.brushOffset + configurationObject.brushHeight)
+            .attr("y2", graphConfig.brushOffset + graphConfig.brushHeight)
             .style("stroke", "rgb(0, 0, 0)")
             .style("stroke-width", "1.0")
             .style("shape-rendering", "crispEdges");
@@ -1259,9 +1259,9 @@ Polymer({
         svg.append("line")
             .attr("id", "rightBorderBrush")
             .attr("x1", width - 15)
-            .attr("y1", configurationObject.brushOffset)
+            .attr("y1", graphConfig.brushOffset)
             .attr("x2", width - 15)
-            .attr("y2", configurationObject.brushOffset + configurationObject.brushHeight)
+            .attr("y2", graphConfig.brushOffset + graphConfig.brushHeight)
             .style("stroke", "rgb(0, 0, 0)")
             .style("stroke-width", "1.0")
             .style("shape-rendering", "crispEdges");
@@ -1308,8 +1308,11 @@ Polymer({
         return {
             graphID: "graph",
             graphWidth: 900,
-            circleStrokeSize: 3.0,
-            lineStrokeSize: 1.0,
+            clippedSVGWidth: 840,
+            clippedSVGHeight: 444,
+            circleRadiusSize: 3.618,
+            circleRadiusExpandedPadding: 3.0,
+            lineStrokeSize: 1.618,
             xAxisTicks: 5,
             yAxisTicks: 10,
             yAxisLabelPadding: -36,
@@ -1320,7 +1323,9 @@ Polymer({
                 left: 45
             },
             brushHeight: 8,
-            brushOffset: 478
+            brushOffset: 478,
+            tooltipXOffset: 185,
+            tooltipYOffset: 190
         };
     },
     // Sets the graph's line and dot colors
