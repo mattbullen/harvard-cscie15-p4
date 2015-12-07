@@ -997,12 +997,12 @@ Polymer({
         }
         
         // Sort the color domain (prevents out of order legend bug)
-        var currentExercisesColorList = (color.domain(currentExercises)).sort(d3.ascending);
-        
+        color.domain(currentExercises.sort(d3.ascending));
+
         // Define the legend layout
         var svg = d3.select("#graph-svg");
         var legend = svg.selectAll(".legend")
-            .data(currentExercisesColorList)
+            .data(color.domain())
             .enter()
             .append("g")
             .attr("class", "legend");
