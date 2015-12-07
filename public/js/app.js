@@ -205,7 +205,7 @@ Polymer({
             this.$.enterReps.disabled = false;
             this.$.enterWeight.disabled = false;
             this.$.enterNotes.disabled = false;
-            this.$.saveSession.disabled = true;
+            this.toggleSaveSession();
         }
         $("#entryMessage").html('<div class="centered"><div class="exerciseTitle">' + tag + '</div></div>');
         console.log("\nMenu button clicked:", tag);
@@ -969,13 +969,15 @@ Polymer({
                 return false;   
             });
         
+        // Reset the legend area
+        d3.selectAll(".legend").remove();
+        
         // No legend needed when displaying individual exercises
         if (mappedLength < 2) {
-            d3.selectAll(".legend").remove();
             return false;
         }
         
-        // Define the graph's legend dimensions (for the summary chart)
+        // Define the legend layout
         var svg = d3.select("#graph-svg");
         var legend = svg.selectAll(".legend")
             .data(color.domain())
