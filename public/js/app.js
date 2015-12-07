@@ -26,6 +26,9 @@ Polymer({
         // Pre-render the basic graph scaffolding
         this.createEmptyGraph();
         
+        // Set an event listener on the main input bar's submit button
+        this.$.saveSession.addEventListener("keyup", this.toggleSaveSession);
+        
         // User flow: initial element presentation and event listeners
         this.clearLayout();
         this.deactivateEnterSessionsBar();
@@ -379,6 +382,14 @@ Polymer({
                 console.log("\nError:", error);
             }
         });
+    },
+    // Only activate the save session button when the main fields have usable values
+    toggleSaveSession: function() {
+        if ($("#enterSets").val() > 0 && $("#enterReps").val() > 0 && $("#enterWeight").val() > 0) {
+            $("#saveSession").removeAttr("disabled");
+        } else {
+            $("#saveSession").attr("disabled", true);
+        }
     },
     // The "create" in the CRUD routines for managing individual workout sessions per exercise
     createSession: function() {
