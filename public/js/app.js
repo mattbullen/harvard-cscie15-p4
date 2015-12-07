@@ -538,7 +538,6 @@ Polymer({
         var width = baseXYBoxSize - +margin.left - +margin.right;
         var paddedWidth = width - 15;
         var height = baseXYBoxSize - +margin.top - +margin.bottom;
-        var dateFormatter = d3.time.format('%b. %e');
         
         // For empty graphs
         if (data.sessions.length === 0) {
@@ -630,6 +629,7 @@ Polymer({
         var clippedSVG = d3.select(".clippedSVG");
         
         // Set the dots
+        var dateFormatter = d3.time.format('%B %e, %Y');
         var removeDots = clippedSVG.selectAll(".dot").remove();
         var dots = clippedSVG.selectAll(".dot");
         dots.data(values)
@@ -1000,6 +1000,7 @@ Polymer({
         color.domain(currentExercises.sort(d3.ascending));
 
         // Define the legend layout
+        var legendMarginLeft = 45;
         var svg = d3.select("#graph-svg");
         var legend = svg.selectAll(".legend")
             .data(color.domain())
@@ -1007,7 +1008,6 @@ Polymer({
             .append("g")
             .attr("class", "legend");
             legend.attr("transform", function(d, i) {
-                var legendMarginLeft = 45;
                 if (i < 5) {
                     return "translate(" + ((i * 160) + legendMarginLeft) + ", " + (height + 78) + ")";
                 } else if (i > 4 && i < 8) {
