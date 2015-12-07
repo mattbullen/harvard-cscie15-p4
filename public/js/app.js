@@ -186,12 +186,14 @@ Polymer({
     },
     // Event listener to update the menu button list, session entry toolbar, and graph content
     updateContentView: function(e) {
-        // Retrieve the button's original exercise name from its template model: https://stackoverflow.com/questions/32212836/how-to-get-data-attribute-value-of-paper-card-from-on-tap-event
+        
+        // Retrieve the button's original exercise name from its template model. 
+        // Source for syntax: https://stackoverflow.com/questions/32212836/how-to-get-data-attribute-value-of-paper-card-from-on-tap-event
         if (e.model) {
             // For named exercises
             var tag = e.model.item.lowercase;
         } else {
-            // For the "summary" view, since it's not actually a named exercise
+            // For the "summary" view, since it's not actually a named exercise and not in that list, but needed to trigger graph updates
             var tag = (e.target.innerText).toLowerCase();
         }
         if (tag === "summary") {
@@ -602,76 +604,7 @@ Polymer({
         
         // Define the graph colors getter function
         var color = model.getColors();
-         
-        // Define the interpolation for the graphed line(s)
-        var newLine = d3.svg.line()
-            .x(function(d) { return x(model.getDate(d.date)); })
-            .y(function (d) { return y(d.total); })
-            .interpolate("linear");
-        
-        // Grab the rendering area on the canvas
-        var clippedSVG = d3.select(".clippedSVG");
-        
-        // Render the line(s) on the canvas
-        var mappedLength = Object.keys(mappedData).length; /*
-        var qsaLength = document.querySelectorAll(".line").length;
-        if (qsaLength < mappedLength) {
-            // console.log("Case 1");
-            if (qsaLength > 0) {
-                clippedSVG.selectAll(".line").each(function(d, i) {
-                   if (i > 0) { d3.select(this).remove(); } 
-                });
-                var newPath = newLine(mappedData[0].values);
-                clippedSVG.select(".line")
-                    .transition()
-                    .attr("d", newPath)
-                    .attr("class", function(d) {
-                        return "line line-" + (mappedData[0].key).replace(/ /gi, "-");
-                    })
-                    .style("stroke", color(mappedData[0].key));
-                var newLinesStartCount = 1;
-            } else {
-                var newLinesStartCount = 0;
-            }
-            console.log(newLinesStartCount, color.domain());
-            for (var i = newLinesStartCount; i < mappedLength; i++) {
-                console.log(mappedData[i], color(mappedData[i].key));
-                clippedSVG.append("g")
-                    .attr("class", "line-wrapper")
-                    .append("path")
-                    .attr("class", "line line-" + (mappedData[i].key).replace(/ /gi, "-"))
-                    .attr("d", newLine(mappedData[i].values))
-                    .style("stroke", function() {
-                        return color(mappedData[i].key)
-                    })
-                    .style("stroke-width", configurationObject.lineStrokeSize)
-                    .style("fill", "none")
-                    .style("opacity", "1.0");
-            }
-        } else {
-            if (mappedLength > 1) {
-                // console.log("Case 2");
-                for (var i = 0; i < mappedLength; i++) {
-                    var lineID = ".line-" + (mappedData[i].key).replace(/ /gi, "-");
-                    var newPath = newLine(mappedData[i].values);
-                    clippedSVG.select(lineID).transition().attr("d", newPath);
-                }
-            } else {
-                // console.log("Case 3");
-                clippedSVG.selectAll(".line").each(function(d, i) {
-                   if (i > 0) { d3.select(this).remove(); } 
-                });
-                var newPath = newLine(mappedData[0].values);
-                clippedSVG.select(".line")
-                    .transition()
-                    .attr("d", newPath)
-                    .attr("class", function(d) {
-                        return "line line-" + (mappedData[0].key).replace(/ /gi, "-");
-                    })
-                    .style("stroke", color(mappedData[0].key));
-            }
-        }*/
-        
+
         // Append a <div> to act as the container for the tooltip
         if (!document.getElementById("tooltipContainer")) {
             var tooltipDiv = d3.select("#" + (configurationObject.graphID || "graph"))
@@ -682,6 +615,9 @@ Polymer({
                 .style("-webkit-font-smoothing", "subpixel-antialiased !important")
                 .style("opacity", "0");
         }
+        
+        // Grab the rendering area on the canvas
+        var clippedSVG = d3.select(".clippedSVG");
         
         // Set the dots
         var removeDots = clippedSVG.selectAll(".dot").remove();
@@ -852,6 +788,12 @@ Polymer({
             });
         clippedSVG.selectAll(".dot").transition().delay(150).style("opacity", "1.0");
         
+        // Define the interpolation for the graphed line(s)
+        var newLine = d3.svg.line()
+            .x(function(d) { return x(model.getDate(d.date)); })
+            .y(function (d) { return y(d.total); })
+            .interpolate("linear");
+            
         // Render the line(s) on the canvas
         var mappedLength = Object.keys(mappedData).length;
         var qsaLength = document.querySelectorAll(".line").length;
@@ -1387,67 +1329,3 @@ Polymer({
         ]);
     }
 });
-
-
-        /* OLD LINE RENDERING ROUTINE - REPLACED BECAUSE IT WAS A LITTLE TOO CLUNKY.
-           THE NEW VERSION ALLOWS A SINGLE LINE TO TRANSITION ITSELF WHEN CHANGING TO SUMMARY VIEW,
-           INSTEAD OF BEING RESET TO THE FIRST CATEGORY IN THE LIST.
-        var mappedLength = Object.keys(mappedData).length;
-        var qsaLength = document.querySelectorAll(".line").length;
-        if (qsaLength < mappedLength) {
-            // console.log("Case 1");
-            if (qsaLength > 0) {
-                clippedSVG.selectAll(".line").each(function(d, i) {
-                   if (i > 0) { d3.select(this).remove(); }
-                });
-                var newPath = newLine(mappedData[0].values);
-                clippedSVG.select(".line")
-                    .transition()
-                    .attr("class", "line line-" + (mappedData[0].key).replace(/ /gi, "-"))
-                    .attr("d", newPath)
-                    .attr("data-name", mappedData[0].key)
-                    .style("stroke", color(mappedData[0].key));
-                var newLinesStartCount = 1;
-            } else {
-                var newLinesStartCount = 0;
-            }
-            for (var i = newLinesStartCount; i < mappedLength; i++) {
-                clippedSVG.append("g")
-                    .attr("class", "line-wrapper")
-                    .append("path")
-                    .attr("class", "line line-" + (mappedData[i].key).replace(/ /gi, "-"))
-                    .attr("d", newLine(mappedData[i].values))
-                    .attr("data-name", mappedData[i].key)
-                    .style("stroke", function() { return d3.select(".dot-" + d3.select(this).attr("data-name")).style("fill"); })
-                    .style("stroke-width", configurationObject.lineStrokeSize)
-                    .style("fill", "none")
-                    .style("opacity", "1.0");
-            }
-        } else {
-            if (mappedLength > 1) {
-                // console.log("Case 2");
-                for (var i = 0; i < mappedLength; i++) {
-                    var lineID = ".line-" + (mappedData[i].key).replace(/ /gi, "-");
-                    var newPath = newLine(mappedData[i].values);
-                    clippedSVG.select(lineID)
-                        .transition()
-                        .attr("class", "line line-" + (mappedData[i].key).replace(/ /gi, "-"))
-                        .attr("d", newPath)
-                        .attr("data-name", mappedData[i].key)
-                        .style("stroke", function() { return d3.select(".dot-" + d3.select(this).attr("data-name")).style("fill"); });
-                }
-            } else {
-                // console.log("Case 3");
-                clippedSVG.selectAll(".line").each(function(d, i) {
-                   if (i > 0) { d3.select(this).remove(); } 
-                });
-                var newPath = newLine(mappedData[0].values);
-                clippedSVG.select(".line")
-                    .transition()
-                    .attr("class", "line line-" + (mappedData[0].key).replace(/ /gi, "-"))
-                    .attr("d", newPath)
-                    .attr("data-name", mappedData[0].key)
-                    .style("stroke", color(mappedData[0].key));
-            }
-        }
-        */
