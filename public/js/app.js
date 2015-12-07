@@ -15,6 +15,11 @@ Polymer({
             type: Array,
             value: [],
             reflect: true
+        },
+        exerciseNames: {
+            type: Array,
+            value: [],
+            reflect: true
         }
     },
     // Runs when the app loads
@@ -170,19 +175,20 @@ Polymer({
                 lowercaseList.push(lowercased);
             }
             this.menuButtons = list;
+            this.exerciseNames = lowercaseList;
         } else {
-            var lowercaseList = [];
             this.menuButtons = [];
+            this.exerciseNames = [];
         }
         
         // Add event listeners to the edit menu pop ups
         var vCEI = this.validateCreateExerciseInput;
-        this.$.enterCreateExerciseName.addEventListener("keyup", function() { vCEI(lowercaseList); });
+        this.$.enterCreateExerciseName.addEventListener("keyup", function() { vCEI(this.exerciseNames); });
         var vUEI = this.validateUpdateExerciseInput;
-        this.$.enterUpdateOldName.addEventListener("keyup", function() { vUEI(lowercaseList); });
-        this.$.enterUpdateNewName.addEventListener("keyup", function() { vUEI(lowercaseList); });
+        this.$.enterUpdateOldName.addEventListener("keyup", function() { vUEI(this.exerciseNames); });
+        this.$.enterUpdateNewName.addEventListener("keyup", function() { vUEI(this.exerciseNames); });
         var vDEI = this.validateDeleteExerciseInput;
-        this.$.enterDeleteExerciseName.addEventListener("keyup", function() { vDEI(lowercaseList); });
+        this.$.enterDeleteExerciseName.addEventListener("keyup", function() { vDEI(this.exerciseNames); });
     },
     // Event listener to update the menu button list, session entry toolbar, and graph content
     updateContentView: function(e) {
@@ -620,6 +626,9 @@ Polymer({
         var clippedSVG = d3.select(".clippedSVG");
         
         // Set the dots
+        
+        color.domain((model.exerciseNames).sort(d3.ascending));
+        
         var removeDots = clippedSVG.selectAll(".dot").remove();
         var dots = clippedSVG.selectAll(".dot");
         dots.data(values)
