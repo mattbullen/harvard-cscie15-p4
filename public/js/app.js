@@ -179,16 +179,17 @@ Polymer({
         } else {
             this.menuButtons = [];
             this.exerciseNames = [];
+            var lowercaseList = [];
         }
         
         // Add event listeners to the edit menu pop ups
         var vCEI = this.validateCreateExerciseInput;
-        this.$.enterCreateExerciseName.addEventListener("keyup", function() { vCEI(this.exerciseNames); });
+        this.$.enterCreateExerciseName.addEventListener("keyup", function() { vCEI(lowercaseList); });
         var vUEI = this.validateUpdateExerciseInput;
-        this.$.enterUpdateOldName.addEventListener("keyup", function() { vUEI(this.exerciseNames); });
-        this.$.enterUpdateNewName.addEventListener("keyup", function() { vUEI(this.exerciseNames); });
+        this.$.enterUpdateOldName.addEventListener("keyup", function() { vUEI(lowercaseList); });
+        this.$.enterUpdateNewName.addEventListener("keyup", function() { vUEI(lowercaseList); });
         var vDEI = this.validateDeleteExerciseInput;
-        this.$.enterDeleteExerciseName.addEventListener("keyup", function() { vDEI(this.exerciseNames); });
+        this.$.enterDeleteExerciseName.addEventListener("keyup", function() { vDEI(lowercaseList); });
     },
     // Event listener to update the menu button list, session entry toolbar, and graph content
     updateContentView: function(e) {
@@ -608,9 +609,10 @@ Polymer({
         d3.select("g.x.axis").transition().call(xAxis);
         d3.select("g.y.axis").transition().call(yAxis);
         
-        // Define the graph colors getter function
+        // Define the graph colors getter function and ordinal domain
         var color = model.getColors();
-
+        color.domain((model.exerciseNames).sort(d3.ascending));
+        
         // Append a <div> to act as the container for the tooltip
         if (!document.getElementById("tooltipContainer")) {
             var tooltipDiv = d3.select("#" + (configurationObject.graphID || "graph"))
@@ -626,9 +628,6 @@ Polymer({
         var clippedSVG = d3.select(".clippedSVG");
         
         // Set the dots
-        
-        color.domain((model.exerciseNames).sort(d3.ascending));
-        
         var removeDots = clippedSVG.selectAll(".dot").remove();
         var dots = clippedSVG.selectAll(".dot");
         dots.data(values)
