@@ -27,9 +27,7 @@ Polymer({
         this.createEmptyGraph();
         
         // Set event listeners for the main input bar's submit button
-        this.$.enterSets.addEventListener("change", this.toggleSaveSession);
-        this.$.enterReps.addEventListener("change", this.toggleSaveSession);
-        this.$.enterWeight.addEventListener("change", this.toggleSaveSession);
+        this.addSessionInputEventListeners();
         
         // User flow: initial element presentation and event listeners
         this.clearLayout();
@@ -190,16 +188,14 @@ Polymer({
     updateContentView: function(e) {
         // Retrieve the button's original exercise name from its template model: https://stackoverflow.com/questions/32212836/how-to-get-data-attribute-value-of-paper-card-from-on-tap-event
         if (e.model) {
+            // For named exercises
             var tag = e.model.item.lowercase;
         } else {
+            // For the "summary" view, since it's not actually a named exercise
             var tag = (e.target.innerText).toLowerCase();
         }
         if (tag === "summary") {
-            this.$.enterSets.disabled = true;
-            this.$.enterReps.disabled = true;
-            this.$.enterWeight.disabled = true;
-            this.$.enterNotes.disabled = true;
-            this.$.saveSession.disabled = true;
+            this.deactivateEnterSessionsBar();
         } else {
             this.$.enterSets.disabled = false;
             this.$.enterReps.disabled = false;
@@ -395,6 +391,15 @@ Polymer({
         } else {
             $("#saveSession").attr("disabled", true);
         }
+    },
+    // Add event listeners to the input bar above the graph
+    addSessionInputEventListeners: function() {
+        this.$.enterSets.addEventListener("keyup", this.toggleSaveSession);
+        this.$.enterSets.addEventListener("change", this.toggleSaveSession);
+        this.$.enterReps.addEventListener("keyup", this.toggleSaveSession);
+        this.$.enterReps.addEventListener("change", this.toggleSaveSession);
+        this.$.enterWeight.addEventListener("keyup", this.toggleSaveSession);
+        this.$.enterWeight.addEventListener("change", this.toggleSaveSession);  
     },
     // The "create" in the CRUD routines for managing individual workout sessions per exercise
     createSession: function() {
@@ -608,7 +613,7 @@ Polymer({
         var clippedSVG = d3.select(".clippedSVG");
         
         // Render the line(s) on the canvas
-        var mappedLength = Object.keys(mappedData).length;
+        var mappedLength = Object.keys(mappedData).length; /*
         var qsaLength = document.querySelectorAll(".line").length;
         if (qsaLength < mappedLength) {
             // console.log("Case 1");
@@ -622,25 +627,27 @@ Polymer({
                     .attr("d", newPath)
                     .attr("class", function(d) {
                         return "line line-" + (mappedData[0].key).replace(/ /gi, "-");
-                    });
+                    })
+                    .style("stroke", color(mappedData[0].key));
                 var newLinesStartCount = 1;
             } else {
                 var newLinesStartCount = 0;
             }
+            console.log(newLinesStartCount, color.domain());
             for (var i = newLinesStartCount; i < mappedLength; i++) {
-                var lineClasses = "line line-" + (mappedData[i].key).replace(/ /gi, "-");
-                var newPath = newLine(mappedData[i].values);
-                var lineColor = color(mappedData[i].key);
+                console.log(mappedData[i], color(mappedData[i].key));
                 clippedSVG.append("g")
                     .attr("class", "line-wrapper")
                     .append("path")
-                    .attr("class", lineClasses)
-                    .attr("d", newPath)
-                    .style("stroke", lineColor)
+                    .attr("class", "line line-" + (mappedData[i].key).replace(/ /gi, "-"))
+                    .attr("d", newLine(mappedData[i].values))
+                    .style("stroke", function() {
+                        return color(mappedData[i].key)
+                    })
                     .style("stroke-width", configurationObject.lineStrokeSize)
                     .style("fill", "none")
                     .style("opacity", "1.0");
-            }      
+            }
         } else {
             if (mappedLength > 1) {
                 // console.log("Case 2");
@@ -660,9 +667,10 @@ Polymer({
                     .attr("d", newPath)
                     .attr("class", function(d) {
                         return "line line-" + (mappedData[0].key).replace(/ /gi, "-");
-                    });
+                    })
+                    .style("stroke", color(mappedData[0].key));
             }
-        }
+        }*/
         
         // Append a <div> to act as the container for the tooltip
         if (!document.getElementById("tooltipContainer")) {
@@ -701,7 +709,7 @@ Polymer({
             .attr("cy", function(d) { return y(d.total); })
             .attr("r", configurationObject.circleStrokeSize)
             .attr("data-size-base", configurationObject.circleStrokeSize)
-            .style("stroke", function(d, i) { return color(d.name); })
+            .style("stroke", function(d) { return color(d.name); })
             .style("fill", function(d) { return color(d.name); })
             .style("cursor", "pointer")
             .style("opacity", "0")
@@ -779,7 +787,7 @@ Polymer({
                             reps: model.validateSessionValues($("#sessionReps")),
                             weight: model.validateSessionValues($("#sessionWeight")),
                             notes: model.validateSessionValues($("#sessionNotes"))
-                        }; console.log(data);
+                        };
                         
                         // POST handling routine
                         $.ajax({
@@ -844,6 +852,65 @@ Polymer({
             });
         clippedSVG.selectAll(".dot").transition().delay(150).style("opacity", "1.0");
         
+        // Render the line(s) on the canvas
+        var mappedLength = Object.keys(mappedData).length;
+        var qsaLength = document.querySelectorAll(".line").length;
+        
+        // Case: only one line on the canvas to update.
+        if (qsaLength === 1 && mappedLength === 1) {
+            var newPath = newLine(mappedData[0].values);
+            var keyMD = mappedData[0].key;
+            clippedSVG.select(".line")
+                .transition()
+                .attr("class", "line line-" + keyMD.replace(/ /gi, "-"))
+                .attr("d", newPath)
+                .attr("data-name", mappedData[0].key)
+                .style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
+        } else {
+            if (qsaLength < mappedLength) {
+                var loopLength = mappedLength;
+            } else {
+                var loopLength = qsaLength;
+            }
+            var arrayMD = [];
+            for (var i = 0; i < loopLength; i++) {
+                if (mappedData[i]) {
+                    arrayMD.push(mappedData[i]);
+                    var newPath = newLine(mappedData[i].values);
+                    var keyMD = mappedData[i].key;
+                    
+                    // Case: update an existing line
+                    if (document.querySelector(".line-" + keyMD)) {
+                        clippedSVG.select(".line-" + keyMD)
+                            .transition()
+                            .attr("d", newPath)
+                            .attr("data-name", keyMD)
+                            .style("stroke", function() { return d3.select(".dot-" + d3.select(this).attr("data-name")).style("fill"); });
+                            
+                    // Case: add a new line
+                    } else {
+                        clippedSVG.append("g")
+                            .attr("class", "line-wrapper")
+                            .append("path")
+                            .attr("class", "line line-" + keyMD.replace(/ /gi, "-"))
+                            .attr("d", newPath)
+                            .attr("data-name", mappedData[i].key)
+                            .style("stroke", function() { return d3.select(".dot-" + d3.select(this).attr("data-name")).style("fill"); })
+                            .style("stroke-width", configurationObject.lineStrokeSize)
+                            .style("fill", "none")
+                            .style("opacity", "1.0");
+                    }
+                }
+            }
+            
+            // Case: remove superfluous lines
+            clippedSVG.selectAll(".line").each(function() {
+                var removeLine = d3.select(this);
+                var grepped = $.grep(arrayMD, function(n) { return n.key === removeLine.attr("data-name"); });
+                if (grepped.length < 1) { removeLine.remove(); }
+            });
+        }
+
         // Define the brush
         var brush = d3.svg.brush()
             .x(xBrush)
@@ -898,7 +965,7 @@ Polymer({
                     .style("opacity", function(d) {
                         var thisDot = d3.select(this);
                         var name = thisDot.attr("data-name");
-                        name = "legendCheckMark-" + name.replace(/ /gi, "-");
+                        name = "legend-icon-" + name.replace(/ /gi, "-");
                         if (document.getElementById(name)) {
                             var checkState = d3.select("#" + name).attr("data-state");
                             if (checkState === "on") {
@@ -960,7 +1027,7 @@ Polymer({
                     .style("opacity", "1.0");
                 
                 // If present, reset the legend
-                d3.selectAll(".legendCheckMark")
+                d3.selectAll(".legend-icon")
                     .attr("data-state", "on")
                     .transition()
                     .duration(200)
@@ -977,10 +1044,13 @@ Polymer({
             return false;
         }
         
+        // Sort the color domain (prevents out of order legend bug)
+        var nameList = (color.domain()).sort(d3.ascending);
+        
         // Define the legend layout
         var svg = d3.select("#graph-svg");
         var legend = svg.selectAll(".legend")
-            .data(color.domain())
+            .data(nameList)
             .enter()
             .append("g")
             .attr("class", "legend");
@@ -1010,9 +1080,9 @@ Polymer({
             .data(mappedData)
             .attr("xlink:href", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH3wYbFBkXJBgGFwAAAEtJREFUOMvt07ERACAIA0DC/jvHCQzmwI50NH8ICJIxlYzBLCbDKYw3MBsdoYNJSGF0oRtGMRu424TbUfVMFLV9Z3Cgl21iP/pf7ABAcQ4jwRBahgAAAABJRU5ErkJggg==")
             .attr("id", function(d) {
-                return "legendCheckMark-" + (d.key).replace(/ /gi, "-");
+                return "legend-icon-" + (d.key).replace(/ /gi, "-");
             })
-            .attr("class", "legendCheckMark")
+            .attr("class", "legend-icon")
             .attr("data-name", function(d, i) {
                 return (d.key).replace(/ /gi, "-");
             })
@@ -1032,26 +1102,22 @@ Polymer({
             .style("text-anchor", "start")
             .style("font-family", "'Roboto', 'Noto', sans-serif")
             .style("font-size", "12px")
-            .text(function(d) { console.log(d, d.key); return model.capString(d.key); });
+            .text(function(d) {
+                return model.capString(d);
+            });
             
         // Add click functionality to the legend
-        var legendClick = d3.selectAll(".legendCheckMark").on("click", function(d) {
+        d3.selectAll(".legend-icon").on("click", function(d) {
             
                 // Remove the tooltip
                 model.removeTooltip();
                 
-                // Reset the dots
+                // Reset the dot sizes
                 clippedSVG.selectAll(".dot")
-                    .data(values)
-                    .attr("data-state", "on")
                     .attr("data-click", "off")
                     .transition()
                     .duration(200)
-                    .attr("r", function(d) { return d3.select(this).attr("data-size-base"); })
-                    .attr("cx", function(d) { return x(model.getDate(d.created_at)); })
-                    .attr("cy", function(d) { return y(d.total); })
-                    .attr("clip-path", "url(#clip)")
-                    .style("opacity", "1.0");
+                    .attr("r", function(d) { return d3.select(this).attr("data-size-base"); });
                 
                 var item = d3.select(this);
                 var referenceName = item.attr("data-name");
@@ -1066,6 +1132,7 @@ Polymer({
                         .transition()
                         .duration(200)
                         .style("opacity", "1.0")
+                        .attr("data-state", "on")
                         .attr("r", function(d) { return d3.select(this).attr("data-size-base"); });
                     svg.select(".line-" + referenceName)
                         .transition()
@@ -1074,11 +1141,6 @@ Polymer({
                     return false;
                 } else {
                     item.attr("data-state", "off");
-                    d3.select("#tooltipContainer")
-                        .style("padding", "0px")
-                        .style("opacity", "0")
-                        .style("border", "none")
-                        .html("");
                     d3.select(this)
                         .transition()
                         .duration(200)
@@ -1087,16 +1149,16 @@ Polymer({
                         .transition()
                         .duration(200)
                         .style("opacity", "0")
-                        .attr("r", "0");
+                        .attr("r", "0")
+                        .attr("data-state", "off");
                     svg.select(".line-" + referenceName)
                         .transition()
                         .duration(200)
                         .style("opacity", "0");
                     return false;
                 }
-                return false;
             });
-
+            
         return false;
     },
     // Draws an empty graph / sets the basic SVG scaffolding for use by the updateGraph() function
@@ -1313,16 +1375,79 @@ Polymer({
     getColors: function() {
         return d3.scale.ordinal().range([
             "#4184f3",
-            "#0033ff",
-            "#0055bb",
-            "#1c49a4",
-            "#24dccc",
-            "#3399ff",
-            "#006f88",
+            "#d32f2f",
+            "#ffa000",
+            "#388e3c",
+            "#ff5722",
+            "#7c4dff",
+            "#303f9f",
             "#3674be",
-            "#000099",
+            "#009688",
             "#003399"
         ]);
     }
 });
 
+
+        /* OLD LINE RENDERING ROUTINE - REPLACED BECAUSE IT WAS A LITTLE TOO CLUNKY.
+           THE NEW VERSION ALLOWS A SINGLE LINE TO TRANSITION ITSELF WHEN CHANGING TO SUMMARY VIEW,
+           INSTEAD OF BEING RESET TO THE FIRST CATEGORY IN THE LIST.
+        var mappedLength = Object.keys(mappedData).length;
+        var qsaLength = document.querySelectorAll(".line").length;
+        if (qsaLength < mappedLength) {
+            // console.log("Case 1");
+            if (qsaLength > 0) {
+                clippedSVG.selectAll(".line").each(function(d, i) {
+                   if (i > 0) { d3.select(this).remove(); }
+                });
+                var newPath = newLine(mappedData[0].values);
+                clippedSVG.select(".line")
+                    .transition()
+                    .attr("class", "line line-" + (mappedData[0].key).replace(/ /gi, "-"))
+                    .attr("d", newPath)
+                    .attr("data-name", mappedData[0].key)
+                    .style("stroke", color(mappedData[0].key));
+                var newLinesStartCount = 1;
+            } else {
+                var newLinesStartCount = 0;
+            }
+            for (var i = newLinesStartCount; i < mappedLength; i++) {
+                clippedSVG.append("g")
+                    .attr("class", "line-wrapper")
+                    .append("path")
+                    .attr("class", "line line-" + (mappedData[i].key).replace(/ /gi, "-"))
+                    .attr("d", newLine(mappedData[i].values))
+                    .attr("data-name", mappedData[i].key)
+                    .style("stroke", function() { return d3.select(".dot-" + d3.select(this).attr("data-name")).style("fill"); })
+                    .style("stroke-width", configurationObject.lineStrokeSize)
+                    .style("fill", "none")
+                    .style("opacity", "1.0");
+            }
+        } else {
+            if (mappedLength > 1) {
+                // console.log("Case 2");
+                for (var i = 0; i < mappedLength; i++) {
+                    var lineID = ".line-" + (mappedData[i].key).replace(/ /gi, "-");
+                    var newPath = newLine(mappedData[i].values);
+                    clippedSVG.select(lineID)
+                        .transition()
+                        .attr("class", "line line-" + (mappedData[i].key).replace(/ /gi, "-"))
+                        .attr("d", newPath)
+                        .attr("data-name", mappedData[i].key)
+                        .style("stroke", function() { return d3.select(".dot-" + d3.select(this).attr("data-name")).style("fill"); });
+                }
+            } else {
+                // console.log("Case 3");
+                clippedSVG.selectAll(".line").each(function(d, i) {
+                   if (i > 0) { d3.select(this).remove(); } 
+                });
+                var newPath = newLine(mappedData[0].values);
+                clippedSVG.select(".line")
+                    .transition()
+                    .attr("class", "line line-" + (mappedData[0].key).replace(/ /gi, "-"))
+                    .attr("d", newPath)
+                    .attr("data-name", mappedData[0].key)
+                    .style("stroke", color(mappedData[0].key));
+            }
+        }
+        */
