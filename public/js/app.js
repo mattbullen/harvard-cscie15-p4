@@ -567,6 +567,7 @@ Polymer({
         var minTotal = +values[0].sets * +values[0].reps * +values[0].weight;
         var maxTotal = minTotal;
         var mappedData = undefined; // Make absolutely sure the old mapped object is empty!
+        var currentExercises = [];
         mappedData = values.map(function(d, i) {
             var thisDate = model.getDate(d.created_at);
             if (thisDate > maxDate) { maxDate = thisDate; }
@@ -576,6 +577,7 @@ Polymer({
             if (thisTotal < minTotal) { minTotal = thisTotal; }
             // console.log(i, thisTotal, minTotal, maxTotal, minDate, maxDate);
             values[i].total = thisTotal;
+            currentExercises.push(d.name);
             return {
                 name: d.name,
                 date: thisDate,
@@ -995,12 +997,12 @@ Polymer({
         }
         
         // Sort the color domain (prevents out of order legend bug)
-        var nameList = (color.domain()).sort(d3.ascending);
+        var currentExercisesColorList = (color.domain(currentExercises)).sort(d3.ascending);
         
         // Define the legend layout
         var svg = d3.select("#graph-svg");
         var legend = svg.selectAll(".legend")
-            .data(nameList)
+            .data(currentExercisesColorList)
             .enter()
             .append("g")
             .attr("class", "legend");
