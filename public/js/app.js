@@ -26,10 +26,10 @@ Polymer({
         // Pre-render the basic graph scaffolding
         this.createEmptyGraph();
         
-        // Set an event listener on the main input bar's submit button
-        this.$.saveSession.addEventListener("keyup", this.toggleSaveSession);
-        this.$.saveSession.addEventListener("click", this.toggleSaveSession);
-        this.$.saveSession.addEventListener("change", this.toggleSaveSession);
+        // Set event listeners for the main input bar's submit button
+        this.$.enterSets.addEventListener("change", this.toggleSaveSession);
+        this.$.enterReps.addEventListener("change", this.toggleSaveSession);
+        this.$.enterWeight.addEventListener("change", this.toggleSaveSession);
         
         // User flow: initial element presentation and event listeners
         this.clearLayout();
