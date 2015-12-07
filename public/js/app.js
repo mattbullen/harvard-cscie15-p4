@@ -27,10 +27,8 @@ Polymer({
         this.createEmptyGraph();
         
         // User flow: initial element presentation and event listeners
-        $("#editMenuWrapper").hide();
-        $("#viewSummary").hide();
-        $("#editExercises").hide();
-        $("#entryMessage").html('<div class="centered"><div class="exerciseTitle">Signed Out</div></div>');
+        this.clearLayout();
+        this.deactivateEnterSessionsBar();
 
         // Set up the CSRF token for later use in POST requests
         $.ajaxSetup({ headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") } });
@@ -89,10 +87,13 @@ Polymer({
         this.currentUser = "";
         this.currentUserFirstName = "";
         this.menuButtons = [];
-        $("#editMenuWrapper").fadeOut();
-        $("#viewSummary").fadeOut();
-        $("#editExercises").fadeOut();
-        $("#entryMessage").html('<div class="centered"><div class="exerciseTitle">Signed Out</div></div>');
+        this.clearLayout();
+        this.deactivateEnterSessionsBar();
+        this.updateGraph({ sessions: [] });
+        this.openWelcomeModal();
+    },
+    // Deactivate the inputs for saving a new session
+    deactivateEnterSessionsBar: function() {
         $("#enterSets").val("");
         this.$.enterSets.disabled = true;
         $("#enterReps").val("");
@@ -102,8 +103,13 @@ Polymer({
         $("#enterNotes").val("");
         this.$.enterNotes.disabled = true;
         this.$.saveSession.disabled = true;
-        this.updateGraph({ sessions: [] });
-        this.openWelcomeModal();
+    },
+    // Clear the menu areas of content
+    clearLayout: function() {
+        $("#editMenuWrapper").hide();
+        $("#viewSummary").hide();
+        $("#editExercises").hide();
+        $("#entryMessage").html('<div class="centered"><div class="exerciseTitle">Signed Out</div></div>');
     },
     // User flow: handles the initial welcome / sign in modal on app load and user sign out
     openWelcomeModal: function() {
