@@ -101,7 +101,7 @@ paper-toolbar {
 }
 
 #welcomeModalTitle {
-    border-bottom: 1px solid #002147 !important;
+    border-bottom: 1px solid #aaa !important;
 }
 
 #welcomeModalTitle h1 {
