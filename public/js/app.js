@@ -818,9 +818,9 @@ Polymer({
             var keyMD = (mappedData[0].key).replace(/ /gi, "-");
             clippedSVG.select(".line")
                 .transition()
-                .attr("class", "line line-" + keyMD.replace(/ /gi, "-"))
+                .attr("class", "line line-" + keyMD)
                 .attr("d", newPath)
-                .attr("data-name", mappedData[0].key)
+                .attr("data-name", keyMD)
                 //.style("stroke", color(keyMD));
                 .style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
         } else {
@@ -853,8 +853,8 @@ Polymer({
                             .attr("class", "line line-" + keyMD)
                             .attr("d", newPath)
                             .attr("data-name", keyMD)
-                            //.style("stroke", color(keyMD))
-                            .style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); })
+                            .style("stroke", color(mappedData[i].key))
+                            //.style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); })
                             .style("stroke-width", graphConfig.lineStrokeSize)
                             .style("fill", "none")
                             .style("opacity", "1.0");
@@ -865,8 +865,9 @@ Polymer({
             // Case: remove superfluous lines
             clippedSVG.selectAll(".line").each(function() {
                 var removeLine = d3.select(this);
-                var grepped = $.grep(arrayMD, function(n) { return n === removeLine.attr("data-name"); });
-                if (grepped.length < 1) { removeLine.remove(); }
+                //var grepped = $.grep(arrayMD, function(n) { return n === removeLine.attr("data-name"); });
+                //if (grepped.length < 1) { removeLine.remove(); }
+                if (arrayMD.indexOf(removeLine.attr("data-name")) < 0)  { removeLine.remove(); }
             });
         }
 
