@@ -1078,7 +1078,7 @@ Polymer({
                     .attr("r", function(d) { return d3.select(this).attr("data-size-base"); });
                 
                 var item = d3.select(this);
-                var referenceName = item.attr("data-name");
+                var referenceName = item.attr("data-name").replace(/ /gi, "-");
                 var state = "" + item.attr("data-state").toLowerCase();
                 if (state === "off") {
                     item.attr("data-state", "on");
