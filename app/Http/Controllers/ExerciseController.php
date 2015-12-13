@@ -48,7 +48,6 @@ class ExerciseController extends Controller {
             return Response::json(array('error' => $reqErrors));
         }
         $emailObject = self::getEmailObject();
-        echo $emailObject;
         $reqName = Request::input('name');
         if (strtolower($reqName) == "all") {
             $item = \App\Exercise::all();
