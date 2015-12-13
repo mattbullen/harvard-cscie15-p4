@@ -137,15 +137,16 @@ Polymer({
         
         // Reference the local instance of the Polymer model
         var model = this;
+        var data = {
+            name: "all",
+            email: model.currentUser
+        };
         
         // POST handling routine
         $.ajax({
             type: "POST",
             url: "/exercise/read",
-            data: {
-                name: "all",
-                email: model.currentUser
-            },
+            data: data,
             success: function(response) {
                 console.log("\nResponse:", response);
                 if (response.found) {

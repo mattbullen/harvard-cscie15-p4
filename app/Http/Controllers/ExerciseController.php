@@ -50,7 +50,7 @@ class ExerciseController extends Controller {
         $emailObject = self::getEmailObject();
         echo $emailObject;
         $reqName = Request::input('name');
-        if (strtolower($reqName) == "all") { 
+        if (strtolower($reqName) == "all") {
             $item = \App\Exercise::where('email_id', '=', $emailObject->id)->get();
         } else {
             $item = \App\Exercise::where('email_id', '=', $emailObject->id)->where('name', 'LIKE', '%' . $reqName . '%')->get();
