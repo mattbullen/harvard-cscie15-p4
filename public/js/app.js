@@ -1317,7 +1317,7 @@ Polymer({
         return {
             graphID: "graph",
             graphWidth: 900,
-            clippedSVGWidth: 840,
+            clippedSVGWidth: 835,
             clippedSVGHeight: 444,
             circleRadiusSize: 3.618,
             circleRadiusExpandedPadding: 3.0,
