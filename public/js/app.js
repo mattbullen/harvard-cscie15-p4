@@ -1028,6 +1028,7 @@ Polymer({
             
         // Define the selection circles in the legend
         legend.append("circle")
+            .data(mappedData)
             .attr("x", 0)
             .attr("y", 0)
             .attr("r", 12)
