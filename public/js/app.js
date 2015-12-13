@@ -1032,7 +1032,8 @@ Polymer({
             .attr("y", 0)
             .attr("r", 12)
             .attr("transform", "translate(11, 11)")
-            .style("fill", color);
+            //.style("fill", color);
+            .style("fill", function() { return d3.select(".dot-" + (d.key).replace(/ /gi, "-")).style("fill"); });
             
         // Render the legend check marks
         legend.append("image")
