@@ -821,8 +821,8 @@ Polymer({
                 .attr("class", "line line-" + keyMD)
                 .attr("d", newPath)
                 .attr("data-name", keyMD)
-                //.style("stroke", color(keyMD));
-                .style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
+                .style("stroke", color(mappedData[0].key));
+                //.style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
         } else {
             if (qsaLength < mappedLength) {
                 var loopLength = mappedLength;
