@@ -56,7 +56,7 @@ Polymer({
             var user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
             this.currentUser = user.po;
             this.currentUserFirstName = user.Ph;
-            console.log("User signed in: " + user.Ph + ", " + user.po);
+            console.log("\nUser signed in: " + user.Ph + ", " + user.po);
             
             // Move on to the "get the app ready for use" process
             this.handleUser(user.po, user.Ph);
@@ -91,7 +91,7 @@ Polymer({
     },
     // User flow: clear the layout when a user signs out
     signOut: function() {
-        console.log("User signed out!");
+        console.log("\nUser signed out!");
         this.currentUser = "";
         this.currentUserFirstName = "";
         this.menuButtons = [];
