@@ -669,8 +669,8 @@ Polymer({
             .attr("r", graphConfig.circleRadiusSize)
             .attr("data-size-base", graphConfig.circleRadiusSize)
             //.style("stroke", function(d) { return color(d.name); })
-            .style("stroke", function(d) { model.colorMap[(d.name).replace(/ /gi, "-").toLowerCase()]; })
-            .style("fill", function(d) { model.colorMap[(d.name).replace(/ /gi, "-").toLowerCase()]; })
+            .style("stroke", function(d) { return model.colorMap[(d.name).replace(/ /gi, "-").toLowerCase()]; })
+            .style("fill", function(d) { return model.colorMap[(d.name).replace(/ /gi, "-").toLowerCase()]; })
             .style("cursor", "pointer")
             .style("opacity", "0")
             .on("click", function(d) {
