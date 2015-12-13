@@ -22,8 +22,8 @@ Polymer({
             reflect: true
         },
         colorMap: {
-            type: Array,
-            value: [],
+            type: Object,
+            value: {},
             reflect: true
         }
     },
@@ -669,8 +669,8 @@ Polymer({
             .attr("r", graphConfig.circleRadiusSize)
             .attr("data-size-base", graphConfig.circleRadiusSize)
             //.style("stroke", function(d) { return color(d.name); })
-            .style("stroke", function(d) { model.colorMap((d.name).replace(/ /gi, "-")); })
-            .style("fill", function(d) { model.colorMap((d.name).replace(/ /gi, "-")); })
+            .style("stroke", function(d) { model.colorMap[(d.name).replace(/ /gi, "-")]; })
+            .style("fill", function(d) { model.colorMap[(d.name).replace(/ /gi, "-")]; })
             .style("cursor", "pointer")
             .style("opacity", "0")
             .on("click", function(d) {
@@ -1377,12 +1377,10 @@ Polymer({
             "#009688",
             "#003399"
         ];
-        var map = [];
+        var map = {};
         var i, item;
         for (i = 0; i < this.exerciseNames.length; i++) {
-            item = {};
-            item[this.exerciseNames[i].replace(/ /gi, "-")] = colors[i];
-            map.push(item);
+            map[this.exerciseNames[i].replace(/ /gi, "-")] = colors[i];
         }
         this.colorMap = map;
         console.log(this.exerciseNames, this.colorMap);
