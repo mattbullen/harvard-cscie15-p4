@@ -823,6 +823,7 @@ Polymer({
                 .attr("data-name", keyMD)
                 .style("stroke", color(mappedData[0].key));
                 //.style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
+                console.log(color(mappedData[0].key), d3.select(".dot-" + keyMD).style("fill"));
         } else {
             if (qsaLength < mappedLength) {
                 var loopLength = mappedLength;
