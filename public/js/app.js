@@ -831,7 +831,7 @@ Polymer({
                 .attr("class", "line line-" + keyMD)
                 .attr("d", newPath)
                 .attr("data-name", keyMD)
-                .style("stroke", color(mappedData[0].key));
+                //.style("stroke", color(mappedData[0].key));
                 .style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
                 //console.log(color(mappedData[0].key), d3.select(".dot-" + keyMD).style("fill"));
         } else {
