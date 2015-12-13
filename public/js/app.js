@@ -1318,7 +1318,7 @@ Polymer({
             yAxisLabelPadding: -36,
             margin: {
                 top: 5, 
-                right: 0, 
+                right: 5, 
                 bottom: 450, 
                 left: 45
             },
