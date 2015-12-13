@@ -623,10 +623,6 @@ Polymer({
         d3.select("g.x.axis").transition().call(xAxis);
         d3.select("g.y.axis").transition().call(yAxis);
         
-        // Define the graph colors getter function and ordinal domain
-        var color = model.getColors();
-        color.domain((model.exerciseNames).sort(d3.ascending));
-        
         // Append a <div> to act as the container for the tooltip
         if (!document.getElementById("tooltipContainer")) {
             var tooltipDiv = d3.select("#" + (graphConfig.graphID || "graph"))
@@ -668,7 +664,6 @@ Polymer({
             .attr("cy", function(d) { return y(d.total); })
             .attr("r", graphConfig.circleRadiusSize)
             .attr("data-size-base", graphConfig.circleRadiusSize)
-            //.style("stroke", function(d) { return color(d.name); })
             .style("stroke", function(d) { return model.colorMap[(d.name).replace(/ /gi, "-").toLowerCase()]; })
             .style("fill", function(d) { return model.colorMap[(d.name).replace(/ /gi, "-").toLowerCase()]; })
             .style("cursor", "pointer")
@@ -831,9 +826,7 @@ Polymer({
                 .attr("class", "line line-" + keyMD)
                 .attr("d", newPath)
                 .attr("data-name", keyMD)
-                //.style("stroke", color(mappedData[0].key));
                 .style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
-                //console.log(color(mappedData[0].key), d3.select(".dot-" + keyMD).style("fill"));
         } else {
             if (qsaLength < mappedLength) {
                 var loopLength = mappedLength;
@@ -853,7 +846,6 @@ Polymer({
                             .transition()
                             .attr("d", newPath)
                             .attr("data-name", keyMD)
-                            //.style("stroke", color(keyMD));
                             .style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
                             
                     // Case: add a new line
@@ -864,7 +856,6 @@ Polymer({
                             .attr("class", "line line-" + keyMD)
                             .attr("d", newPath)
                             .attr("data-name", keyMD)
-                            //.style("stroke", color(mappedData[i].key))
                             .style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); })
                             .style("stroke-width", graphConfig.lineStrokeSize)
                             .style("fill", "none")
@@ -876,8 +867,6 @@ Polymer({
             // Case: remove superfluous lines
             clippedSVG.selectAll(".line").each(function() {
                 var removeLine = d3.select(this);
-                //var grepped = $.grep(arrayMD, function(n) { return n === removeLine.attr("data-name"); });
-                //if (grepped.length < 1) { removeLine.remove(); }
                 if (arrayMD.indexOf(removeLine.attr("data-name")) < 0)  { removeLine.remove(); }
             });
         }
@@ -1016,13 +1005,16 @@ Polymer({
         }
         
         // Sort the color domain (prevents out of order legend bug)
-        color.domain(currentExercises.sort(d3.ascending));
+        // Define the graph colors getter function and ordinal domain
+        //var color = model.getColors();
+        //color.domain((model.exerciseNames).sort(d3.ascending));
+        //color.domain(currentExercises.sort(d3.ascending));
 
         // Define the legend layout
         var legendMarginLeft = 45;
         var svg = d3.select("#graph-svg");
         var legend = svg.selectAll(".legend")
-            .data(color.domain())
+            .data(currentExercises.sort(d3.ascending))
             .enter()
             .append("g")
             .attr("class", "legend");
@@ -1045,7 +1037,6 @@ Polymer({
             .attr("y", 0)
             .attr("r", 12)
             .attr("transform", "translate(11, 11)")
-            //.style("fill", color);
             .style("fill", function(d) { return d3.select(".dot-" + (d.key).replace(/ /gi, "-")).style("fill"); });
             
         // Render the legend check marks
