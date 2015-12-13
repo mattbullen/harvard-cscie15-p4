@@ -1006,15 +1006,15 @@ Polymer({
         
         // Sort the color domain (prevents out of order legend bug)
         // Define the graph colors getter function and ordinal domain
-        //var color = model.getColors();
-        //color.domain((model.exerciseNames).sort(d3.ascending));
-        //color.domain(currentExercises.sort(d3.ascending));
-
+        var color = model.getColors();
+        color.domain(currentExercises.sort(d3.ascending));
+        console.log(color.domain());
+        
         // Define the legend layout
         var legendMarginLeft = 45;
         var svg = d3.select("#graph-svg");
         var legend = svg.selectAll(".legend")
-            .data(currentExercises.sort(d3.ascending))
+            .data(color.domain())
             .enter()
             .append("g")
             .attr("class", "legend");
@@ -1374,7 +1374,6 @@ Polymer({
             map[this.exerciseNames[i].replace(/ /gi, "-")] = colors[i];
         }
         this.colorMap = map;
-        console.log(this.exerciseNames, this.colorMap);
     }
 });
 
