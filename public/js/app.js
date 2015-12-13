@@ -1004,17 +1004,16 @@ Polymer({
             return false;
         }
         
-        // Sort the color domain (prevents out of order legend bug)
-        // Define the graph colors getter function and ordinal domain
-        var color = model.getColors();
-        color.domain(currentExercises.sort(d3.ascending));
-        console.log(color.domain());
+        // Set the legend's domain
+        var legendDomain = d3.scale.ordinal();
+        legendDomain.domain(currentExercises.sort(d3.ascending));
+        console.log(legendDomain.domain());
         
         // Define the legend layout
         var legendMarginLeft = 45;
         var svg = d3.select("#graph-svg");
         var legend = svg.selectAll(".legend")
-            .data(color.domain())
+            .data(legendDomain.domain())
             .enter()
             .append("g")
             .attr("class", "legend");
