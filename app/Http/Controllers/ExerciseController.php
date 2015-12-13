@@ -50,7 +50,7 @@ class ExerciseController extends Controller {
         $emailObject = self::getEmailObject();
         $reqName = Request::input('name');
         if (strtolower($reqName) == "all") {
-            $item = \App\Exercise::all();
+            $item = \App\Exercise::where('email_id', '=', $emailObject->id)->get();
         } else {
             $item = \App\Exercise::where('email_id', '=', $emailObject->id)->where('name', 'LIKE', '%' . $reqName . '%')->get();
         }
@@ -97,7 +97,7 @@ class ExerciseController extends Controller {
         if ($item) {
             $item->delete();
             \App\Session::where('name', $reqName)->where('email_id', '=', $emailObject->id)->delete();
-            return Response::json(array('updated' => \App\Exercise::->where('email_id', '=', $emailObject->id)->get()));
+            return Response::json(array('updated' => \App\Exercise::where('email_id', '=', $emailObject->id)->get()));
         } else {
             return Response::json(array('conflict' => $reqName . ' not found!'));
         }
