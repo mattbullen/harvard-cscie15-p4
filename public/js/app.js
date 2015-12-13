@@ -159,6 +159,8 @@ Polymer({
     // Response handler for setMenuButtons()
     updateMenuButtons: function(data) {
         
+        this.menuButtons = []
+        
         // Sort and process the exercise name strings
         if (data.length > 0) {
             data = data.sort(this.sortByProperty("name"));
@@ -177,7 +179,6 @@ Polymer({
             this.menuButtons = list;
             this.exerciseNames = lowercaseList;
         } else {
-            this.menuButtons = [];
             this.exerciseNames = [];
             var lowercaseList = [];
         }
