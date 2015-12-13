@@ -821,8 +821,8 @@ Polymer({
                 .attr("class", "line line-" + keyMD.replace(/ /gi, "-"))
                 .attr("d", newPath)
                 .attr("data-name", mappedData[0].key)
-                .style("stroke", color(keyMD));
-                //.style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
+                //.style("stroke", color(keyMD));
+                .style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
         } else {
             if (qsaLength < mappedLength) {
                 var loopLength = mappedLength;
@@ -842,8 +842,8 @@ Polymer({
                             .transition()
                             .attr("d", newPath)
                             .attr("data-name", keyMD)
-                            .style("stroke", color(keyMD));
-                            //.style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
+                            //.style("stroke", color(keyMD));
+                            .style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
                             
                     // Case: add a new line
                     } else {
@@ -853,7 +853,8 @@ Polymer({
                             .attr("class", "line line-" + keyMD.replace(/ /gi, "-"))
                             .attr("d", newPath)
                             .attr("data-name", keyMD)
-                            .style("stroke", color(keyMD))
+                            //.style("stroke", color(keyMD))
+                            .style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); })
                             .style("stroke-width", graphConfig.lineStrokeSize)
                             .style("fill", "none")
                             .style("opacity", "1.0");
