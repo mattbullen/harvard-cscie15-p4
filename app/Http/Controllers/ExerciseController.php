@@ -50,15 +50,15 @@ class ExerciseController extends Controller {
         $emailObject = self::getEmailObject();
         $reqName = Request::input('name');
         if (strtolower($reqName) == "all") { 
-            $item = \App\Exercise::where('email_id', '=', $emailObject->id)->get();
+            //$item = \App\Exercise::where('email_id', '=', $emailObject->id)->get();
         } else {
-            $item = \App\Exercise::where('name', 'LIKE', '%' . $reqName . '%')->where('email_id', '=', $emailObject->id)->get();
+            //$item = \App\Exercise::where('name', 'LIKE', '%' . $reqName . '%')->where('email_id', '=', $emailObject->id)->get();
         }
-        if ($item && sizeof($item) > 0) {
-            return Response::json(array('found' => $item));
-        } else {
-            return Response::json(array('conflict' => $reqName . ' not found!'));
-        }
+        //if ($item && sizeof($item) > 0) {
+            return Response::json(array('found' => $emailObject));
+        //} else {
+        //    return Response::json(array('conflict' => $reqName . ' not found!'));
+        //}
     }
     
     public function updateExercise() {
