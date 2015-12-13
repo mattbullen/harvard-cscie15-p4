@@ -142,7 +142,10 @@ Polymer({
         $.ajax({
             type: "POST",
             url: "/exercise/read",
-            data: { name: "all" },
+            data: {
+                name: "all",
+                email: model.currentUser
+            },
             success: function(response) {
                 console.log("\nResponse:", response);
                 if (response.found) {
@@ -158,9 +161,7 @@ Polymer({
     },
     // Response handler for setMenuButtons()
     updateMenuButtons: function(data) {
-        
-        this.menuButtons = []
-        
+
         // Sort and process the exercise name strings
         if (data.length > 0) {
             data = data.sort(this.sortByProperty("name"));
@@ -179,6 +180,7 @@ Polymer({
             this.menuButtons = list;
             this.exerciseNames = lowercaseList;
         } else {
+            this.menuButtons = []
             this.exerciseNames = [];
             var lowercaseList = [];
         }
@@ -266,7 +268,7 @@ Polymer({
         var data = {
             name: name,
             email: model.currentUser
-        }
+        };
         $("#enterCreateExerciseName").val("");
         $("#createExerciseButton").attr("disabled", true);
         
@@ -316,7 +318,7 @@ Polymer({
             name: name,
             updateTo: updateTo,
             email: model.currentUser
-        }
+        };
         $("#enterUpdateOldName").val("");
         $("#enterUpdateNewName").val("");
         $("#updateExerciseButton").attr("disabled", true);
@@ -368,7 +370,7 @@ Polymer({
         var data = {
             name: name,
             email: model.currentUser
-        }
+        };
         $("#enterDeleteExerciseName").val("");
         $("#deleteExerciseButton").attr("disabled", true);
         

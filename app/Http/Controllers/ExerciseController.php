@@ -38,7 +38,7 @@ class ExerciseController extends Controller {
             $item->name = $reqName;
             $item->email()->associate($emailObject);
             $item->save();
-            return Response::json(array('exercises' => \App\Exercise::all()));
+            return Response::json(array('exercises' => \App\Exercise::where('email_id', '=', $emailObject->id)->get()));
         }
     }
     
@@ -49,7 +49,8 @@ class ExerciseController extends Controller {
         }
         $reqName = Request::input('name');
         if (strtolower($reqName) == "all") { $reqName = ''; }
-        $item = \App\Exercise::where('name', 'LIKE', '%' . $reqName . '%')->get();
+        $emailObject = self::getEmailObject();
+        $item = \App\Exercise::where('name', 'LIKE', '%' . $reqName . '%')->where('email_id', '=', $emailObject->id)->get();
         if ($item && sizeof($item) > 0) {
             return Response::json(array('found' => $item));
         } else {
@@ -70,12 +71,13 @@ class ExerciseController extends Controller {
         if ($reqNameUpdateTo == '') {
             return Response::json(array('error' => 'Need an update-to name!'));
         }
-        $item = \App\Exercise::where('name', '=', $reqNameOld)->first();
+        $emailObject = self::getEmailObject();
+        $item = \App\Exercise::where('name', '=', $reqNameOld)->where('email_id', '=', $emailObject->id)->first();
         if ($item) {
             $item->name = $reqNameUpdateTo;
             $item->save();
             \App\Session::where('name', $reqNameOld)->update(array('name' => $reqNameUpdateTo));
-            return Response::json(array('updated' => \App\Exercise::all()));
+            return Response::json(array('updated' => \App\Exercise::where('email_id', '=', $emailObject->id)->get()));
         } else {
             return Response::json(array('conflict' => $reqNameOld . ' not found!'));
         }
@@ -87,11 +89,12 @@ class ExerciseController extends Controller {
             return Response::json(array('error' => $reqErrors));
         }
         $reqName = Request::input('name');
+        $emailObject = self::getEmailObject();
         $item = \App\Exercise::where('name', '=', $reqName)->first();
         if ($item) {
             $item->delete();
-            \App\Session::where('name', $reqName)->delete();
-            return Response::json(array('updated' => \App\Exercise::all()));
+            \App\Session::where('name', $reqName)->where('email_id', '=', $emailObject->id)->delete();
+            return Response::json(array('updated' => \App\Exercise::->where('email_id', '=', $emailObject->id)->get()));
         } else {
             return Response::json(array('conflict' => $reqName . ' not found!'));
         }
