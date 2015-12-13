@@ -815,14 +815,14 @@ Polymer({
         // Case: only one line on the canvas to update.
         if (qsaLength === 1 && mappedLength === 1) {
             var newPath = newLine(mappedData[0].values);
-            var keyMD = mappedData[0].key;
+            var keyMD = (mappedData[0].key).replace(/ /gi, "-");
             clippedSVG.select(".line")
                 .transition()
                 .attr("class", "line line-" + keyMD.replace(/ /gi, "-"))
                 .attr("d", newPath)
                 .attr("data-name", mappedData[0].key)
-                .style("stroke", color(keyMD));
-                //.style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
+                //.style("stroke", color(keyMD));
+                .style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
         } else {
             if (qsaLength < mappedLength) {
                 var loopLength = mappedLength;
@@ -832,9 +832,9 @@ Polymer({
             var arrayMD = [];
             for (var i = 0; i < loopLength; i++) {
                 if (mappedData[i]) {
-                    arrayMD.push(mappedData[i]);
                     var newPath = newLine(mappedData[i].values);
-                    var keyMD = mappedData[i].key;
+                    var keyMD = (mappedData[i].key).replace(/ /gi, "-");
+                    arrayMD.push(keyMD);
                     
                     // Case: update an existing line
                     if (document.querySelector(".line-" + keyMD)) {
@@ -842,19 +842,19 @@ Polymer({
                             .transition()
                             .attr("d", newPath)
                             .attr("data-name", keyMD)
-                            .style("stroke", color(keyMD));
-                            //.style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
+                            //.style("stroke", color(keyMD));
+                            .style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
                             
                     // Case: add a new line
                     } else {
                         clippedSVG.append("g")
                             .attr("class", "line-wrapper")
                             .append("path")
-                            .attr("class", "line line-" + keyMD.replace(/ /gi, "-"))
+                            .attr("class", "line line-" + keyMD)
                             .attr("d", newPath)
                             .attr("data-name", keyMD)
-                            .style("stroke", color(keyMD))
-                            //.style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); })
+                            //.style("stroke", color(keyMD))
+                            .style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); })
                             .style("stroke-width", graphConfig.lineStrokeSize)
                             .style("fill", "none")
                             .style("opacity", "1.0");
@@ -865,7 +865,7 @@ Polymer({
             // Case: remove superfluous lines
             clippedSVG.selectAll(".line").each(function() {
                 var removeLine = d3.select(this);
-                var grepped = $.grep(arrayMD, function(n) { return n.key === removeLine.attr("data-name"); });
+                var grepped = $.grep(arrayMD, function(n) { return n === removeLine.attr("data-name"); });
                 if (grepped.length < 1) { removeLine.remove(); }
             });
         }
@@ -1110,7 +1110,7 @@ Polymer({
                         .style("opacity", "0")
                         .attr("r", "0")
                         .attr("data-state", "off");
-                    svg.select(".line-" + referenceName)
+                    svg.selectAll(".line-" + referenceName)
                         .transition()
                         .duration(200)
                         .style("opacity", "0");
