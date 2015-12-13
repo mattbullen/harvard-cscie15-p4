@@ -337,6 +337,7 @@ Polymer({
                         $("#entryMessage").fadeOut().html('<div class="centered"><div class="exerciseTitle">' + updateTo + '</div></div>').fadeIn();
                         model.currentExercise = updateTo;
                     }
+                    $("#viewSummary").click();
                 }
             },
             error: function(error) {
