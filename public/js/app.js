@@ -20,6 +20,11 @@ Polymer({
             type: Array,
             value: [],
             reflect: true
+        },
+        colorMap: {
+            type: Array,
+            value: [],
+            reflect: true
         }
     },
     // Runs when the app loads
@@ -165,7 +170,7 @@ Polymer({
 
         // Sort and process the exercise name strings
         if (data.length > 0) {
-            data = data.sort(this.sortByProperty("name"));
+            // data = data.sort(this.sortByProperty("name"));
             var list = [];
             var lowercaseList = [];
             var item, lowercased;
@@ -178,13 +183,16 @@ Polymer({
                 });
                 lowercaseList.push(lowercased);
             }
-            this.menuButtons = list;
-            this.exerciseNames = lowercaseList;
+            this.menuButtons = list.sort(this.sortByProperty("lowercase"));
+            this.exerciseNames = lowercaseList.sort();
         } else {
             this.menuButtons = []
             this.exerciseNames = [];
             var lowercaseList = [];
         }
+        
+        // Set the graph's color map
+        this.getColorMap();
         
         // Add event listeners to the edit menu pop ups
         var vCEI = this.validateCreateExerciseInput;
@@ -660,8 +668,9 @@ Polymer({
             .attr("cy", function(d) { return y(d.total); })
             .attr("r", graphConfig.circleRadiusSize)
             .attr("data-size-base", graphConfig.circleRadiusSize)
-            .style("stroke", function(d) { return color(d.name); })
-            .style("fill", function(d) { return color(d.name); })
+            //.style("stroke", function(d) { return color(d.name); })
+            .style("stroke", function(d) { model.colorMap((d.name).replace(/ /gi, "-")); })
+            .style("fill", function(d) { model.colorMap((d.name).replace(/ /gi, "-")); })
             .style("cursor", "pointer")
             .style("opacity", "0")
             .on("click", function(d) {
@@ -823,8 +832,8 @@ Polymer({
                 .attr("d", newPath)
                 .attr("data-name", keyMD)
                 .style("stroke", color(mappedData[0].key));
-                //.style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
-                console.log(color(mappedData[0].key), d3.select(".dot-" + keyMD).style("fill"));
+                .style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); });
+                //console.log(color(mappedData[0].key), d3.select(".dot-" + keyMD).style("fill"));
         } else {
             if (qsaLength < mappedLength) {
                 var loopLength = mappedLength;
@@ -855,8 +864,8 @@ Polymer({
                             .attr("class", "line line-" + keyMD)
                             .attr("d", newPath)
                             .attr("data-name", keyMD)
-                            .style("stroke", color(mappedData[i].key))
-                            //.style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); })
+                            //.style("stroke", color(mappedData[i].key))
+                            .style("stroke", function() { return d3.select(".dot-" + keyMD).style("fill"); })
                             .style("stroke-width", graphConfig.lineStrokeSize)
                             .style("fill", "none")
                             .style("opacity", "1.0");
@@ -1354,5 +1363,44 @@ Polymer({
             "#009688",
             "#003399"
         ]);
+    },
+    getColorMap: function() {
+        var colors = [
+            "#4184f3",
+            "#d32f2f",
+            "#ffa000",
+            "#388e3c",
+            "#ff5722",
+            "#7c4dff",
+            "#303f9f",
+            "#3674be",
+            "#009688",
+            "#003399"
+        ];
+        var map = [];
+        var i, item;
+        for (i = 0; i < this.exerciseNames.length; i++) {
+            item = {};
+            item[this.exerciseNames[i].replace(/ /gi, "-")] = colors[i];
+            map.push(item);
+        }
+        this.colorMap = map;
+        console.log(this.exerciseNames, this.colorMap);
     }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
