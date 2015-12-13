@@ -47,10 +47,13 @@ class ExerciseController extends Controller {
         if ($reqErrors) {
             return Response::json(array('error' => $reqErrors));
         }
-        $reqName = Request::input('name');
-        if (strtolower($reqName) == "all") { $reqName = ''; }
         $emailObject = self::getEmailObject();
-        $item = \App\Exercise::where('name', 'LIKE', '%' . $reqName . '%')->where('email_id', '=', $emailObject->id)->get();
+        $reqName = Request::input('name');
+        if (strtolower($reqName) == "all") { 
+            $item = \App\Exercise::where('email_id', '=', $emailObject->id)->get();
+        } else {
+            $item = \App\Exercise::where('name', 'LIKE', '%' . $reqName . '%')->where('email_id', '=', $emailObject->id)->get();
+        }
         if ($item && sizeof($item) > 0) {
             return Response::json(array('found' => $item));
         } else {
