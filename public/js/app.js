@@ -1367,7 +1367,7 @@ Polymer({
         ];
     },
     getColorMap: function() {
-        var colors = getColorList();
+        var colors = this.getColorList();
         var entry, color, index;
         for (entry in this.colorMap) {
             color = this.colorMap[entry]; console.log(entry, color);
@@ -1375,7 +1375,7 @@ Polymer({
             if (index !== -1) {
                 colors.splice(index, 1);
                 if (colors.length === 0) {
-                    colors = getColorList();
+                    colors = this.getColorList();
                 }
             }
         }
@@ -1386,7 +1386,7 @@ Polymer({
                 this.colorMap[name] = colors[0];
                 colors.splice(0, 1);
                 if (colors.length === 0) {
-                    colors = getColorList();
+                    colors = this.getColorList();
                 }
             }
         }
