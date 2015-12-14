@@ -49,6 +49,10 @@ a:hover {
 
 /* base-app.html */
 
+#mainContainer {
+    overflow: hidden !important;
+}
+
 .buttonHover {
     font-weight: normal !important;
     color: #fff !important;
@@ -65,8 +69,8 @@ a:hover {
 
 paper-material {
     position: relative;
-    max-width: 960px;
-    width: 95%;
+    max-width: 1200px;
+    width: 100%;
     margin: 25px auto;
     color: #212121;
     background-color: #fff;
@@ -130,8 +134,58 @@ paper-toolbar {
     color: #212121;
 }
 
+#mainPanel {
+    border-left: 1px solid #ccc;
+}
+
 #entryMessage {
+    margin-bottom: 0px !important;
     padding: 6px !important;
+    border-bottom: 1px solid #ccc !important;
+}
+
+#logSession {
+    margin-top: 0px !important;
+    padding-bottom: 8px;
+}
+
+#enterSets,
+#enterReps {
+    display: inline-block;
+    width: 6%;
+}
+
+#enterWeight {
+    display: inline-block;
+    width: 8%;
+}
+
+#enterSets {
+    margin: 0 4% 0 4%;
+}
+
+#enterReps,
+#enterWeight {
+    margin: 0 4% 0 0;
+}
+
+#enterNotes {
+    display: inline-block;
+    width: 51%;
+}
+
+#saveSession {
+    position: absolute;
+    top: 12px;
+    right: 3%;
+    width: 56px;
+    height: 56px;
+}
+  
+.main-panel {
+    background-color: #eee;
+    height: 100vh;
+    overflow-y: hidden;
 }
 
 #left {
@@ -239,53 +293,6 @@ paper-toolbar {
 
 .textClose:hover {
     color: #4184f3 !important;
-}
-
-#mainPanel {
-    border-left: 1px solid #ccc;
-}
-
-#logSession {
-    padding-bottom: 8px;
-}
-
-#enterSets,
-#enterReps {
-    display: inline-block;
-    width: 6%;
-}
-
-#enterWeight {
-    display: inline-block;
-    width: 8%;
-}
-
-#enterSets {
-    margin: 0 4% 0 4%;
-}
-
-#enterReps,
-#enterWeight {
-    margin: 0 4% 0 0;
-}
-
-#enterNotes {
-    display: inline-block;
-    width: 51%;
-}
-
-#saveSession {
-    position: absolute;
-    top: 12px;
-    right: 3%;
-    width: 56px;
-    height: 56px;
-}
-  
-.main-panel {
-    background-color: #eee;
-    height: 100vh;
-    overflow-y: hidden;
 }
 
 /* SVG Layout */

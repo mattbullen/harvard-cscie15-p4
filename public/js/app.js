@@ -224,7 +224,7 @@ Polymer({
             this.$.enterNotes.disabled = false;
             this.toggleSaveSession();
         }
-        $("#entryMessage").html('<div class="centered"><div class="exerciseTitle">' + tag + '</div></div>');
+        $("#entryMessage")fadeOut().html('<div class="centered"><div class="exerciseTitle">' + tag + '</div></div>').fadeIn();
         console.log("\nMenu button clicked:", tag);
         this.currentExercise = tag;
         this.readSessions();
@@ -1340,20 +1340,6 @@ Polymer({
         };
     },
     // Sets the graph's line and dot colors
-    getColors: function() {
-        return d3.scale.ordinal().range([
-            "#4184f3",
-            "#d32f2f",
-            "#ffa000",
-            "#388e3c",
-            "#ff5722",
-            "#7c4dff",
-            "#303f9f",
-            "#3674be",
-            "#009688",
-            "#003399"
-        ]);
-    },
     getColorMap: function() {
         var colors = [
             "#4184f3",
@@ -1375,19 +1361,3 @@ Polymer({
         this.colorMap = map;
     }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
