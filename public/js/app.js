@@ -1365,11 +1365,25 @@ Polymer({
             "#009688",
             "#003399"
         ];
-        var map = {};
-        var i, item;
-        for (i = 0; i < this.exerciseNames.length; i++) {
-            map[this.exerciseNames[i].replace(/ /gi, "-")] = colors[i];
+        var entry, color, index;
+        for (entry in this.colorMap) {
+            color = this.colorMap[entry];
+            index = colors.indexOf(color);
+            if (index !== -1) {
+                colors.splice(index, 1);
+            }
         }
-        this.colorMap = map;
+        var map = {};
+        var i, j;
+        for (i = 0; i < this.exerciseNames.length; i++) {
+            j = i;
+            if (i > colors.length) {
+                while (j > 0) {
+                    j = j - colors.length;
+                }
+            }
+            map[this.exerciseNames[i].replace(/ /gi, "-")] = colors[j];
+        }
+        this.colorMap = map; console.log(colors, map);
     }
 });
