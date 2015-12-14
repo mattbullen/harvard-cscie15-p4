@@ -1313,9 +1313,7 @@ Polymer({
         var i, part;
         for (i = 0; i < parts.length; i++) {
             part = parts[i];
-            if (part !== " ") {
-                capped += part.substring(0, 1).toUpperCase() + part.substring(1, part.length);
-            }
+            capped += part.substring(0, 1).toUpperCase() + part.substring(1, part.length);
         }
         return capped;
     },
