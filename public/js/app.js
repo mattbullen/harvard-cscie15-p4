@@ -224,7 +224,7 @@ Polymer({
             this.$.enterNotes.disabled = false;
             this.toggleSaveSession();
         }
-        $("#entryMessage")fadeOut().html('<div class="centered"><div class="exerciseTitle">' + tag + '</div></div>').fadeIn();
+        $("#entryMessage").fadeOut().html('<div class="centered"><div class="exerciseTitle">' + tag + '</div></div>').fadeIn();
         console.log("\nMenu button clicked:", tag);
         this.currentExercise = tag;
         this.readSessions();
