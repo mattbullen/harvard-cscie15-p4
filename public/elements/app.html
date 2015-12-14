@@ -55,7 +55,7 @@
                     
                     <p>After creating a new exercise, use the input bar directly above the graph to start logging work out sessions. As you add each session, the graph will automatically update. To view or edit details about a particular session, click on its corresponding dot inside the graph to load a summary/editing tooltip. If you're unsure of what a button does, hover over it for a brief description.</p>
                     
-                    <h2 class="spacer">Ready to start? Please sign in!</h2>
+                    <h2 class="spacer">Ready to start? Please sign in:</h2>
                     <div class="centered">
                         <google-signin class="buttonGoogle" client-id="132101877152-mj6pbmmc8jt05q7o78sm39103fm00189.apps.googleusercontent.com" scopes=""></google-signin>
                     </div>
@@ -71,9 +71,6 @@
             entry-animation="scale-up-animation"
             exit-animation="fade-out-animation">
             <paper-material class="editExerciseWrapper" elevation="2">
-                <div class="centered">
-                    <div id="createExerciseTitle" class="exerciseTitle">Add Exercise</div>
-                </div>
                 <paper-item class="editExerciseContent internal">
                     <paper-input id="enterCreateExerciseName" class="editExerciseInput" char-counter label="New Exercise Name" maxlength="20"></paper-input>
                     <paper-fab id="createExerciseButton" class="buttonHover" icon="icons:done" on-tap="createExercise" title="Create a new exercise?" disabled></paper-fab>
@@ -89,18 +86,12 @@
             class="editExerciseModal"
             entry-animation="scale-up-animation"
             exit-animation="fade-out-animation">
-            <paper-material class="editExerciseWrapper" elevation="2">
-            
-                <div class="centered">
-                    <div id="updateExerciseTitle" class="exerciseTitle">Update Name</div>
-                </div>
-                    
+            <paper-material class="editExerciseWrapper" elevation="2"> 
                 <paper-item class="editExerciseContent internal">
                     <paper-input id="enterUpdateOldName" class="editExerciseInput" char-counter label="Old Exercise Name" maxlength="20"></paper-input>
                     <paper-input id="enterUpdateNewName" class="editExerciseInput" char-counter label="New Exercise Name" maxlength="20"></paper-input>
                     <paper-fab id="updateExerciseButton" class="buttonHover" icon="icons:done" on-tap="updateExercise" title="Update the exercise's name?" disabled></paper-fab>
                 </paper-item>
-
                 <paper-item class="closeEditExerciseModal internal" on-tap="closeUpdateExerciseModal">
                     <div class="editExerciseClose textClose">CLOSE</div>
                 </paper-item>
