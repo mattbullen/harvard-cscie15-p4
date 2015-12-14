@@ -588,7 +588,14 @@ Polymer({
             brush.clear();
             d3.selectAll(".x.brush").transition().call(brush);
             d3.select("#xAxisBrush").transition().call(xAxisBrush);
+            model.$.resetGraph.disabled = true;
+            d3.select(".background").style({ "cursor": "default" });
+            d3.select(".extent").style({ "cursor": "default", "fill": "#fff" });
             return false;
+        } else {
+            model.$.resetGraph.disabled = false;
+            d3.select(".background").style({ "cursor": "pointer" });
+            d3.select(".extent").style({ "cursor": "pointer", "fill": "#002147" });
         }
         
         // Map the values in the data object
