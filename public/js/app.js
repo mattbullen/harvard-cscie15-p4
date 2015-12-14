@@ -120,6 +120,8 @@ Polymer({
     // Clear the menu areas of content
     clearLayout: function() {
         this.$.resetGraph.disabled = true;
+        $("#resetGraph").click();
+        d3.select(".background").style({ "cursor": "default" });
         d3.select(".extent").style({ "cursor": "default", "fill": "#fff" });
         $("#editMenuWrapper").hide();
         $("#viewSummary").hide();
@@ -206,9 +208,12 @@ Polymer({
         this.$.enterDeleteExerciseName.addEventListener("keyup", function() { vDEI(lowercaseList); });
         
         if (this.exerciseNames.length > 0) {
+            d3.select(".background").style({ "cursor": "pointer" });
             d3.select(".extent").style({ "cursor": "pointer", "fill": "#002147" });
             this.$.resetGraph.disabled = false;
         } else {
+            $("#resetGraph").click();
+            d3.select(".background").style({ "cursor": "default" });
             d3.select(".extent").style({ "cursor": "default", "fill": "#fff" });
             this.$.resetGraph.disabled = true;
         }
@@ -355,13 +360,11 @@ Polymer({
                         $("#entryMessage").fadeOut().html('<div class="centered"><div class="exerciseTitle">' + updateTo + '</div></div>').fadeIn();
                         model.currentExercise = updateTo;
                     }
-                    console.log(model.colorMap);
                     var oldName = name.replace(/ /gi, "-");
                     var sameColor = model.colorMap[oldName];
                     model.colorMap[updateTo.replace(/ /gi, "-")] = sameColor;
-                    delete model.colorMap[oldName]
-                    console.log(model.colorMap);
-                    $("#viewSummary").click(); console.log(model.colorMap);
+                    delete model.colorMap[oldName];
+                    $("#viewSummary").click();
                 }
             },
             error: function(error) {
