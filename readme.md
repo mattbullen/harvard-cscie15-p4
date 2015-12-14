@@ -7,11 +7,11 @@ http://p4.matthewbullen.me
 
 A Laravel 5, Google Polymer 1.0, and D3.js one page web app for fitness tracking. Details:
 * Laravel handles all of the server-side functionality.
-* Polymer handles the browser-side layout, templating, data-binding, and general user flow.
-* I used D3 for the main graph that tracks work out sessions.
+* Polymer handles the browser-side layout, templating, data-binding, and general user flow. I chose Polymer since I haven't used it before, and I wanted to try making a true one page app that uses data-binding to update the layout, instead of using multiple templates or pages.
+* I used D3 for the main graph that tracks work out sessions. Similar to the page template, the graph is dynamic and autoupdates when the underlying data changes. It interfaces with the Laravel back end using basic AJAX calls. I hadn't tried blending D3 with Laravel or Polymer before, either, and aside from needing to pay a little more attention to function scopes, all three work together really nicely.
+* The app relies on three MySQL tables: registered user e-mail addresses, a list of exercise names, and a table to hold invidual workout session records.
 * The app uses two sets of CRUD operations: the first set manages the list of exercise names/categories, and the second manages the records of individual work out sessions.
 * Users are authenticated using the Google OAuth2 API. After passing Google authentication, the app only needs the user's e-mail address to link exercises/sessions to that user.
-* For testing, I made two test accounts: jillcscie15@gmail.com and jamalcscie15@gmail.com (the passwords are listed in the Canvas submission page). These accounts are pre-seeded with randomly-generated values for a short list of exercises.
 
 #### Demo
 
@@ -19,6 +19,7 @@ TBD
 
 #### Details for teaching team
 
+* For testing, I made two test accounts: jillcscie15@gmail.com and jamalcscie15@gmail.com (the passwords are listed in the Canvas submission page). These accounts are pre-seeded with randomly-generated values for a short list of exercises.
 * The W3 HTML validator doesn't recognize the custom DOM tags or link hrefs that Polymer needs to work. I'm not sure that it's validating all of the generated DOM or Shadow DOM elements that Polymer uses inside the app, either. The W3 CSS validator doesn't seem to recognize the D3/SVG style rules in app.css, or some of the vendor prefixes used by normalize.css or the app. Polymer is still pretty new, so I think this might be unavoidable. Otherwise, the HTML and CSS seems to validate.
 
 #### Outside code
