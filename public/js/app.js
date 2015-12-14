@@ -1308,7 +1308,16 @@ Polymer({
     },
     // Helper function to capitalize strings
     capString: function(text) {
-        return text.substring(0, 1).toUpperCase() + text.substring(1, text.length);
+        var parts = text.split(" ");
+        var capped = "";
+        var i, part;
+        for (i = 0; i < parts.length; i++) {
+            part = parts[i];
+            if (part !== " ") {
+                capped += part.substring(0, 1).toUpperCase() + part.substring(1, part.length);
+            }
+        }
+        return capped;
     },
     // Helper function to format dates for D3's internal use
     // From: https://stackoverflow.com/questions/8301531/dealing-with-dates-on-d3-js-axis
