@@ -119,6 +119,8 @@ Polymer({
     },
     // Clear the menu areas of content
     clearLayout: function() {
+        this.$.resetGraph.disabled = true;
+        d3.select(".extent").style({ "cursor": "default", "fill": "#fff" });
         $("#editMenuWrapper").hide();
         $("#viewSummary").hide();
         $("#editExercises").hide();
@@ -135,6 +137,8 @@ Polymer({
         $("#viewSummary").fadeIn().show();
         $("#editExercises").fadeIn().show();
         this.setMenuButtons();
+        this.$.resetGraph.disabled = false;
+        d3.select(".extent").style({ "cursor": "pointer", "fill": "#002147" });
         $("#viewSummary").click();
     },
     // The "read" in the CRUD routines for the list of exercise names
@@ -345,6 +349,7 @@ Polymer({
                         $("#entryMessage").fadeOut().html('<div class="centered"><div class="exerciseTitle">' + updateTo + '</div></div>').fadeIn();
                         model.currentExercise = updateTo;
                     }
+                    delete model.colorMap[name.replace(/ /gi, "-")];
                     $("#viewSummary").click();
                 }
             },
@@ -393,6 +398,7 @@ Polymer({
                 console.log("\nResponse:", response);
                 if (response.updated) {
                     model.updateMenuButtons(response.updated);
+                    delete model.colorMap[name.replace(/ /gi, "-")];
                     if (model.currentExercise === "summary" || model.currentExercise === name || response.updated.length < 1) {
                         $("#viewSummary").click();
                     }
