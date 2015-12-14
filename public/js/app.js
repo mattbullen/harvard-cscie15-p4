@@ -1010,7 +1010,6 @@ Polymer({
         // Set the legend's domain
         var legendDomain = d3.scale.ordinal();
         legendDomain.domain(currentExercises.sort(d3.ascending));
-        console.log(legendDomain.domain());
         
         // Define the legend layout
         var legendMarginLeft = 45;
