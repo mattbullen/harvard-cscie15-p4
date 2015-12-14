@@ -356,8 +356,9 @@ Polymer({
                         model.currentExercise = updateTo;
                     }
                     console.log(model.colorMap);
-                    delete model.colorMap[name.replace(/ /gi, "-")];
-                    model.getColorMap();  console.log(model.colorMap);
+                    var sameColor = model.colorMap[name.replace(/ /gi, "-")];
+                    model.colorMap[updateTo.replace(/ /gi, "-")] = sameColor;
+                    console.log(model.colorMap);
                     $("#viewSummary").click(); console.log(model.colorMap);
                 }
             },
