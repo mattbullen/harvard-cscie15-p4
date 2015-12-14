@@ -210,6 +210,10 @@ paper-toolbar {
     margin-bottom: 15px;
 }
 
+#editMenuButton {
+    margin-left: -25px !important;
+}
+
 .editMenuButton {
     width: 200px;
 }
