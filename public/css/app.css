@@ -231,16 +231,16 @@ paper-toolbar {
 } 
 
 #createExerciseModal {  
-    left: 278px;
+    left: 253px;
     width: 320px;
 }
 
 #updateExerciseModal {
-    left: 491px;
+    left: 466px;
 }
 
 #deleteExerciseModal {
-    left: 703px;
+    left: 678px;
 }
 
 .editExerciseWrapper {
