@@ -11,6 +11,7 @@ A Laravel 5, Google Polymer 1.0, and D3.js one page web app for fitness tracking
 * I used D3 for the main graph that tracks work out sessions.
 * The app uses two sets of CRUD operations: the first set manages the list of exercise names/categories, and the second manages the records of individual work out sessions.
 * Users are authenticated using the Google OAuth2 API. After passing Google authentication, the app only needs the user's e-mail address to link exercises/sessions to that user.
+* For testing, I made two test accounts: jillcscie15@gmail.com and jamalcscie15@gmail.com (the passwords are listed in the Canvas submission page). These accounts are pre-seeded with randomly-generated values for a short list of exercises.
 
 #### Demo
 
