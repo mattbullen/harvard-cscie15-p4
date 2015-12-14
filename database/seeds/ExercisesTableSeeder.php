@@ -7,10 +7,10 @@ class ExercisesTableSeeder extends Seeder
     private function createList($id)
     {
         $list = array(
-            0 => 'Bench Press',
-            1 => 'Deadlift',
-            2 => 'Squat',
-            3 => 'Overhead Press'
+            0 => 'bench press',
+            1 => 'deadlift',
+            2 => 'squat',
+            3 => 'overhead press'
         );
         
         for ($i = 0; $i < 4; $i++) {

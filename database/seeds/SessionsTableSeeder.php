@@ -6,13 +6,13 @@ class SessionsTableSeeder extends Seeder
 {
     private function getWeight($exercise, $session)
     {   
-        if ($session > 0 && rand(0, 1) === 0) {
-            $session = $session - 1;
+        if ($session > 0) {
+            $session = $session - rand(0, 1);
         }
         if ($exercise === 0) {
             return 50 + ($session * 5);
         } else if ($exercise === 1) {
-            return 100 + ($session * 5);
+            return 100 + ($session * 10);
         } else if ($exercise === 2) {
             return 75 + ($session * 5);
         } else {
@@ -23,10 +23,10 @@ class SessionsTableSeeder extends Seeder
     private function createList($id)
     {
         $list = array(
-            0 => 'Bench Press',
-            1 => 'Deadlift',
-            2 => 'Squat',
-            3 => 'Overhead Press'
+            0 => 'bench press',
+            1 => 'deadlift',
+            2 => 'squat',
+            3 => 'overhead press'
         );
         
         for ($i = 0; $i < 4; $i++) {
@@ -36,8 +36,8 @@ class SessionsTableSeeder extends Seeder
                     'created_at' => $date,
                     'updated_at' => $date,
                     'name' => $list[$i],
-                    'sets' => rand(0, 3) + 3,
-                    'reps' => rand(0, 3) + 3,
+                    'sets' => rand(0, 2) + 3,
+                    'reps' => rand(0, 2) + 5,
                     'weight' => self::getWeight($i, $j),
                     'notes' => 'This is ' . strtolower($list[$i]) . ' note #' . ($j + 1) . '.',
                     'email_id' => $id
