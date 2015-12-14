@@ -546,11 +546,10 @@ Polymer({
         var graphConfig = model.getConfiguration();
 
         // Find the layout dimensions for the base canvas for later reference
-        var baseXYBoxSize = +graphConfig.graphWidth || 900;
         var margin = graphConfig.margin; 
-        var width = baseXYBoxSize - +margin.left - +margin.right;
+        var width = +graphConfig.graphWidth - +margin.left - +margin.right;
         var paddedWidth = width - 15;
-        var height = baseXYBoxSize - +margin.top - +margin.bottom;
+        var height = +graphConfig.graphHeight - +margin.top - +margin.bottom;
         
         // For empty graphs
         if (data.sessions.length === 0) {
@@ -1136,11 +1135,10 @@ Polymer({
         model.clearElement(graphConfig.graphID);
 
         // Find the layout dimensions for the base canvas for later reference
-        var baseXYBoxSize = +graphConfig.graphWidth || 900;
         var margin = graphConfig.margin; 
-        var width = baseXYBoxSize - +margin.left - +margin.right;
+        var width = +graphConfig.graphWidth - +margin.left - +margin.right;
         var paddedWidth = width - 15;
-        var height = baseXYBoxSize - +margin.top - +margin.bottom;
+        var height = +graphConfig.graphHeight - +margin.top - +margin.bottom;
         
         // Define the min/max canvas ranges for x and y values
         var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate("2015-01-01"), model.getDate(new Date())]);
@@ -1319,6 +1317,7 @@ Polymer({
         return {
             graphID: "graph",
             graphWidth: 1150,
+            graphHeight: 900,
             clippedSVGWidth: 1085,
             clippedSVGHeight: 444,
             circleRadiusSize: 3.618,
