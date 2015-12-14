@@ -602,7 +602,7 @@ Polymer({
         minDate.setDate(minDate.getDate() - 1);
         maxDate = new Date(maxDate);
         maxDate.setDate(maxDate.getDate() + 1);
-        maxTotal = maxTotal * 1.01;
+        maxTotal = maxTotal * 1.05;
         mappedData = d3.nest()
             .key(function(d) { return d.name; })
             .sortKeys(d3.ascending)
