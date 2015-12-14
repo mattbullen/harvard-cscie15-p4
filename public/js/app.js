@@ -355,7 +355,9 @@ Polymer({
                         $("#entryMessage").fadeOut().html('<div class="centered"><div class="exerciseTitle">' + updateTo + '</div></div>').fadeIn();
                         model.currentExercise = updateTo;
                     }
-                    delete model.colorMap[name.replace(/ /gi, "-")]; console.log(model.colorMap);
+                    console.log(model.colorMap);
+                    delete model.colorMap[name.replace(/ /gi, "-")];
+                    model.getColorMap();  console.log(model.colorMap);
                     $("#viewSummary").click(); console.log(model.colorMap);
                 }
             },
