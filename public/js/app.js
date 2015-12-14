@@ -1370,7 +1370,7 @@ Polymer({
         var colors = this.getColorList();
         var entry, color, index;
         for (entry in this.colorMap) {
-            color = this.colorMap[entry]; console.log(entry, color);
+            color = this.colorMap[entry];
             index = colors.indexOf(color);
             if (index !== -1) {
                 colors.splice(index, 1);
@@ -1390,6 +1390,5 @@ Polymer({
                 }
             }
         }
-        console.log(colors, this.colorMap);
     }
 });
