@@ -138,10 +138,13 @@ paper-toolbar {
     border-left: 1px solid #ccc;
 }
 
-#entryMessage {
+#entryWrapper paper-material {
     margin-bottom: 0px !important;
-    padding: 6px !important;
     border-bottom: 1px solid #ccc !important;
+}
+
+#entryMessage {
+    padding: 6px !important;
 }
 
 #logSession {
