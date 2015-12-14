@@ -120,7 +120,7 @@ Polymer({
     // Clear the menu areas of content
     clearLayout: function() {
         this.$.resetGraph.disabled = true;
-        $("#resetGraph").click();
+        this.updateGraph({ sessions: [] });
         d3.select(".background").style({ "cursor": "default" });
         d3.select(".extent").style({ "cursor": "default", "fill": "#fff" });
         $("#editMenuWrapper").hide();
@@ -212,7 +212,7 @@ Polymer({
             d3.select(".extent").style({ "cursor": "pointer", "fill": "#002147" });
             this.$.resetGraph.disabled = false;
         } else {
-            $("#resetGraph").click();
+            this.updateGraph({ sessions: [] });
             d3.select(".background").style({ "cursor": "default" });
             d3.select(".extent").style({ "cursor": "default", "fill": "#fff" });
             this.$.resetGraph.disabled = true;
