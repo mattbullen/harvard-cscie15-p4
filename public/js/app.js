@@ -1374,7 +1374,7 @@ Polymer({
             }
         }
         var map = {};
-        var i, j;
+        var i, j, name;
         for (i = 0; i < this.exerciseNames.length; i++) {
             j = i;
             if (i > colors.length) {
@@ -1382,7 +1382,13 @@ Polymer({
                     j = j - colors.length;
                 }
             }
-            map[this.exerciseNames[i].replace(/ /gi, "-")] = colors[j];
+            name = this.exerciseNames[i].replace(/ /gi, "-");
+            if (this.colorMap[name]) {
+                map[name] = this.colorMap[name];
+            } else {    
+                map[name] = colors[0];
+                colors.splice(0, 1);
+            }
         }
         this.colorMap = map; console.log(colors, map);
     }
