@@ -1022,13 +1022,13 @@ Polymer({
             .attr("class", "legend");
             legend.attr("transform", function(d, i) {
                 if (i < 7) {
-                    return "translate(" + ((i * 155) + legendMarginLeft) + ", " + (height + 78) + ")";
+                    return "translate(" + ((i * 155) + legendMarginLeft) + ", " + (height + 80) + ")";
                 } else if (i > 6 && i < 10) {
                     var j = i - 7;
-                    return "translate(" + ((j * 155) + legendMarginLeft) + ", " + (height + 108) + ")";
+                    return "translate(" + ((j * 155) + legendMarginLeft) + ", " + (height + 115) + ")";
                 } else {
                     var j = i - 10;
-                    return "translate(" + ((j * 155) + legendMarginLeft) + ", " + (height + 138) + ")";
+                    return "translate(" + ((j * 155) + legendMarginLeft) + ", " + (height + 150) + ")";
                 }
             });
             
