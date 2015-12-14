@@ -81,9 +81,9 @@ paper-toolbar {
 }
 
 .toolbarTitle {
+    padding: 0px !important;
     font-size: 20px !important;
     text-transform: uppercase;
-    background: ;
 }
 
 .iron-overlay-backdrop-0 {
