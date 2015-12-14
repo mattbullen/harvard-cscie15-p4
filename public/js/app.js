@@ -137,8 +137,6 @@ Polymer({
         $("#viewSummary").fadeIn().show();
         $("#editExercises").fadeIn().show();
         this.setMenuButtons();
-        this.$.resetGraph.disabled = false;
-        d3.select(".extent").style({ "cursor": "pointer", "fill": "#002147" });
         $("#viewSummary").click();
     },
     // The "read" in the CRUD routines for the list of exercise names
@@ -206,6 +204,14 @@ Polymer({
         this.$.enterUpdateNewName.addEventListener("keyup", function() { vUEI(lowercaseList); });
         var vDEI = this.validateDeleteExerciseInput;
         this.$.enterDeleteExerciseName.addEventListener("keyup", function() { vDEI(lowercaseList); });
+        
+        if (this.exerciseNames.length > 0) {
+            d3.select(".extent").style({ "cursor": "pointer", "fill": "#002147" });
+            this.$.resetGraph.disabled = false;
+        } else {
+            d3.select(".extent").style({ "cursor": "default", "fill": "#fff" });
+            this.$.resetGraph.disabled = true;
+        }
     },
     // Event listener to update the menu button list, session entry toolbar, and graph content
     updateContentView: function(e) {
@@ -349,8 +355,8 @@ Polymer({
                         $("#entryMessage").fadeOut().html('<div class="centered"><div class="exerciseTitle">' + updateTo + '</div></div>').fadeIn();
                         model.currentExercise = updateTo;
                     }
-                    delete model.colorMap[name.replace(/ /gi, "-")];
-                    $("#viewSummary").click();
+                    delete model.colorMap[name.replace(/ /gi, "-")]; console.log(model.colorMap);
+                    $("#viewSummary").click(); console.log(model.colorMap);
                 }
             },
             error: function(error) {
