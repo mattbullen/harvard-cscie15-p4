@@ -1021,14 +1021,14 @@ Polymer({
             .append("g")
             .attr("class", "legend");
             legend.attr("transform", function(d, i) {
-                if (i < 7) {
-                    return "translate(" + ((i * 155) + legendMarginLeft) + ", " + (height + 80) + ")";
-                } else if (i > 6 && i < 10) {
-                    var j = i - 7;
-                    return "translate(" + ((j * 155) + legendMarginLeft) + ", " + (height + 115) + ")";
+                if (i < 6) {
+                    return "translate(" + ((i * 165) + legendMarginLeft) + ", " + (height + 80) + ")";
+                } else if (i > 5 && i < 9) {
+                    var j = i - 6;
+                    return "translate(" + ((j * 165) + legendMarginLeft) + ", " + (height + 115) + ")";
                 } else {
-                    var j = i - 10;
-                    return "translate(" + ((j * 155) + legendMarginLeft) + ", " + (height + 150) + ")";
+                    var j = i - 9;
+                    return "translate(" + ((j * 165) + legendMarginLeft) + ", " + (height + 150) + ")";
                 }
             });
             
@@ -1062,11 +1062,11 @@ Polymer({
             
         // Define the text labels in the legend
         legend.append("text")
-            .attr("x", 26)
+            .attr("x", 30)
             .attr("y", 11)
             .attr("dy", "0.35em")
             .style("text-anchor", "start")
-            .style("font-family", "'Roboto', 'Noto', sans-serif")
+            .style("font-family", "'Museo', 'Roboto', 'Noto', sans-serif")
             .style("font-size", "12px")
             .text(function(d) {
                 return model.capString(d);
