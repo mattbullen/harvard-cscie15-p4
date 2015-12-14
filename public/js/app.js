@@ -1318,8 +1318,8 @@ Polymer({
     getConfiguration: function() {
         return {
             graphID: "graph",
-            graphWidth: 900,
-            clippedSVGWidth: 835,
+            graphWidth: 1150,
+            clippedSVGWidth: 1085,
             clippedSVGHeight: 444,
             circleRadiusSize: 3.618,
             circleRadiusExpandedPadding: 3.0,
