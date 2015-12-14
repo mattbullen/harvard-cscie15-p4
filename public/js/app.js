@@ -598,6 +598,10 @@ Polymer({
                 total: thisTotal
             };
         });
+        minDate = new Date(minDate);
+        minDate.setDate(minDate.getDate() - 1);
+        maxDate = new Date(maxDate);
+        maxDate.setDate(maxDate.getDate() + 1);
         maxTotal = maxTotal * 1.01;
         mappedData = d3.nest()
             .key(function(d) { return d.name; })
@@ -1017,13 +1021,13 @@ Polymer({
             .append("g")
             .attr("class", "legend");
             legend.attr("transform", function(d, i) {
-                if (i < 5) {
+                if (i < 7) {
                     return "translate(" + ((i * 160) + legendMarginLeft) + ", " + (height + 78) + ")";
-                } else if (i > 4 && i < 8) {
-                    var j = i - 5;
+                } else if (i > 6 && i < 10) {
+                    var j = i - 7;
                     return "translate(" + ((j * 160) + legendMarginLeft) + ", " + (height + 108) + ")";
                 } else {
-                    var j = i - 8;
+                    var j = i - 10;
                     return "translate(" + ((j * 160) + legendMarginLeft) + ", " + (height + 138) + ")";
                 }
             });
