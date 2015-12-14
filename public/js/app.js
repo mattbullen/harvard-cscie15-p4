@@ -1352,8 +1352,8 @@ Polymer({
         };
     },
     // Sets the graph's line and dot colors
-    getColorMap: function() {
-        var colors = [
+    getColorList: function() {
+        return [
             "#4184f3",
             "#d32f2f",
             "#ffa000",
@@ -1365,31 +1365,31 @@ Polymer({
             "#009688",
             "#003399"
         ];
+    },
+    getColorMap: function() {
+        var colors = getColorList();
         var entry, color, index;
         for (entry in this.colorMap) {
             color = this.colorMap[entry]; console.log(entry, color);
             index = colors.indexOf(color);
             if (index !== -1) {
                 colors.splice(index, 1);
-            }
-        }
-        var map = {};
-        var i, j, name;
-        for (i = 0; i < this.exerciseNames.length; i++) {
-            j = i;
-            if (i > colors.length) {
-                while (j > 0) {
-                    j = j - colors.length;
+                if (colors.length === 0) {
+                    colors = getColorList();
                 }
             }
+        }
+        var i, name;
+        for (i = 0; i < this.exerciseNames.length; i++) {
             name = this.exerciseNames[i].replace(/ /gi, "-");
-            if (this.colorMap[name]) {
-                map[name] = this.colorMap[name];
-            } else {    
-                map[name] = colors[0];
+            if (!this.colorMap[name]) {
+                this.colorMap[name] = colors[0];
                 colors.splice(0, 1);
+                if (colors.length === 0) {
+                    colors = getColorList();
+                }
             }
         }
-        this.colorMap = map; console.log(colors, map);
+        console.log(colors, this.colorMap);
     }
 });
