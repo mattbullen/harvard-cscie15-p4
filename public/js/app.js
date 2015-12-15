@@ -1354,9 +1354,8 @@ Polymer({
     //       https://stackoverflow.com/questions/11020658/javascript-json-date-parse-in-ie7-ie8-returns-nan
     //       https://github.com/phstc/jquery-dateFormat
     getDate: function(date) {
-        console.log(date);
         if (date) {
-            return new Date($.format.date(date, "yyyy-MM-dd"));
+            return $.format.date(new Date(date), "yyyy-MM-dd");
         }
     },
     // Helper object to store some basic layout and graph presentation details
