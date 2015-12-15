@@ -1355,8 +1355,7 @@ Polymer({
     //       https://github.com/phstc/jquery-dateFormat
     getDate: function(date) {
         if ((/msie|trident|spartan|edge/i).test(navigator.userAgent)) {
-            console.log("3");
-            return new Date($.format.toBrowserTimeZone(date, "yyyy-MM-dd"));
+            return new Date($.format.date(date, "yyyy-MM-dd"));
         } else {
             return new Date($.format.toBrowserTimeZone(date, "yyyy-MM-dd HH:mm:ss"));
         }
