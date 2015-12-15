@@ -1343,8 +1343,9 @@ Polymer({
     },
     // Helper function to format dates for D3's internal use
     // From: https://stackoverflow.com/questions/8301531/dealing-with-dates-on-d3-js-axis
+    //       https://stackoverflow.com/questions/17825137/d3-time-scale-not-working-date-inputs-on-ie-10-and-firefox
     getDate: function(date) {
-        date = date.split("-");
+        date = ("" + date).split("-");
         console.log(date);
         if (date[1].length === 1) { date[1] = "0" + date[1]; }
         if (date[2].length === 1) { date[2] = "0" + date[2]; }
