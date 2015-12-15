@@ -80,6 +80,11 @@ paper-toolbar {
     background: #002147 !important;
 }
 
+iron-overlay-backdrop {
+    height: 100% !important;
+    min-height: 768px !important;
+}
+
 .toolbarTitle {
     padding: 0px !important;
     font-size: 20px !important;
