@@ -748,8 +748,6 @@ Polymer({
                     $("#sessionDate").on("change", function() {
                         if ($(this).val() === "") { $(this).val(" "); }
                     });
-                    $("#updateSession").on("click", model.updateSession);
-                    $("#deleteSession").on("click", model.deleteSession);
                     
                     // Set the tooltip's opacity back to visible
                     tooltip.transition().duration(200).style("opacity", "1.0");
@@ -823,7 +821,10 @@ Polymer({
                             }
                         });
                     }
-
+                    
+                    $("#updateSession").on("click", updateSession);
+                    $("#deleteSession").on("click", deleteSession);
+                    
                 } else {
                     
                     // Toggle the click state
