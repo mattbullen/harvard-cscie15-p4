@@ -487,7 +487,7 @@ Polymer({
         // Validate the POST data and reset the inputs
         var data = {
             email: model.currentUser,
-            name: model.currentExercise
+            name: model.currentExercise.toLowerCase()
         };
         
         // POST handling routine
