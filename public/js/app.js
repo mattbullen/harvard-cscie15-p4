@@ -488,7 +488,7 @@ Polymer({
         var data = {
             email: model.currentUser,
             name: model.currentExercise.toLowerCase()
-        };
+        }; console.log(data);
         
         // POST handling routine
         $.ajax({
@@ -498,7 +498,7 @@ Polymer({
             success: function(response) {
                 console.log("\nResponse:", response);
                 if (response.sessions) {
-                    model.updateGraph(JSON.parse(response));
+                    model.updateGraph(response);
                 }
             },
             error: function(error) {
