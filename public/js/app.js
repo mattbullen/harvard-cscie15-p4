@@ -1354,7 +1354,9 @@ Polymer({
     //       https://stackoverflow.com/questions/11020658/javascript-json-date-parse-in-ie7-ie8-returns-nan
     //       https://github.com/phstc/jquery-dateFormat
     getDate: function(date) {
-        if (date) {
+        if ((/msie|trident/i).test(navigator.userAgent)) {
+            return new Date($.format.toBrowserTimeZone(date, "yyyy-MM-dd"));
+        } else {
             return new Date($.format.toBrowserTimeZone(date, "yyyy-MM-dd HH:mm:ss"));
         }
     },
