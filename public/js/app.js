@@ -687,7 +687,7 @@ Polymer({
             .attr("data-notes", function(d) { return d.notes; })
             .attr("data-state", "on")
             .attr("data-click", "off")
-            .attr("cx", function(d) { return x(d.created_at); })       
+            .attr("cx", function(d) { return x(model.getDate(d.created_at)); })       
             .attr("cy", function(d) { return y(d.total); })
             .attr("r", graphConfig.circleRadiusSize)
             .attr("data-size-base", graphConfig.circleRadiusSize)
