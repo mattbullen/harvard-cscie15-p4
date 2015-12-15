@@ -1344,7 +1344,13 @@ Polymer({
     // Helper function to format dates for D3's internal use
     // From: https://stackoverflow.com/questions/8301531/dealing-with-dates-on-d3-js-axis
     getDate: function(date) {
-        return new Date(date);
+        date = date.split("-");
+        console.log(date);
+        if (date[2].length < 2) { date[2] = "0" + date[2]; }
+        if (date[4].length < 2) { date[4] = "0" + date[4]; }
+        var parsedDate = date[0] + "-" + date[2] + "-" + date[4];
+        console.log(parsedDate);
+        return new Date(parsedDate);
     },
     // Helper object to store some basic layout and graph presentation details
     getConfiguration: function() {
