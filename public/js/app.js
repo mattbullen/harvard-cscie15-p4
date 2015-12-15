@@ -839,7 +839,7 @@ Polymer({
         var newLine = d3.svg.line()
             .x(function(d) {
                 if ((/msie|trident|spartan|edge/i).test(navigator.userAgent)) {
-                    return x(model.getDate(d.date)) + 10;
+                    return x(model.getDate(d.date)) + 12;
                 } else {
                     return x(model.getDate(d.date));
                 }
