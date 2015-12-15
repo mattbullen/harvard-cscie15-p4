@@ -1351,10 +1351,22 @@ Polymer({
     // Helper function to format dates for D3's internal use
     // From: https://stackoverflow.com/questions/8301531/dealing-with-dates-on-d3-js-axis
     //       https://stackoverflow.com/questions/13091523/javascript-invalid-date-error-in-internet-explorer
-    getDate: function(date) {
-        var parts = ("" + date).substring(0, 9).split(" ");
-        console.log(date, new Date(parts[3], parts[2], parts[1]));
-        return new Date(parts[3], parts[2], parts[1]);
+    getDate: function(odate) {
+        //var parts = ("" + date).substring(0, 9).split(" ");
+        //console.log(date, new Date(parts[3], parts[2], parts[1]));
+        //return new Date(parts[3], parts[2], parts[1]);
+        var isoExp = /^\s*(\d{4})-(\d\d)-(\d\d)\s*$/,
+        date = new Date(NaN), month,
+        parts = isoExp.exec(odate);
+
+        if(parts) {
+          month = +parts[2];
+          date.setFullYear(parts[1], month - 1, parts[3]);
+          if(month != date.getMonth() + 1) {
+            date.setTime(NaN);
+          }
+        }
+        return date;
     },
     // Helper object to store some basic layout and graph presentation details
     getConfiguration: function() {
