@@ -570,8 +570,11 @@ Polymer({
             d3.selectAll(".line").remove();
             d3.selectAll(".dot").remove();
             d3.selectAll(".legend").remove();
-            var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate("2015-01-01"), model.getDate(new Date())]);
-            var xBrush = d3.time.scale().range([0, paddedWidth]).domain([model.getDate("2015-01-01"), model.getDate(new Date())]);
+            // Date format from: https://stackoverflow.com/questions/17825137/d3-time-scale-not-working-date-inputs-on-ie-10-and-firefox
+            var formatBaseDate = d3.time.format("%Y-%m-%d"); 
+            var baseDate = formatBaseDate.parse("2015-01-01") 
+            var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate(baseDate), model.getDate(new Date())]);
+            var xBrush = d3.time.scale().range([0, paddedWidth]).domain([model.getDate(baseDate), model.getDate(new Date())]);
             var y = d3.scale.linear().range([height, 0]).domain([0, 10000]);
             var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(graphConfig.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
             var xAxisBrush = d3.svg.axis().scale(x).orient("bottom").ticks(graphConfig.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
@@ -1165,6 +1168,7 @@ Polymer({
         var height = +graphConfig.graphHeight - +margin.top - +margin.bottom;
         
         // Define the min/max canvas ranges for x and y values
+        // Date format from: https://stackoverflow.com/questions/17825137/d3-time-scale-not-working-date-inputs-on-ie-10-and-firefox
         var formatBaseDate = d3.time.format("%Y-%m-%d"); 
         var baseDate = formatBaseDate.parse("2015-01-01") 
         var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate(baseDate), model.getDate(new Date())]);
@@ -1345,7 +1349,6 @@ Polymer({
     },
     // Helper function to format dates for D3's internal use
     // From: https://stackoverflow.com/questions/8301531/dealing-with-dates-on-d3-js-axis
-    //       https://stackoverflow.com/questions/17825137/d3-time-scale-not-working-date-inputs-on-ie-10-and-firefox
     getDate: function(date) {
         return new Date(date);
     },
