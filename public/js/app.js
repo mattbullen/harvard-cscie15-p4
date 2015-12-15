@@ -632,7 +632,7 @@ Polymer({
             .sortKeys(d3.ascending)
             .sortValues(function(a, b) { return a.date - b.date; })
             .entries(mappedData);
-        values.sortValues(function(a, b) { return a.date - b.date; });
+        values.sort(function(a, b) { return a.date - b.date; });
         // console.log("mappedData:", mappedData);
         
         // Define the min/max canvas ranges for x and y values
