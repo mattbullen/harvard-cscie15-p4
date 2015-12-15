@@ -1352,6 +1352,7 @@ Polymer({
     // From: https://stackoverflow.com/questions/8301531/dealing-with-dates-on-d3-js-axis
     //       https://stackoverflow.com/questions/13091523/javascript-invalid-date-error-in-internet-explorer
     getDate: function(date) {
+        console.log(new Date(date));
         return new Date(date);
     },
     // Helper object to store some basic layout and graph presentation details
