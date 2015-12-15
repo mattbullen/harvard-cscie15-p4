@@ -1346,9 +1346,9 @@ Polymer({
     getDate: function(date) {
         date = date.split("-");
         console.log(date);
+        if (date[1].length < 1 { date[1] = "0" + date[1]; }
         if (date[2].length < 2) { date[2] = "0" + date[2]; }
-        if (date[4].length < 2) { date[4] = "0" + date[4]; }
-        var parsedDate = date[0] + "-" + date[2] + "-" + date[4];
+        var parsedDate = date[0] + "-" + date[1] + "-" + date[2];
         console.log(parsedDate);
         return new Date(parsedDate);
     },
