@@ -1355,7 +1355,9 @@ Polymer({
     //       https://github.com/phstc/jquery-dateFormat
     getDate: function(date) {
         console.log(date);
-        return new Date($.format.date(date, "yyyy-MM-dd hh:mm:ss:ssss a")); // HH:mm:ss
+        if (date) {
+            return new Date($.format.date(date, "yyyy-MM-dd HH:mm:ss:ssss")); // HH:mm:ss
+        }
     },
     // Helper object to store some basic layout and graph presentation details
     getConfiguration: function() {
