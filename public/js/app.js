@@ -485,7 +485,7 @@ Polymer({
         if (model.currentUser === "") { return false; }
         
         // Validate the POST data and reset the inputs
-        if (model.currentExercise.substring(0, 7) === "summary") { // <-- For Internet Explorer
+        if (model.currentExercise.substring(0, 7) === "summary") { // <-- For Internet Explorer, which was appending multiple spaces to the string for no apparent reason.
             var reqName = "summary";
         } else {
             var reqName = model.currentExercise;
