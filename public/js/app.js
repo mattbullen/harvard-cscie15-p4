@@ -485,10 +485,15 @@ Polymer({
         if (model.currentUser === "") { return false; }
         
         // Validate the POST data and reset the inputs
+        if (model.currentExercise.substring(0, 7) === "summary") { // <-- For Internet Explorer
+            var name = "summary";
+        } else {
+            var name = model.currentExercise.toLowerCase();
+        }
         var data = {
             email: model.currentUser,
-            name: model.currentExercise.toLowerCase()
-        }; console.log(data);
+            name: name
+        };
         
         // POST handling routine
         $.ajax({
