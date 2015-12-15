@@ -1165,8 +1165,10 @@ Polymer({
         var height = +graphConfig.graphHeight - +margin.top - +margin.bottom;
         
         // Define the min/max canvas ranges for x and y values
-        var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate("2015-01-01"), model.getDate(new Date())]);
-        var xBrush = d3.time.scale().range([0, paddedWidth]).domain([model.getDate("2015-01-01"), model.getDate(new Date())]);
+        var formatBaseDate = d3.time.format("%Y-%m-%d"); 
+        var baseDate = formatBaseDate.parse("2015-01-01") 
+        var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate(baseDate), model.getDate(new Date())]);
+        var xBrush = d3.time.scale().range([0, paddedWidth]).domain([model.getDate(baseDate), model.getDate(new Date())]);
         var y = d3.scale.linear().range([height, 0]).domain([0, 10000]);
         
         // Define the x-axis dimensions, ticks, and orientation
@@ -1345,13 +1347,7 @@ Polymer({
     // From: https://stackoverflow.com/questions/8301531/dealing-with-dates-on-d3-js-axis
     //       https://stackoverflow.com/questions/17825137/d3-time-scale-not-working-date-inputs-on-ie-10-and-firefox
     getDate: function(date) {
-        date = ("" + date).split("-");
-        console.log(date, new Date(date));
-        if (date[1].length === 1) { date[1] = "0" + date[1]; }
-        if (date[2].length === 1) { date[2] = "0" + date[2]; }
-        var parsedDate = date[0] + "-" + date[1] + "-" + date[2];
-        console.log(parsedDate);
-        return new Date(parsedDate);
+        return new Date(date);
     },
     // Helper object to store some basic layout and graph presentation details
     getConfiguration: function() {
