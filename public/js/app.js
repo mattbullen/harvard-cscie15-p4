@@ -1352,9 +1352,9 @@ Polymer({
     // From: https://stackoverflow.com/questions/8301531/dealing-with-dates-on-d3-js-axis
     //       https://stackoverflow.com/questions/13091523/javascript-invalid-date-error-in-internet-explorer
     getDate: function(date) {
-        var parts = ("" + date).substring(0, 9).split("-");
-        console.log(date, new Date(parts[0], parts[1], parts[2]));
-        return new Date(parts[0], parts[1], parts[2]);
+        var parts = ("" + date).substring(0, 9).split(" ");
+        console.log(date, new Date(parts[3], parts[2], parts[1]));
+        return new Date(parts[3], parts[2], parts[1]);
     },
     // Helper object to store some basic layout and graph presentation details
     getConfiguration: function() {
