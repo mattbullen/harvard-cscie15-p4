@@ -636,8 +636,8 @@ Polymer({
         // console.log("mappedData:", mappedData);
         
         // Define the min/max canvas ranges for x and y values
-        var x = d3.time.scale().range([0, paddedWidth]).domain([minDate, maxDate]);
-        var xBrush = d3.time.scale().range([0, paddedWidth]).domain([minDate, maxDate]);
+        var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate(minDate), model.getDate(maxDate)]);
+        var xBrush = d3.time.scale().range([0, paddedWidth]).domain([model.getDate(minDate), model.getDate(maxDate)]);
         var y = d3.scale.linear().range([height, 0]).domain([0, maxTotal]);
         
         // Define the x-axis dimensions, ticks, and orientation
