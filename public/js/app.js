@@ -222,7 +222,7 @@ Polymer({
             var tag = e.model.item.lowercase;
         } else {
             // For the "summary" view, since it's not actually a named exercise and not in that list, but needed to trigger graph updates
-            var tag = (e.target.innerHTML).toLowerCase();
+            var tag = $(e.target).attr("data-name").toLowerCase(); console.log(tag);
         }
         if (tag === "summary") {
             this.deactivateEnterSessionsBar();
@@ -484,15 +484,10 @@ Polymer({
         // Prevent server activity without a signed in user (probably redundant, but just in case)
         if (model.currentUser === "") { return false; }
         
-        // Validate the POST data and reset the inputs
-        if (model.currentExercise.substring(0, 7) === "summary") { // <-- For Internet Explorer, which was appending multiple spaces to the string for no apparent reason.
-            var reqName = "summary";
-        } else {
-            var reqName = model.currentExercise;
-        }
+        // Get the POST data
         var data = {
             email: model.currentUser,
-            name: reqName
+            name: model.currentExercise
         };
         
         // POST handling routine
@@ -934,7 +929,6 @@ Polymer({
                 // Update the line(s)
                 if (mappedLength > 1){
                     for (var i = 0; i < mappedLength; i++) {
-                        // console.log(mappedData[i]);
                         var lineID = ".line-" + (mappedData[i].key).replace(/ /gi, "-");
                         var newPath = newLine(mappedData[i].values);
                         clippedSVG.select(lineID).transition().attr("d", newPath).attr("clip-path", "url(#clip)");
