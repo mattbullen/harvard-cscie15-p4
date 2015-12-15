@@ -565,14 +565,13 @@ Polymer({
         var paddedWidth = width - 15;
         var height = +graphConfig.graphHeight - +margin.top - +margin.bottom;
         
-        // Date format from: https://stackoverflow.com/questions/17825137/d3-time-scale-not-working-date-inputs-on-ie-10-and-firefox
-        var formatBaseDate = d3.time.format("%Y-%m-%d"); 
-            
         // For empty graphs
         if (data.sessions.length === 0) {
             d3.selectAll(".line").remove();
             d3.selectAll(".dot").remove();
             d3.selectAll(".legend").remove();
+            // Date format from: https://stackoverflow.com/questions/17825137/d3-time-scale-not-working-date-inputs-on-ie-10-and-firefox
+            var formatBaseDate = d3.time.format("%Y-%m-%d"); 
             var baseDate = formatBaseDate.parse("2015-01-01") 
             var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate(baseDate), model.getDate(new Date())]);
             var xBrush = d3.time.scale().range([0, paddedWidth]).domain([model.getDate(baseDate), model.getDate(new Date())]);
