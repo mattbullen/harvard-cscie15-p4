@@ -30,3 +30,4 @@ TBD
 * Google Web Components OAuth2 sign in button: https://elements.polymer-project.org/elements/google-signin
 * D3.js: http://d3js.org/ and http://bl.ocks.org/mbostock
 * jQuery 2.1.4: https://jquery.com/download/
+* jQuery dateFormat polyfill (for IE): https://github.com/phstc/jquery-dateFormat
