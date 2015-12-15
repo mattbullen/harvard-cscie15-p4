@@ -1294,17 +1294,19 @@ Polymer({
             .style("stroke", "rgb(0, 0, 0)")
             .style("stroke-width", "1.0")
             .style("shape-rendering", "crispEdges");
-            
-        // Append the brush's bottom border line
-        svg.append("line")
-            .attr("id", "topBorderBrush")
-            .attr("x1", 0)
-            .attr("y1", graphConfig.brushOffset + 9)
-            .attr("x2", width - 15)
-            .attr("y2", graphConfig.brushOffset + 9)
-            .style("stroke", "rgb(0, 0, 0)")
-            .style("stroke-width", "1.0")
-            .style("shape-rendering", "crispEdges");
+         
+        // For Firefox & IE: append the brush's bottom border line
+        if ((/msie|trident|firefox/i).test(navigator.userAgent)) {
+            svg.append("line")
+                .attr("id", "topBorderBrush")
+                .attr("x1", 0)
+                .attr("y1", graphConfig.brushOffset + 9)
+                .attr("x2", width - 15)
+                .attr("y2", graphConfig.brushOffset + 9)
+                .style("stroke", "rgb(0, 0, 0)")
+                .style("stroke-width", "1.0")
+                .style("shape-rendering", "crispEdges");
+        }
 
         // Append the brush's left border line
         svg.append("line")
