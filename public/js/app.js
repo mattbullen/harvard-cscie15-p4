@@ -1355,18 +1355,22 @@ Polymer({
         //var parts = ("" + date).substring(0, 9).split(" ");
         //console.log(date, new Date(parts[3], parts[2], parts[1]));
         //return new Date(parts[3], parts[2], parts[1]);
-        var isoExp = /^\s*(\d{4})-(\d\d)-(\d\d)\s*$/,
-        date = new Date(NaN), month,
-        parts = isoExp.exec(odate);
+        var monthArray = {"Jan":0, "Feb":1, "Mar":2, "Apr":3, "May":4, "Jun":5, "Jul":6, "Aug":7, "Sep":8, "Oct":9, "Nev":10, "Dec":11};
+        //get the values from the string
+        var regex = /^[^ ]+ ([^ ]+) (\d{1,2}) (\d{2}):(\d{2}):(\d{2}) \+(\d{4}) (\d{4})$/;
+        match = regex.exec(date);
+        var month   = monthArray[match[1]],
+            date    = match[2],
+            hours   = match[3],
+            minutes = match[4],
+            seconds = match[5],
+            ms      = match[6],
+            year    = match[7];
 
-        if(parts) {
-          month = +parts[2];
-          date.setFullYear(parts[1], month - 1, parts[3]);
-          if(month != date.getMonth() + 1) {
-            date.setTime(NaN);
-          }
-        }
-        return date;
+        //create date object with values
+        var dateObject = new Date(year, month, date, hours, minutes , seconds, ms);
+
+        return dateObject.getTime(); //timestamp in ms
     },
     // Helper object to store some basic layout and graph presentation details
     getConfiguration: function() {
