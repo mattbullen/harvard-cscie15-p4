@@ -20,7 +20,7 @@ TBD
 #### Details for teaching team
 
 * For testing, I made two test accounts: jillcscie15@gmail.com and jamalcscie15@gmail.com (the passwords are listed in the Canvas submission page). These accounts are pre-seeded with randomly-generated values for a short list of exercises.
-* The app works great in Chrome and Firefox (latest versions). It struggles with Internet Explorer. IE doesn't recognize some of the CSS or SVG components used by Polymer. It also formats dates differently than Chrome/Firefox/D3, which took a date formatting polyfill to correct. I've fixed what I could, but it's going to be much slower and clunkier when using IE than when using Chrome.
+* The app works great in Chrome and Firefox (latest versions). It struggles with Internet Explorer, even using Edge or IE10. IE doesn't seem to recognize some of the CSS or SVG components used by Polymer, but without throwing specific errors. It also formats dates differently than Chrome/Firefox/D3, which took a date formatting polyfill to correct. I've fixed what I could, but it's going to be much slower and clunkier when using IE than when using Chrome.
 * The W3 HTML validator doesn't recognize the custom DOM tags or link hrefs that Polymer needs to work. I'm not sure that it's validating all of the generated DOM or Shadow DOM elements that Polymer uses inside the app, either. The W3 CSS validator doesn't seem to recognize the D3/SVG style rules in app.css, or some of the vendor prefixes used by normalize.css or the app. Polymer is still pretty new, so I think this might be unavoidable. Otherwise, the HTML and CSS seems to validate.
 
 #### Outside code
