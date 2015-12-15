@@ -605,7 +605,7 @@ Polymer({
         var mappedData = undefined; // Make absolutely sure the old mapped object is empty!
         var currentExercises = [];
         mappedData = values.map(function(d, i) {
-            var thisDate = model.getDate(formatBaseDate.parse(d.created_at));
+            var thisDate = model.getDate(d.created_at);
             if (thisDate > maxDate) { maxDate = thisDate; }
             if (thisDate < minDate) { minDate = thisDate; }
             var thisTotal = +d.sets * +d.reps * +d.weight;
