@@ -630,8 +630,9 @@ Polymer({
         mappedData = d3.nest()
             .key(function(d) { return d.name; })
             .sortKeys(d3.ascending)
-            .sortValues(function(a,b) { return a.date - b.date; })
+            .sortValues(function(a, b) { return a.date - b.date; })
             .entries(mappedData);
+        values.sortValues(function(a, b) { return a.date - b.date; });
         // console.log("mappedData:", mappedData);
         
         // Define the min/max canvas ranges for x and y values
