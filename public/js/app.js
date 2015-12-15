@@ -1346,7 +1346,7 @@ Polymer({
     //       https://stackoverflow.com/questions/17825137/d3-time-scale-not-working-date-inputs-on-ie-10-and-firefox
     getDate: function(date) {
         date = ("" + date).split("-");
-        console.log(date);
+        console.log(date, new Date(date));
         if (date[1].length === 1) { date[1] = "0" + date[1]; }
         if (date[2].length === 1) { date[2] = "0" + date[2]; }
         var parsedDate = date[0] + "-" + date[1] + "-" + date[2];
