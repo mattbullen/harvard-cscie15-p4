@@ -623,9 +623,9 @@ Polymer({
             };
         });
         minDate = new Date(minDate);
-        minDate.setDate(minDate.getDate() - 1);
+        model.getDate(minDate.setDate(minDate.getDate() - 1));
         maxDate = new Date(maxDate);
-        maxDate.setDate(maxDate.getDate() + 1);
+        model.getDate(maxDate.setDate(maxDate.getDate() + 1));
         maxTotal = maxTotal * 1.03;
         mappedData = d3.nest()
             .key(function(d) { return d.name; })
@@ -687,7 +687,7 @@ Polymer({
             .attr("data-notes", function(d) { return d.notes; })
             .attr("data-state", "on")
             .attr("data-click", "off")
-            .attr("cx", function(d) { return x(model.getDate(d.created_at)); })       
+            .attr("cx", function(d) { return x(d.created_at); })       
             .attr("cy", function(d) { return y(d.total); })
             .attr("r", graphConfig.circleRadiusSize)
             .attr("data-size-base", graphConfig.circleRadiusSize)
