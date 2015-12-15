@@ -1351,7 +1351,7 @@ Polymer({
     // Helper function to format dates for D3's internal use
     // From: https://stackoverflow.com/questions/8301531/dealing-with-dates-on-d3-js-axis
     //       https://stackoverflow.com/questions/13091523/javascript-invalid-date-error-in-internet-explorer
-    getDate: function(odate) {
+    getDate: function(date) {
         //var parts = ("" + date).substring(0, 9).split(" ");
         //console.log(date, new Date(parts[3], parts[2], parts[1]));
         //return new Date(parts[3], parts[2], parts[1]);
