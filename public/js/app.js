@@ -1351,6 +1351,7 @@ Polymer({
     // Helper function to format dates for D3's internal use
     // From: https://stackoverflow.com/questions/8301531/dealing-with-dates-on-d3-js-axis
     getDate: function(date) {
+        console.log(date, new Date(date));
         return new Date(date);
     },
     // Helper object to store some basic layout and graph presentation details
