@@ -1356,7 +1356,7 @@ Polymer({
     getDate: function(date) {
         console.log(date);
         if (date) {
-            return new Date($.format.date(date, "yyyy-MM-dd HH:mm:ss:ssss")); // HH:mm:ss
+            return new Date($.format.date(date, "yyyy-MM-dd HH:mm:ss"));
         }
     },
     // Helper object to store some basic layout and graph presentation details
