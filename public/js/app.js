@@ -498,7 +498,7 @@ Polymer({
             success: function(response) {
                 console.log("\nResponse:", response);
                 if (response.sessions) {
-                    model.updateGraph(response);
+                    model.updateGraph(JSON.parse(response));
                 }
             },
             error: function(error) {
