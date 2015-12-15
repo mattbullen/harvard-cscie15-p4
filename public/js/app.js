@@ -622,10 +622,10 @@ Polymer({
                 total: thisTotal
             };
         });
-       // minDate = new Date(minDate);
-       // model.getDate(minDate.setDate(minDate.getDate() - 1));
-       // maxDate = new Date(maxDate);
-       // model.getDate(maxDate.setDate(maxDate.getDate() + 1));
+        minDate = new Date(minDate);
+        model.getDate(minDate.setDate(minDate.getDate() - 1));
+        maxDate = new Date(maxDate);
+        model.getDate(maxDate.setDate(maxDate.getDate() + 1));
         maxTotal = maxTotal * 1.03;
         mappedData = d3.nest()
             .key(function(d) { return d.name; })
@@ -1351,11 +1351,10 @@ Polymer({
     // Helper function to format dates for D3's internal use
     // From: https://stackoverflow.com/questions/8301531/dealing-with-dates-on-d3-js-axis
     //       https://stackoverflow.com/questions/13091523/javascript-invalid-date-error-in-internet-explorer
-    //       
+    //       https://stackoverflow.com/questions/11020658/javascript-json-date-parse-in-ie7-ie8-returns-nan
+    //       https://github.com/phstc/jquery-dateFormat
     getDate: function(date) {
-        console.log(date, $.format.date(new Date(date), "E MMM dd yyyy HH:mm:ss"));
-        // return new Date(date);
-        return new Date($.format.date(date, "yyyy-MM-dd")); // HH:mm:ss
+        return new Date($.format.date(date, "yyyy-MM-dd hh:mm:ss")); // HH:mm:ss
     },
     // Helper object to store some basic layout and graph presentation details
     getConfiguration: function() {
