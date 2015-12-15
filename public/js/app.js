@@ -843,7 +843,7 @@ Polymer({
         // Define the interpolation for the graphed line(s)
         var newLine = d3.svg.line()
             .x(function(d) {
-                if ((/msie|trident|spartan|edge/i).test(navigator.userAgent)) {
+                if ((/msie|trident|firefox/i).test(navigator.userAgent)) {
                     return x(model.getDate(d.date)) + 12;
                 } else {
                     return x(model.getDate(d.date));
@@ -1365,7 +1365,7 @@ Polymer({
     //       https://stackoverflow.com/questions/11020658/javascript-json-date-parse-in-ie7-ie8-returns-nan
     //       https://github.com/phstc/jquery-dateFormat
     getDate: function(date) {
-        if ((/msie|trident|spartan|edge/i).test(navigator.userAgent)) {
+        if ((/msie|trident|firefox/i).test(navigator.userAgent)) {
             return new Date($.format.date(date, "yyyy-MM-dd"));
         } else {
             return new Date($.format.toBrowserTimeZone(date, "yyyy-MM-dd HH:mm:ss"));
