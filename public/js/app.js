@@ -837,7 +837,13 @@ Polymer({
         
         // Define the interpolation for the graphed line(s)
         var newLine = d3.svg.line()
-            .x(function(d) { return x(model.getDate(d.date)); })
+            .x(function(d) {
+                if ((/msie|trident|spartan|edge/i).test(navigator.userAgent)) {
+                    return x(model.getDate(d.date)) + 10;
+                } else {
+                    return x(model.getDate(d.date));
+                }
+             })
             .y(function (d) { return y(d.total); })
             .interpolate("linear");
             
