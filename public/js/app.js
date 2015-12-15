@@ -486,13 +486,13 @@ Polymer({
         
         // Validate the POST data and reset the inputs
         if (model.currentExercise.substring(0, 7) === "summary") { // <-- For Internet Explorer
-            var name = "summary";
+            var reqName = "summary";
         } else {
-            var name = model.currentExercise.toLowerCase();
+            var reqName = model.currentExercise;
         }
         var data = {
             email: model.currentUser,
-            name: name
+            name: reqName
         };
         
         // POST handling routine
