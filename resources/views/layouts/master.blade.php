@@ -31,7 +31,7 @@
     <body fullbleed unresolved>
         
         <!-- Imported Polymer Template -->
-        <base-app> <base-app>
+        <base-app> </base-app>
         
     </body>
    
