@@ -222,7 +222,7 @@ Polymer({
             var tag = e.model.item.lowercase;
         } else {
             // For the "summary" view, since it's not actually a named exercise and not in that list, but needed to trigger graph updates
-            var tag = (e.target.innerText).toLowerCase();
+            var tag = (e.target.innerHTML).toLowerCase();
         }
         if (tag === "summary") {
             this.deactivateEnterSessionsBar();
