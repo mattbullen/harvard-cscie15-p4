@@ -573,8 +573,8 @@ Polymer({
             // Date format from: https://stackoverflow.com/questions/17825137/d3-time-scale-not-working-date-inputs-on-ie-10-and-firefox
             var formatBaseDate = d3.time.format("%Y-%m-%d"); 
             var baseDate = formatBaseDate.parse("2015-01-01") 
-            var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate(baseDate), model.getDate(new Date())]);
-            var xBrush = d3.time.scale().range([0, paddedWidth]).domain([model.getDate(baseDate), model.getDate(new Date())]);
+            var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate(baseDate).getTime(), model.getDate(new Date()).getTime()]);
+            var xBrush = d3.time.scale().range([0, paddedWidth]).domain([model.getDate(baseDate).getTime(), model.getDate(new Date()).getTime()]);
             var y = d3.scale.linear().range([height, 0]).domain([0, 10000]);
             var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(graphConfig.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
             var xAxisBrush = d3.svg.axis().scale(x).orient("bottom").ticks(graphConfig.xAxisTicks).tickFormat(d3.time.format('%b. %e'));
@@ -615,7 +615,7 @@ Polymer({
             currentExercises.push(d.name);
             return {
                 name: d.name,
-                date: thisDate,
+                date: thisDate.getTime(),
                 sets: +d.sets,
                 reps: +d.reps,
                 weight: +d.weight,
@@ -623,9 +623,9 @@ Polymer({
             };
         });
         minDate = new Date(minDate);
-        model.getDate(minDate.setDate(minDate.getDate() - 1));
+        model.getDate(minDate.setDate(minDate.getDate() - 1)).getTime();;
         maxDate = new Date(maxDate);
-        model.getDate(maxDate.setDate(maxDate.getDate() + 1));
+        model.getDate(maxDate.setDate(maxDate.getDate() + 1)).getTime();;
         maxTotal = maxTotal * 1.03;
         mappedData = d3.nest()
             .key(function(d) { return d.name; })
@@ -688,7 +688,7 @@ Polymer({
             .attr("data-notes", function(d) { return d.notes; })
             .attr("data-state", "on")
             .attr("data-click", "off")
-            .attr("cx", function(d) { return x(model.getDate(d.created_at)); })       
+            .attr("cx", function(d) { return x(model.getDate(d.created_at).getTime()); })       
             .attr("cy", function(d) { return y(d.total); })
             .attr("r", graphConfig.circleRadiusSize)
             .attr("data-size-base", graphConfig.circleRadiusSize)
@@ -1172,8 +1172,8 @@ Polymer({
         // Date format from: https://stackoverflow.com/questions/17825137/d3-time-scale-not-working-date-inputs-on-ie-10-and-firefox
         var formatBaseDate = d3.time.format("%Y-%m-%d"); 
         var baseDate = formatBaseDate.parse("2015-01-01") 
-        var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate(baseDate), model.getDate(new Date())]);
-        var xBrush = d3.time.scale().range([0, paddedWidth]).domain([model.getDate(baseDate), model.getDate(new Date())]);
+        var x = d3.time.scale().range([0, paddedWidth]).domain([model.getDate(baseDate).getTime(), model.getDate(new Date()).getTime()]);
+        var xBrush = d3.time.scale().range([0, paddedWidth]).domain([model.getDate(baseDate).getTime(), model.getDate(new Date()).getTime()]);
         var y = d3.scale.linear().range([height, 0]).domain([0, 10000]);
         
         // Define the x-axis dimensions, ticks, and orientation
