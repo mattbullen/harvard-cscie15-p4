@@ -93,7 +93,7 @@ class ExerciseController extends Controller {
         }
         $reqName = Request::input('name');
         $emailObject = self::getEmailObject();
-        $item = \App\Exercise::where('name', '=', $reqName)->first();
+        $item = \App\Exercise::where('name', '=', $reqName)->where('email_id', '=', $emailObject->id)->first();
         if ($item) {
             $item->delete();
             \App\Session::where('name', $reqName)->where('email_id', '=', $emailObject->id)->delete();
