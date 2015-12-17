@@ -619,6 +619,7 @@ Polymer({
                 sets: +d.sets,
                 reps: +d.reps,
                 weight: +d.weight,
+                notes: d.notes,
                 total: thisTotal
             };
         });
