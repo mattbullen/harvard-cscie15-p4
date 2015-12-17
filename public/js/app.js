@@ -767,7 +767,7 @@ Polymer({
                             sets: model.validateSessionValues($("#sessionSets")),
                             reps: model.validateSessionValues($("#sessionReps")),
                             weight: model.validateSessionValues($("#sessionWeight")),
-                            notes: model.validateSessionValues($("#sessionNotes"))
+                            notes: $("#sessionNotes").val()
                         };
                         
                         // POST handling routine
