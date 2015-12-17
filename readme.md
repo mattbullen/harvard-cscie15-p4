@@ -10,6 +10,7 @@ A Laravel 5, Google Polymer 1.0, and D3.js one page web app for fitness tracking
 * Polymer handles the browser-side templating, view-related data-binding, and general user flow. I chose Polymer since I haven't used it before, and I wanted to try making a true one page app that uses dynamic data-binding to update the layout, instead of using multiple static templates or pages.
 * I used D3 for the main graph that tracks work out sessions. Similar to the page template, the graph is dynamic and autoupdates when the underlying data changes. It interfaces with the Laravel back end using AJAX calls. I hadn't tried blending D3 with Laravel or Polymer before, either, and aside from needing to pay a little more attention to function scopes, all three work together really nicely.
 * The app uses three MySQL tables: registered user e-mail addresses, a list of exercise names, and a table to hold invidual workout session records.
+* User input is validated on the server inside the models with additional validation inside some of the controller functions. Values are also validated in browser before AJAX calls are made.
 * The app uses two sets of CRUD operations: the first set manages the list of exercise names/categories, and the second manages the records of individual work out sessions.
 * Users are authenticated using the Google OAuth2 API. After passing Google authentication, the app only needs the user's e-mail address to link exercises/sessions to that user.
 
