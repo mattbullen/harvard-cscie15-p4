@@ -759,7 +759,6 @@ Polymer({
                         $.ajaxSetup({ headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") } });
                     
                         // Validate the POST data and reset the inputs
-                        if ($("#sessionNotes").val() === "") { var newNotes = " "; } else { var updatedNotes = $("#sessionNotes").val(); }
                         var data = {
                             view: model.currentExercise,
                             id: dot.attr("data-id"),
@@ -769,7 +768,7 @@ Polymer({
                             sets: model.validateSessionValues($("#sessionSets")),
                             reps: model.validateSessionValues($("#sessionReps")),
                             weight: model.validateSessionValues($("#sessionWeight")),
-                            notes: updatedNotes
+                            notes: $("#sessionNotes").val()
                         };
                         
                         // POST handling routine
