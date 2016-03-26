@@ -59,12 +59,12 @@ Polymer({
             
             // Add the user first name and e-mail address to the local template's model
             var user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
-            this.currentUser = user.po;
-            this.currentUserFirstName = user.Ph;
-            console.log("\nUser signed in: " + user.Ph + ", " + user.po);
+            this.currentUser = user.hg;
+            this.currentUserFirstName = user.Za;
+            console.log("\nUser signed in: " + user.wc  + ", " + user.hg);
             
             // Move on to the "get the app ready for use" process
-            this.handleUser(user.po, user.Ph);
+            this.handleUser(user.hg, user.Za);
         }
         
         // For debugging:
@@ -1226,27 +1226,7 @@ Polymer({
             .attr("class", "y axis")
             .call(yAxis);
 
-        // Append the top border line
-        svg.append("line")
-            .attr("id", "topBorder")
-            .attr("x1", 0)
-            .attr("y1", 0)
-            .attr("x2", width - 15)
-            .attr("y2", 0)
-            .style("stroke", "rgb(0, 0, 0)")
-            .style("stroke-width", "1.0")
-            .style("shape-rendering", "crispEdges");
-            
-        // Append the far right border line
-        svg.append("line")
-            .attr("id", "rightBorder")
-            .attr("x1", width - 15)
-            .attr("y1", 0)
-            .attr("x2", width - 15)
-            .attr("y2", height)
-            .style("stroke", "rgb(0, 0, 0)")
-            .style("stroke-width", "1.0")
-            .style("shape-rendering", "crispEdges");
+        
         
         // Define the range slider base canvas
         var context = svg.append("g")
