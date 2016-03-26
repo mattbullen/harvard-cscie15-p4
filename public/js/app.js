@@ -1226,7 +1226,27 @@ Polymer({
             .attr("class", "y axis")
             .call(yAxis);
 
-        
+        // Append the top border line
+        svg.append("line")
+            .attr("id", "topBorder")
+            .attr("x1", 0)
+            .attr("y1", 0)
+            .attr("x2", width - 15)
+            .attr("y2", 0)
+            .style("stroke", "rgb(0, 0, 0)")
+            .style("stroke-width", "1.0")
+            .style("shape-rendering", "crispEdges");
+            
+        // Append the far right border line
+        svg.append("line")
+            .attr("id", "rightBorder")
+            .attr("x1", width - 15)
+            .attr("y1", 0)
+            .attr("x2", width - 15)
+            .attr("y2", height)
+            .style("stroke", "rgb(0, 0, 0)")
+            .style("stroke-width", "1.0")
+            .style("shape-rendering", "crispEdges");
         
         // Define the range slider base canvas
         var context = svg.append("g")
